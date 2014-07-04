@@ -1,4 +1,4 @@
 $(document).ready(function($){
-	$('#scroller').asScrollable();
+	$('#scroller').asScrollbar();
 });
 
