@@ -1,4 +1,4 @@
-/*! jQuery plugin - v0.1.1 - 2014-07-04
+/*! jQuery plugin - v0.1.1 - 2014-07-07
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -87,7 +87,7 @@
          contentClass: 'content',
          wrapperClass: 'wrapper',
          barClass: 'scrollbar',
-         barTmpl: '<div class="scrollbar"><div class="handle"></div></div>',
+         barTmpl: '<div class="{{scrollbar}}"><div class="{{handle}}"></div></div>',
          handleClass: 'handle',
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
          namespace: 'asScrollable',
@@ -123,7 +123,7 @@
                  this.$bar = this.$container.find('.' + options.barClass);
 
                  if (this.$bar.length === 0) {
-                     this.$bar = $(options.barTmpl);
+                     this.$bar = $(options.barTmpl.replace(/\{\{scrollbar\}\}/g, options.barClass).replace(/\{\{handle\}\}/g, options.handleClass));
                      this.$bar.appendTo($wrapper);
                  }
 

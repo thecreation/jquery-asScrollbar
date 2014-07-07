@@ -92,7 +92,7 @@
          contentClass: 'content',
          wrapperClass: 'wrapper',
          barClass: 'scrollbar',
-         barTmpl: '<div class="scrollbar"><div class="handle"></div></div>',
+         barTmpl: '<div class="{{scrollbar}}"><div class="{{handle}}"></div></div>',
          handleClass: 'handle',
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
          namespace: 'asScrollable',
@@ -128,7 +128,7 @@
                  this.$bar = this.$container.find('.' + options.barClass);
 
                  if (this.$bar.length === 0) {
-                     this.$bar = $(options.barTmpl);
+                     this.$bar = $(options.barTmpl.replace(/\{\{scrollbar\}\}/g, options.barClass).replace(/\{\{handle\}\}/g, options.handleClass));
                      this.$bar.appendTo($wrapper);
                  }
 
