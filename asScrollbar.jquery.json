@@ -19,7 +19,8 @@
     }
   ],
   "dependencies": {
-    "jquery": "*"
+    "jquery": "*",
+	"jquery-mousewheel" : "git@github.com:brandonaaron/jquery-mousewheel.git"
   },
   "keywords": []
 }

@@ -96,6 +96,7 @@
          handleClass: 'handle',
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
          namespace: 'asScrollable',
+         mousewheel: 10,
          responsive: false
      };
 
@@ -185,6 +186,19 @@
                  $(this).trigger(self.eventName('change'), [percent, 'content']);
              });
 
+             $bar.on('mousewheel', function(e, delta) {
+                 var offset = self.getHanldeOffset();
+                 if (offset <= 0 && delta > 0) {
+                     return true;
+                 } else if (offset >= self.bLength && delta < 0) {
+                     return true;
+                 } else {
+                     offset = offset - self.options.mousewheel * delta;
+
+                     self.handleMove(offset, false, true);
+                     return false;
+                 }
+             });
 
              $bar.on('mousedown', function(e) {
                  var oriAttr = self.oriAttr,
@@ -298,9 +312,14 @@
                  $bar = this.$bar;
 
              if (isPercent) {
-                 value = value * bLength;
                  percent = value;
+                 value = value * bLength;
              } else {
+                 if (value < 0) {
+                     value = 0;
+                 } else if (value > bLength) {
+                     value = bLength;
+                 }
                  percent = value / bLength;
              }
 
