@@ -361,7 +361,7 @@
          destory: function() {
              this.$bar.remove();
              this.$container.html(this.$content.html());
-             this.$container.removeData('scroll');
+             this.$container.removeData(pluginName);
          }
      }
 
