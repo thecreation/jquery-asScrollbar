@@ -14,8 +14,15 @@
      var Plugin = $[pluginName] = function(options, container) {
          var oriAttr,
              $container = this.$container = $(container);
-
          options = this.options = $.extend({}, Plugin.defaults, options || {});
+		
+		 this.classes = {
+			contentClass: options.namespace + 'content',
+			wrapperClass: options.namespace +'wrapper',
+			barClass: options.namespace +'scrollbar',
+			handleClass: options.namespace +'handle',
+			directionClass : options.namespace + options.direction
+		 };
 
          if (this.options.direction === 'vertical') {
              oriAttr = this.oriAttr = {
@@ -56,17 +63,17 @@
          }
 
          //var $content = this.$content = $container.children().first();
-         var $content = this.$content = $container.find('.' + options.contentClass);
+         var $content = this.$content = $container.find('.' + this.classes.contentClass);
 
          if ($content.length === 0) {
-             $container.wrapInner('<div class="' + options.contentClass + '"/>');
-             $content = this.$content = $container.find('.' + options.contentClass);
+             $container.wrapInner('<div class="' + this.classes.contentClass + '"/>');
+             $content = this.$content = $container.find('.' + this.classes.contentClass);
          }
 
-         var $wrapper = this.$wrapper = $container.find('.' + options.wrapperClass);
+         var $wrapper = this.$wrapper = $container.find('.' + this.classes.wrapperClass);
          if ($wrapper.length === 0) {
-             $content.wrap('<div class="' + options.wrapperClass + '"/>');
-             $wrapper = this.$wrapper = $content.parents('.' + options.wrapperClass);
+             $content.wrap('<div class="' + this.classes.wrapperClass + '"/>');
+             $wrapper = this.$wrapper = $content.parents('.' + this.classes.wrapperClass);
          }
 
          $container.css({
@@ -126,17 +133,17 @@
                  content = this.$content[0];
 
              if (typeof this.$bar === 'undefined') {
-                 this.$bar = this.$container.find('.' + options.barClass);
+                 this.$bar = this.$container.find('.' + this.classes.barClass);
 
                  if (this.$bar.length === 0) {
-                     this.$bar = $(options.barTmpl.replace(/\{\{scrollbar\}\}/g, options.barClass).replace(/\{\{handle\}\}/g, options.handleClass));
+                     this.$bar = $(options.barTmpl.replace(/\{\{scrollbar\}\}/g, this.classes.barClass).replace(/\{\{handle\}\}/g, this.classes.handleClass));
                      this.$bar.appendTo($wrapper);
                  }
 
-                 this.$bar.addClass(options.direction).attr('draggable', false);
+                 this.$bar.addClass(this.classes.direction).attr('draggable', false);
              }
 
-             var $handle = this.$handle = this.$bar.find('.' + options.handleClass),
+             var $handle = this.$handle = this.$bar.find('.' + this.classes.handleClass),
                  bar = this.$bar[0],
                  handle = this.$handle[0];
 
