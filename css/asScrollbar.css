@@ -8,7 +8,7 @@ body{
 
 
 
-.scrollbar { 
+.asScrollable-scrollbar { 
 	position:absolute;
 	top:0;
 	right:0;
@@ -27,7 +27,7 @@ body{
 	
 	
 }
-.scrollbar .handle { 
+.asScrollable-scrollbar .asScrollable-handle { 
 	
 	background: #fff; 
 	cursor: pointer; 
@@ -43,19 +43,19 @@ body{
 	box-shadow: 0 1px 0 #555;
 }
 
-.horizontal.scrollbar {
+.horizontal.asScrollable-scrollbar {
     height: 8px;
     margin: 1em 0;
 	width:100%;
 }
-.horizontal.scrollbar .handle { 
+.horizontal.asScrollable-scrollbar .asScrollable-handle { 
 	height: 100%; 
 }
-.vertical.scrollbar { 
+.vertical.asScrollable-scrollbar { 
 	height:100%;
 	width: 8px;
 }
-.vertical.scrollbar .handle { 
+.vertical.asScrollable-scrollbar .asScrollable-handle { 
 	width: 100%; 
 }
 
@@ -73,7 +73,7 @@ body{
 	width:100%;
 
 }
-#container .scrollbar{
+#container .asScrollable-scrollbar{
 	height:396px;
 	right:0;
 	position:absolute;
@@ -86,7 +86,7 @@ body{
 	position : relative;
 	width:100%;
 }
-.wrapper::-webkit-scrollbar{
+.asScrollable-wrapper::-webkit-scrollbar{
 	width:0;
 }
 .no-select{
@@ -97,15 +97,15 @@ body{
 
 #scrollable{
 }
-#scrollable .content{
+#scrollable .asScrollable-content{
 	width:5000px;
 }
-.handle{
+.asScrollable-handle{
 	position	: absolute;
 	top		: 0;
 	left		: 0;
 }
 
-.scrollbar{
+.asScrollable-scrollbar{
 	overflow:hidden;
 }
