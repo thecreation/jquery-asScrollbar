@@ -28,6 +28,7 @@
     "grunt-contrib-concat": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-copy": "*",
+    "grunt-contrib-less": "*",
     "grunt-contrib-watch": "*",
     "grunt-contrib-clean": "*",
     "grunt": "~0.4.5",

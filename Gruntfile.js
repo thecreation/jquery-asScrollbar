@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         // Task configuration.
         // -- clean config -------------------------------------------------------
         clean: {
-            files: ['dist']
+            files: ['dist', 'css']
         },
 
         // -- concat config -------------------------------------------------------
@@ -89,6 +89,15 @@ module.exports = function(grunt) {
             }
         },
 
+        // -- Clean Config ---------------------------------------------------------
+        less: {
+            dist: {
+                files: {
+                    'css/asScrollbar.css': 'less/asScrollbar.less'
+                }
+            }
+        },
+
         // -- replace Config --------------------------------------------------------
         replace: {
             bower: {
@@ -117,8 +126,9 @@ module.exports = function(grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', ['js', 'dist']);
+    grunt.registerTask('default', ['js', 'dist', 'css']);
     grunt.registerTask('dist', ['clean', 'concat', 'uglify']);
+    grunt.registerTask('css', ['less']);
     grunt.registerTask('js', ['jshint', 'jsbeautifier']);
 
     grunt.registerTask('version', [

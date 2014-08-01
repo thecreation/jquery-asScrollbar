@@ -15,17 +15,17 @@
          var oriAttr,
              $container = this.$container = $(container);
          options = this.options = $.extend({}, Plugin.defaults, options || {});
-		
-		 this.classes = {
-			contentClass: options.namespace + '-content',
-			wrapperClass: options.namespace +'-wrapper',
-			barClass: options.namespace +'-scrollbar',
-			handleClass: options.namespace +'-handle',
-			directionClass : options.namespace + '-'+options.direction,
-		 };
 
-         if(options.skin){
-            this.classes.skinClass = options.namespace + '-' + options.skin;
+         this.classes = {
+             contentClass: options.namespace + '-content',
+             wrapperClass: options.namespace + '-wrapper',
+             barClass: options.namespace + '-scrollbar',
+             handleClass: options.namespace + '-handle',
+             directionClass: options.namespace + '-' + options.direction,
+         };
+
+         if (options.skin) {
+             this.classes.skinClass = options.namespace + '-' + options.skin;
          }
 
          if (this.options.direction === 'vertical') {
@@ -85,7 +85,7 @@
              'position': 'relative'
          }).addClass(this.classes.skinClass);
 
-        
+
          var wrapper = $wrapper[0];
          $wrapper.css(oriAttr.overflow, 'scroll')
              .css(oriAttr.crossSize, wrapper.parentNode[oriAttr.crossClient] + wrapper[oriAttr.crossOffset] - wrapper[oriAttr.crossClient] + 'px');
@@ -109,7 +109,7 @@
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
          namespace: 'asScrollable',
          mousewheel: 10,
-         skin:false,
+         skin: false,
          responsive: false
      };
 
@@ -146,7 +146,7 @@
                      this.$bar.appendTo($wrapper);
                  }
 
-                 this.$bar.addClass(this.classes.direction).attr('draggable', false);
+                 this.$bar.addClass(this.classes.directionClass).attr('draggable', false);
              }
 
              var $handle = this.$handle = this.$bar.find('.' + this.classes.handleClass),
