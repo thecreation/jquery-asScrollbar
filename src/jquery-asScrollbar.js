@@ -17,10 +17,10 @@
          options = this.options = $.extend({}, Plugin.defaults, options || {});
 
          this.classes = {
-             contentClass: options.namespace + '-content',
-             wrapperClass: options.namespace + '-wrapper',
-             barClass: options.namespace + '-scrollbar',
-             handleClass: options.namespace + '-handle',
+             contentClass: options.namespace + '-' + options.contentClass,
+             wrapperClass: options.namespace + '-' + options.wrapperClass,
+             barClass: options.namespace + '-' + options.barClass,
+             handleClass: options.namespace + '-' + options.handleClass,
              directionClass: options.namespace + '-' + options.direction,
          };
 
@@ -87,8 +87,7 @@
 
 
          var wrapper = $wrapper[0];
-         $wrapper.css(oriAttr.overflow, 'scroll')
-             .css(oriAttr.crossSize, wrapper.parentNode[oriAttr.crossClient] + wrapper[oriAttr.crossOffset] - wrapper[oriAttr.crossClient] + 'px');
+         $wrapper.css(oriAttr.overflow, 'scroll');
 
          $content.css('overflow', 'hidden')
              .css(oriAttr.crossSize, 'auto');
@@ -110,25 +109,29 @@
          namespace: 'asScrollable',
          mousewheel: 10,
          skin: false,
-         responsive: false
+         responsive: false,
+		 showOnhover : true
      };
 
      Plugin.prototype = {
          constructor: Plugin,
          initLayout: function() {
-
              var $wrapper = this.$wrapper,
-                 $container = this.$container;
+			     wrapper  = $wrapper[0],
+                 $container = this.$container,
+				 oriAttr = this.oriAttr;
+
+			$wrapper.css(oriAttr.crossSize, wrapper.parentNode[oriAttr.crossClient] + wrapper[oriAttr.crossOffset] - wrapper[oriAttr.crossClient] + 'px');
 
              if (this.options.direction === 'horizontal') {
                  $container.css('height', $container.height());
              } else {
                  $wrapper.css('height', $container.height());
              }
-
+			 this.isOverContainer = false;
+			 this.hasBar = true;
+			 this.isClick = false;
              this.initBarLayout();
-
-
              $container.trigger(this.eventName('initLayout'));
          },
          initBarLayout: function() {
@@ -183,7 +186,11 @@
                          this.$handle.css(oriAttr.pos, hPosition);
                      }
                  }
+
+				 this.hasBar = true;
+				 this.$bar.hide();
              } else {
+				 this.hasBar = false;
                  this.$bar.hide();
              }
          },
@@ -218,8 +225,7 @@
                      bLength = self.bLength,
                      hLength = self.hLength,
                      $handle = self.$handle;
-
-
+			     self.isClick = true;
                  self.hPosition = self.getHanldeOffset();
                  if ($(e.target).is($handle)) {
                      self.dragStart = e[oriAttr.mouseAttr];
@@ -277,6 +283,8 @@
                          '-moz-user-input': 'inherit',
                          '-moz-user-select': 'inherit'
                      });
+					 self.isClick = false;
+					 self.hideBar();
                  });
              });
 
@@ -296,12 +304,32 @@
                      self.$container.trigger(self.eventName('hitend'));
                  }
              });
+			 $container.on('mouseenter', function(e) {
+				self.isOverContainer = true;
+                self.showBar();
+             });
+			 $container.on('mouseleave',function(e){
+				 self.isOverContainer = false;
+				 self.hideBar();
+			 });
              if (this.options.responsive) {
                  $(window).resize(function() {
                      self.initLayout();
                  });
              }
          },
+		 showBar : function(){
+			if(this.hasBar){
+				this.$bar.show();
+			}
+		 },
+		 hideBar : function(){
+			if(this.options.showOnhover && this.hasBar){
+				if(!this.isOverContainer && !this.isClick){
+					this.$bar.hide();
+				}
+			}
+		 },
          getHanldeOffset: function() {
              return parseInt(this.$handle.css(this.oriAttr.pos).replace('px', ''), 10);
          },
@@ -396,7 +424,9 @@
              this.each(function() {
                  if (!$(this).data(pluginName)) {
                      $(this).data(pluginName, new Plugin(options, this));
-                 }
+                 }else{
+					$(this).data(pluginName).initLayout();
+				 }
              });
 
          }
