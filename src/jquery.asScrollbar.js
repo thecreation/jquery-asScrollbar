@@ -1,5 +1,5 @@
 /*
-  * asScrollable
+  * asScrollbar
   * https://github.com/amazingSurge/jquery-asScrollable
   *
   * Copyright (c) 2014 amazingSurge
@@ -21,11 +21,11 @@
 				directionClass: options.namespace + '-' + options.direction
 			};
 
+            if (options.skin) {
+                this.classes.skinClass = options.namespace + '-' + options.skin;
+            }
 
-         	if (options.skin) {
-             	this.classes.skinClass = options.namespace + '-' + options.skin;
-         	}	
-
+         	
 			if (this.options.direction === 'vertical') {
 				oriAttr = this.oriAttr = {
 					x: 'Y',
@@ -70,6 +70,9 @@
 
             this.$bar.addClass(this.classes.barClass).addClass(this.classes.directionClass).attr('draggable', false);
 
+            if(options.skin){
+                this.$bar.addClass(this.classes.skinClass);
+            }
             if(options.barLength !== false){
             	this.setBarLength(options.barLength);
             }
@@ -92,10 +95,12 @@
 		  namespace : 'asScrollbar',
 		  barClass: 'scrollbar',
 		  handleClass: 'handle',
+          minHandleLength : 30,
 		  direction: 'vertical',//if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
 	  };
 
 	  Plugin.prototype = {
+          constructor : Plugin,
 		  eventName: function(events) {
              if (typeof events !== 'string' || events === '') {
                  return false;
@@ -185,6 +190,9 @@
 
 		 setHandleLength : function(length){
 			  if(typeof length !== 'undefined'){
+                if(length<this.options.minHandleLength){
+                    length = this.options.minHandleLength;
+                }
 				this.$handle.css(this.oriAttr.size, length);
 			 }
 			 this.setLength();

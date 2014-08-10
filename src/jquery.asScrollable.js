@@ -83,7 +83,11 @@
          $container.css({
              'overflow': 'hidden',
              'position': 'relative'
-         }).addClass(this.classes.skinClass);
+         })
+
+         if(options.skin){
+            $container.addClass(this.classes.skinClass);
+         }
 
 
          $wrapper.css(oriAttr.overflow, 'scroll');
@@ -162,9 +166,9 @@
                  wrapperLength = wrapper[oriAttr.client];
 
              if (contentLength - wrapperLength > 0) {
-
+                this.$bar.css('visibility','hidden').show();
                  $scrollbar.setHandleLength(bar[oriAttr.client] * wrapperLength / contentLength);
-                
+                this.$bar.css('visibility','visible');
                  var percent = this.getPercentOffset();
                      
                  var hPosition = percent * $scrollbar.bLength;
