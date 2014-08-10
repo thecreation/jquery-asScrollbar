@@ -1,6 +1,6 @@
  /*
-  * asScrollbar
-  * https://github.com/amazingSurge/jquery-asScrollbar
+  * asScrollable
+  * https://github.com/amazingSurge/jquery-asScrollable
   *
   * Copyright (c) 2014 amazingSurge
   * Licensed under the GPL license.
@@ -9,7 +9,7 @@
  (function($, document, window, undefined) {
      "use strict";
 
-     var pluginName = 'asScrollbar';
+     var pluginName = 'asScrollable';
 
      var Plugin = $[pluginName] = function(options, container) {
          var oriAttr,
@@ -129,7 +129,6 @@
              }
              this.isOverContainer = false;
              this.hasBar = true;
-             this.isClick = false;
              this.initBarLayout();
              $container.trigger(this.eventName('initLayout'));
          },
@@ -148,49 +147,37 @@
                      this.$bar.appendTo($wrapper);
                  }
 
-                 this.$bar.addClass(this.classes.directionClass).attr('draggable', false);
+                 this.$bar.asScrollbar({
+                    namespace:options.namespace,
+                    skin:options.skin,
+                    barClass: options.barClass,
+                    handleClass: options.handleClass
+                 });
              }
 
-             var $handle = this.$handle = this.$bar.find('.' + this.classes.handleClass),
-                 bar = this.$bar[0],
-                 handle = this.$handle[0];
-
-             var contentLength = content[oriAttr.offset],
+             var $scrollbar = this.$scrollbar = this.$bar.data('asScrollbar'),
+                 $bar = this.$bar,
+                 bar = $bar[0],
+                 contentLength = content[oriAttr.offset],
                  wrapperLength = wrapper[oriAttr.client];
 
              if (contentLength - wrapperLength > 0) {
-                 $handle.css(oriAttr.size, bar[oriAttr.client] * wrapperLength / contentLength);
-                 if (typeof this.bLength === 'undefined') {
-                     this.hLength = handle[oriAttr.client];
-                     this.bLength = bar[oriAttr.client] - this.hLength;
 
-                     var percent = this.getPercentOffset();
-                     this.hPosition = percent * this.bLength;
-                     if (this.hPosition !== 0) {
-                         this.handleMove(this.hPosition, false);
-                     }
-                 } else {
-                     var origLength = this.bLength;
-                     this.hLength = handle[oriAttr.client];
-                     var newLength = this.bLength = bar[oriAttr.client] - this.hLength;
-                     var hPosition = this.getHanldeOffset();
-
-                     if (hPosition !== 0) {
-                         hPosition = hPosition * newLength / origLength;
-
-                         if (hPosition > newLength) {
-                             hPosition = newLength;
-                         }
-
-                         this.$handle.css(oriAttr.pos, hPosition);
-                     }
-                 }
-
+                 $scrollbar.setHandleLength(bar[oriAttr.client] * wrapperLength / contentLength);
+                
+                 var percent = this.getPercentOffset();
+                     
+                 var hPosition = percent * $scrollbar.bLength;
+                     
+                if (hPosition !== 0) {
+                    $scrollbar.handleMove(this.hPosition, false);
+                }
+                 
                  this.hasBar = true;
-                 this.$bar.hide();
+                 this.hideBar();
              } else {
                  this.hasBar = false;
-                 this.$bar.hide();
+                 this.hideBar();
              }
          },
 
@@ -205,93 +192,29 @@
                  $(this).trigger(self.eventName('change'), [percent, 'content']);
              });
 
-             $bar.on('mousewheel', function(e, delta) {
-                 var offset = self.getHanldeOffset();
-                 if (offset <= 0 && delta > 0) {
-                     return true;
-                 } else if (offset >= self.bLength && delta < 0) {
-                     return true;
-                 } else {
-                     offset = offset - self.options.mousewheel * delta;
+            $bar.on('mousedown', function(e) {
+                
+                self.$container.css({
+                    '-moz-user-focus': 'ignore',
+                    '-moz-user-input': 'disabled',
+                    '-moz-user-select': 'none'
+                });
 
-                     self.handleMove(offset, false, true);
-                     return false;
-                 }
-             });
-
-             $bar.on('mousedown', function(e) {
-                 var oriAttr = self.oriAttr,
-                     bLength = self.bLength,
-                     hLength = self.hLength,
-                     $handle = self.$handle;
-                 self.isClick = true;
-                 self.hPosition = self.getHanldeOffset();
-                 if ($(e.target).is($handle)) {
-                     self.dragStart = e[oriAttr.mouseAttr];
-                     self.isDrag = true;
-                     $handle.addClass('is-drag');
-                     self.$bar.trigger(self.eventName('dragstart'));
-
-                     $(document).on(self.eventName('selectstart'), function() {
-                         return false;
-                     });
-
-                     self.$container.css({
-                         '-moz-user-focus': 'ignore',
-                         '-moz-user-input': 'disabled',
-                         '-moz-user-select': 'none'
-                     });
-
-                     $(document).on(self.eventName('mousemove'), function(e) {
-                         if (self.isDrag) {
-                             var oriAttr = self.oriAttr,
-                                 bLength = self.bLength;
-
-                             var stop = e[oriAttr.mouseAttr],
-                                 start = self.dragStart;
-
-                             var distance = self.hPosition + stop - start;
-
-                             if (distance < 0) {
-                                 distance = 0;
-                             } else if (distance > bLength) {
-                                 distance = bLength;
-                             }
-                             self.handleMove(distance, false, true);
-                         }
-                     });
-                 } else {
-                     var offset = e[oriAttr.mouseAttr] - self.$bar.offset()[oriAttr.pos] - hLength / 2;
-
-                     if (offset < 0) {
-                         offset = 0;
-                     } else if (offset > bLength) {
-                         offset = bLength;
-                     }
-
-                     self.handleMove(offset, false, true);
-                 }
                  $(document).one(self.eventName('mouseup blur'), function() {
-                     self.$handle.removeClass('is-drag');
-                     self.$bar.trigger('dragend.' + self.options.namespace);
-                     self.isDrag = false;
-                     $(document).off(self.eventName('selectstart mousemove'));
-
                      self.$container.css({
                          '-moz-user-focus': 'inherit',
                          '-moz-user-input': 'inherit',
                          '-moz-user-select': 'inherit'
                      });
-                     self.isClick = false;
                      self.hideBar();
                  });
              });
 
-             $container.on(this.eventName('change'), function(e, value, type) {
+            $container.on(this.eventName('change'), function(e, value, type) {
                  if (type === 'bar') {
                      self.move(value, true);
                  } else if (type === 'content') {
-                     self.handleMove(value, true);
+                     self.$bar.data('asScrollbar').handleMove(value, true);
                  }
 
                  $container.addClass('is-scrolled');
@@ -303,6 +226,7 @@
                      self.$container.trigger(self.eventName('hitend'));
                  }
              });
+
              $container.on('mouseenter', function() {
                  self.isOverContainer = true;
                  self.showBar();
@@ -324,14 +248,12 @@
          },
          hideBar: function() {
              if (this.options.showOnhover && this.hasBar) {
-                 if (!this.isOverContainer && !this.isClick) {
+                 if (!this.isOverContainer && !this.$scrollbar.isDrag) {
                      this.$bar.hide();
                  }
              }
          },
-         getHanldeOffset: function() {
-             return parseInt(this.$handle.css(this.oriAttr.pos).replace('px', ''), 10);
-         },
+        
          getContentOffset: function() {
              var oriAttr = this.oriAttr,
                  wrapper = this.$wrapper[0];
@@ -343,33 +265,6 @@
                  wrapper = this.$wrapper[0],
                  content = this.$content[0];
              return this.getContentOffset() / (content[oriAttr.client] - wrapper[oriAttr.offset]);
-         },
-         handleMove: function(value, isPercent, trigger) {
-             var percent, $handle = this.$handle,
-                 params = {},
-                 bLength = this.bLength,
-                 oriAttr = this.oriAttr,
-                 $bar = this.$bar;
-
-             if (isPercent) {
-                 percent = value;
-                 value = value * bLength;
-             } else {
-                 if (value < 0) {
-                     value = 0;
-                 } else if (value > bLength) {
-                     value = bLength;
-                 }
-                 percent = value / bLength;
-             }
-
-             params[oriAttr.pos] = value;
-
-             $handle.css(params);
-
-             if (trigger) {
-                 $bar.trigger(this.eventName('change'), [percent, 'bar']);
-             }
          },
          eventName: function(events) {
              if (typeof events !== 'string' || events === '') {
@@ -433,3 +328,4 @@
      };
 
  })(jQuery, document, window);
+
