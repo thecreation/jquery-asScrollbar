@@ -17,27 +17,34 @@ module.exports = function(grunt) {
             files: ['dist', 'css']
         },
 
-        // -- concat config -------------------------------------------------------
+        // -- concat config ------------------------------------------------------
         concat: {
             options: {
                 banner: '<%= banner %>',
                 stripBanners: true
             },
-            dist: {
-                src: ['src/<%= pkg.name %>.js'],
-                dest: 'dist/<%= pkg.name %>.js'
-            }
+            dist_basic: {
+                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollable.js'],
+                dest: 'dist/jquery.asScrollable.js',
+            },
+            dist_extras: {
+                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollSide.js'],
+                dest: 'dist/jquery.asScrollSide.js',
+            },
         },
-
         // -- uglify config -------------------------------------------------------
         uglify: {
             options: {
                 banner: '<%= banner %>'
             },
-            dist: {
-                src: '<%= concat.dist.dest %>',
-                dest: 'dist/<%= pkg.name %>.min.js'
-            }
+            dist_basic: {
+                src: '<%= concat.dist_basic.dest %>',
+                dest: 'dist/jquery.asScrollable.min.js',
+            },
+            dist_extras: {
+                src: '<%= concat.dist_extras.dest %>',
+                dest: 'dist/jquery.asScrollSide.min.js',
+            },
         },
 
         // -- jsbeautifier config -------------------------------------------------------
@@ -126,10 +133,10 @@ module.exports = function(grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', ['js', 'dist', 'css']);
-    grunt.registerTask('dist', ['clean', 'concat', 'uglify']);
+    grunt.registerTask('default', ['js', 'clean', 'dist', 'css']);
+    grunt.registerTask('dist', ['concat', 'uglify']);
     grunt.registerTask('css', ['less']);
-    grunt.registerTask('js', ['jshint', 'jsbeautifier']);
+    grunt.registerTask('js', ['jsbeautifier', 'jshint']);
 
     grunt.registerTask('version', [
         'replace:bower',

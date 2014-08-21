@@ -85,8 +85,8 @@
              'position': 'relative'
          })
 
-         if(options.skin){
-            $container.addClass(this.classes.skinClass);
+         if (options.skin) {
+             $container.addClass(this.classes.skinClass);
          }
 
 
@@ -152,10 +152,10 @@
                  }
 
                  this.$bar.asScrollbar({
-                    namespace:options.namespace,
-                    skin:options.skin,
-                    barClass: options.barClass,
-                    handleClass: options.handleClass
+                     namespace: options.namespace,
+                     skin: options.skin,
+                     barClass: options.barClass,
+                     handleClass: options.handleClass
                  });
              }
 
@@ -166,17 +166,17 @@
                  wrapperLength = wrapper[oriAttr.client];
 
              if (contentLength - wrapperLength > 0) {
-                this.$bar.css('visibility','hidden').show();
+                 this.$bar.css('visibility', 'hidden').show();
                  $scrollbar.setHandleLength(bar[oriAttr.client] * wrapperLength / contentLength);
-                this.$bar.css('visibility','visible');
+                 this.$bar.css('visibility', 'visible');
                  var percent = this.getPercentOffset();
-                     
+
                  var hPosition = percent * $scrollbar.bLength;
-                     
-                if (hPosition !== 0) {
-                    $scrollbar.handleMove(this.hPosition, false);
-                }
-                 
+
+                 if (hPosition !== 0) {
+                     $scrollbar.handleMove(this.hPosition, false);
+                 }
+
                  this.hasBar = true;
                  this.hideBar();
              } else {
@@ -196,13 +196,13 @@
                  $(this).trigger(self.eventName('change'), [percent, 'content']);
              });
 
-            $bar.on('mousedown', function(e) {
-                
-                self.$container.css({
-                    '-moz-user-focus': 'ignore',
-                    '-moz-user-input': 'disabled',
-                    '-moz-user-select': 'none'
-                });
+             $bar.on('mousedown', function(e) {
+
+                 self.$container.css({
+                     '-moz-user-focus': 'ignore',
+                     '-moz-user-input': 'disabled',
+                     '-moz-user-select': 'none'
+                 });
 
                  $(document).one(self.eventName('mouseup blur'), function() {
                      self.$container.css({
@@ -214,7 +214,7 @@
                  });
              });
 
-            $container.on(this.eventName('change'), function(e, value, type) {
+             $container.on(this.eventName('change'), function(e, value, type) {
                  if (type === 'bar') {
                      self.move(value, true);
                  } else if (type === 'content') {
@@ -257,7 +257,7 @@
                  }
              }
          },
-        
+
          getContentOffset: function() {
              var oriAttr = this.oriAttr,
                  wrapper = this.$wrapper[0];
@@ -332,4 +332,3 @@
      };
 
  })(jQuery, document, window);
-
