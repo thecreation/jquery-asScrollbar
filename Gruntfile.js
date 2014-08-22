@@ -31,6 +31,10 @@ module.exports = function(grunt) {
                 src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollSide.js'],
                 dest: 'dist/jquery.asScrollSide.js',
             },
+            dist_all: {
+                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollable.js', 'src/jquery.asScrollSide.js'],
+                dest: 'dist/jquery.asScrollbar_all.js',
+            }
         },
         // -- uglify config -------------------------------------------------------
         uglify: {
@@ -45,9 +49,13 @@ module.exports = function(grunt) {
                 src: '<%= concat.dist_extras.dest %>',
                 dest: 'dist/jquery.asScrollSide.min.js',
             },
+            dist_all: {
+                src: '<%= concat.dist_all.dest %>',
+                dest: 'dist/jquery.asScrollbar_all.min.js',
+            },
         },
 
-        // -- jsbeautifier config -------------------------------------------------------
+        // -- jsbeautifier config --------------------------------------------------
         jsbeautifier: {
             files: ["src/**/*.js", 'Gruntfile.js'],
             options: {
@@ -68,7 +76,7 @@ module.exports = function(grunt) {
             }
         },
 
-        // -- jshint config -------------------------------------------------------
+        // -- jshint config ---------------------------------------------------------
         jshint: {
             gruntfile: {
                 options: {
@@ -84,7 +92,7 @@ module.exports = function(grunt) {
             }
         },
 
-        // -- watch config -------------------------------------------------------
+        // -- watch config -----------------------------------------------------------
         watch: {
             gruntfile: {
                 files: '<%= jshint.gruntfile.src %>',
@@ -96,7 +104,7 @@ module.exports = function(grunt) {
             }
         },
 
-        // -- Clean Config ---------------------------------------------------------
+        // -- Clean Config -----------------------------------------------------------
         less: {
             dist: {
                 files: {
@@ -105,7 +113,7 @@ module.exports = function(grunt) {
             }
         },
 
-        // -- replace Config --------------------------------------------------------
+        // -- replace Config ----------------------------------------------------------
         replace: {
             bower: {
                 src: ['bower.json'],
@@ -126,7 +134,7 @@ module.exports = function(grunt) {
         }
     });
 
-    // -- Main Tasks ---------------------------------------------------------------
+    // -- Main Tasks ------------------------------------------------------------------
     // These plugins provide necessary tasks.
     require('load-grunt-tasks')(grunt, {
         pattern: ['grunt-*']
