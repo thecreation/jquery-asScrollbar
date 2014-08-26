@@ -1,4 +1,4 @@
-/*! jQuery plugin - v0.1.1 - 2014-08-22
+/*! jQuery plugin - v0.1.1 - 2014-08-26
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -199,7 +199,7 @@
         },
 
         getHanldeOffset: function() {
-            return parseInt(this.$handle.css(this.oriAttr.pos).replace('px', ''), 10);
+            return parseFloat(this.$handle.css(this.oriAttr.pos).replace('px', ''));
         },
 
         setHandleOffset: function(offset) {
@@ -207,16 +207,20 @@
         },
 
         handleMove: function(value, isPercent, trigger) {
-            if (!value) return;
             var percent, $handle = this.$handle,
                 params = {},
+                offset = this.getHanldeOffset(),
                 bLength = this.bLength,
                 hLength = this.hLength,
                 oriAttr = this.oriAttr,
                 $bar = this.$bar;
-
             if (isPercent) {
                 percent = value;
+                if (percent < 0) {
+                    value = 0;
+                } else if (percent > 1) {
+                    value = 1;
+                }
                 value = value * bLength;
             } else {
                 if (value < 0) {
@@ -226,13 +230,15 @@
                 }
                 percent = value / bLength;
             }
-            params[oriAttr.pos] = value;
-
-            $handle.css(params);
-
             if (trigger) {
                 $bar.trigger(this.eventName('change'), [percent, 'bar']);
             }
+            if (offset === 0 && value === 0) return;
+            if (value === 1 && isPercent && offset === this.bLength) return;
+            if (value === this.bLength && offset === this.bLength) return;
+            params[oriAttr.pos] = value;
+
+            $handle.css(params);
         }
     };
 
@@ -618,7 +624,6 @@
 
         $side.css({
             position: 'fixed',
-            left: 0,
             top: 0
         });
 
@@ -626,10 +631,8 @@
         $side.wrapInner($('<div/>').addClass(this.classes.contentClass));
 
         this.$content = $side.find('.' + this.classes.contentClass).css({
-
             position: 'absolute',
             top: 0,
-            left: 0,
             width: '100%'
         });
         this.isOverSide = false;
@@ -685,6 +688,8 @@
                 }
 
                 this.$bar.asScrollbar({
+                    barLength: options.barLength,
+                    handleLength: options.handleLength,
                     namespace: options.namespace,
                     skin: options.skin,
                     mousewheel: options.delta,
@@ -698,6 +703,9 @@
                 $bar = this.$bar,
                 bar = $bar[0];
 
+            if (options.adjust > 0) {
+                $scrollbar.setBarLength(this.wHeight);
+            }
             if (height > wHeight) {
                 this.$bar.css('visibility', 'hidden').show();
                 $scrollbar.setHandleLength(bar.clientHeight * wHeight / height);
@@ -726,20 +734,12 @@
 
                 offset = offset + self.options.mousewheel * delta;
 
-                if (offset > 0) {
-                    offset = 0;
-                } else {
-                    offset < -self.max;
-                }
-                self.$content.css('top', offset);
-
+                offset = self.move(offset);
                 var percent = -offset / self.max;
-
                 self.$content.trigger(self.eventName('change'), [percent, 'content']);
             });
 
             $bar.on('mousedown', function(e) {
-
                 self.$side.css({
                     '-moz-user-focus': 'ignore',
                     '-moz-user-input': 'disabled',
@@ -799,11 +799,21 @@
                 if (value > 1 || value < 0) {
                     return false;
                 }
-
                 value = -value * this.max;
+            } else {
+                if (value > 0) {
+                    value = 0;
+                } else if (value < -this.max) {
+                    value = -this.max;
+                }
             }
 
-            this.$content.css('top', value);
+            if (this.getOffset() !== value) {
+                this.$content.css('top', value);
+                return value;
+            }
+
+            return false;
         },
 
         showBar: function() {

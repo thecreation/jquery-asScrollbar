@@ -204,7 +204,7 @@
         },
 
         getHanldeOffset: function() {
-            return parseInt(this.$handle.css(this.oriAttr.pos).replace('px', ''), 10);
+            return parseFloat(this.$handle.css(this.oriAttr.pos).replace('px', ''));
         },
 
         setHandleOffset: function(offset) {
@@ -212,16 +212,20 @@
         },
 
         handleMove: function(value, isPercent, trigger) {
-            if (!value) return;
             var percent, $handle = this.$handle,
                 params = {},
+                offset = this.getHanldeOffset(),
                 bLength = this.bLength,
                 hLength = this.hLength,
                 oriAttr = this.oriAttr,
                 $bar = this.$bar;
-
             if (isPercent) {
                 percent = value;
+                if (percent < 0) {
+                    value = 0;
+                } else if (percent > 1) {
+                    value = 1;
+                }
                 value = value * bLength;
             } else {
                 if (value < 0) {
@@ -231,13 +235,15 @@
                 }
                 percent = value / bLength;
             }
-            params[oriAttr.pos] = value;
-
-            $handle.css(params);
-
             if (trigger) {
                 $bar.trigger(this.eventName('change'), [percent, 'bar']);
             }
+            if (offset === 0 && value === 0) return;
+            if (value === 1 && isPercent && offset === this.bLength) return;
+            if (value === this.bLength && offset === this.bLength) return;
+            params[oriAttr.pos] = value;
+
+            $handle.css(params);
         }
     };
 

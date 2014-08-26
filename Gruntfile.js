@@ -28,11 +28,11 @@ module.exports = function(grunt) {
                 dest: 'dist/jquery.asScrollable.js',
             },
             dist_extras: {
-                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollSide.js'],
-                dest: 'dist/jquery.asScrollSide.js',
+                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollside.js'],
+                dest: 'dist/jquery.asScrollside.js',
             },
             dist_all: {
-                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollable.js', 'src/jquery.asScrollSide.js'],
+                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollable.js', 'src/jquery.asScrollside.js'],
                 dest: 'dist/jquery.asScrollbar_all.js',
             }
         },
@@ -47,7 +47,7 @@ module.exports = function(grunt) {
             },
             dist_extras: {
                 src: '<%= concat.dist_extras.dest %>',
-                dest: 'dist/jquery.asScrollSide.min.js',
+                dest: 'dist/jquery.asScrollside.min.js',
             },
             dist_all: {
                 src: '<%= concat.dist_all.dest %>',
