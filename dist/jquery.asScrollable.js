@@ -1,4 +1,4 @@
-/*! jQuery plugin - v0.1.1 - 2014-08-26
+/*! jQuery plugin - v0.1.1 - 2014-08-27
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -462,16 +462,16 @@
              $bar.on('mousedown', function(e) {
 
                  self.$container.css({
-                     '-moz-user-focus': 'ignore',
-                     '-moz-user-input': 'disabled',
-                     '-moz-user-select': 'none'
+                     'user-focus': 'ignore',
+                     'user-input': 'disabled',
+                     'user-select': 'none'
                  });
 
                  $(document).one(self.eventName('mouseup blur'), function() {
                      self.$container.css({
-                         '-moz-user-focus': 'inherit',
-                         '-moz-user-input': 'inherit',
-                         '-moz-user-select': 'inherit'
+                         'user-focus': 'inherit',
+                         'user-input': 'inherit',
+                         'user-select': 'inherit'
                      });
                      self.hideBar();
                  });
@@ -518,6 +518,8 @@
                  if (!this.isOverContainer && !this.$scrollbar.isDrag) {
                      this.$bar.hide();
                  }
+             } else if (!this.hasBar) {
+                 this.$bar.hide();
              }
          },
 
