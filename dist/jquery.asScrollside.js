@@ -1,4 +1,4 @@
-/*! jQuery plugin - v0.1.1 - 2014-08-27
+/*! jQuery plugin - v0.1.1 - 2014-08-29
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
