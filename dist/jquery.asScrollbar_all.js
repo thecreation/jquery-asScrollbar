@@ -284,7 +284,8 @@
              wrapperClass: options.namespace + '-' + options.wrapperClass,
              barClass: options.namespace + '-' + options.barClass,
              handleClass: options.namespace + '-' + options.handleClass,
-             directionClass: options.namespace + '-' + options.direction
+             directionClass: options.namespace + '-' + options.direction,
+			 scrollableClass : options.namespace + '-' + options.scrollableClass
          };
 
          if (options.skin) {
@@ -369,6 +370,7 @@
          contentClass: 'content',
          wrapperClass: 'wrapper',
          barClass: 'scrollbar',
+		 scrollableClass : 'is-scrollable',
          barTmpl: '<div class="{{scrollbar}}"><div class="{{handle}}"></div></div>',
          handleClass: 'handle',
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
@@ -437,13 +439,15 @@
                  var hPosition = percent * $scrollbar.bLength;
 
                  if (hPosition !== 0) {
-                     $scrollbar.handleMove(this.hPosition, false);
+                     $scrollbar.handleMove(hPosition, false);
                  }
 
                  this.hasBar = true;
+				 this.$wrapper.addClass(this.classes.scrollableClass);
                  this.hideBar();
              } else {
                  this.hasBar = false;
+				 this.$wrapper.removeClass(this.classes.scrollableClass);
                  this.hideBar();
              }
          },
@@ -610,7 +614,8 @@
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
-            contentClass: options.namespace + '-' + options.contentClass
+            contentClass: options.namespace + '-' + options.contentClass,
+			scrollableClass : options.namespace + '-' + options.scrollableClass
         };
 
         if (options.skin) {
@@ -716,9 +721,11 @@
                 }
                 this.$bar.css('visibility', 'visible');
                 this.hasBar = true;
+				this.$wrapper.addClass(this.classes.scrollableClass);
                 this.hideBar();
             } else {
                 this.hasBar = false;
+				this.$wrapper.removeClass(this.classes.scrollableClass);
                 this.hideBar();
             }
         },
@@ -855,6 +862,7 @@
         barClass: 'scrollbar',
         handleClass: 'handle',
         contentClass: 'content',
+		scrollableClass : 'is-scrollable',
         adjust: 0
     };
     $.fn[pluginName] = function(options) {

@@ -281,7 +281,8 @@
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
-            contentClass: options.namespace + '-' + options.contentClass
+            contentClass: options.namespace + '-' + options.contentClass,
+			scrollableClass : options.namespace + '-' + options.scrollableClass
         };
 
         if (options.skin) {
@@ -387,9 +388,11 @@
                 }
                 this.$bar.css('visibility', 'visible');
                 this.hasBar = true;
+				this.$wrapper.addClass(this.classes.scrollableClass);
                 this.hideBar();
             } else {
                 this.hasBar = false;
+				this.$wrapper.removeClass(this.classes.scrollableClass);
                 this.hideBar();
             }
         },
@@ -526,6 +529,7 @@
         barClass: 'scrollbar',
         handleClass: 'handle',
         contentClass: 'content',
+		scrollableClass : 'is-scrollable',
         adjust: 0
     };
     $.fn[pluginName] = function(options) {
