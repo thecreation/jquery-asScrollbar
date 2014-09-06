@@ -12,9 +12,10 @@
     var pluginName = 'asScrollbar';
 
     var Plugin = $[pluginName] = function(options, bar) {
-        var oriAttr,
-            $bar = this.$bar = $(bar),
-            options = this.options = $.extend({}, Plugin.defaults, options || {});
+        this.$bar = $(bar);
+
+        options = this.options = $.extend({}, Plugin.defaults, options || {});
+
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
@@ -25,7 +26,7 @@
             this.classes.skinClass = options.namespace + '-' + options.skin;
         }
 
-
+        var oriAttr;
         if (this.options.direction === 'vertical') {
             oriAttr = this.oriAttr = {
                 x: 'Y',
@@ -65,8 +66,8 @@
         }
 
         var $handle = this.$handle = this.$bar.find('.' + this.classes.handleClass),
-            bar = this.$bar[0],
             handle = $handle[0];
+        bar = this.$bar[0];
 
         this.$bar.addClass(this.classes.barClass).addClass(this.classes.directionClass).attr('draggable', false);
 
@@ -96,7 +97,7 @@
         barClass: 'scrollbar',
         handleClass: 'handle',
         minHandleLength: 30,
-        direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
+        direction: 'vertical' //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
     };
 
     Plugin.prototype = {
@@ -117,8 +118,7 @@
 
         initEvent: function() {
             var self = this,
-                $bar = this.$bar,
-                $handle = this.$handle;
+                $bar = this.$bar;
 
             $bar.on('mousedown', function(e) {
                 var oriAttr = self.oriAttr,

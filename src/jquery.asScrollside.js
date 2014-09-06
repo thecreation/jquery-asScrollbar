@@ -4,14 +4,14 @@
     var pluginName = 'asScrollSide';
 
     var Plugin = $[pluginName] = function(options, side) {
-        var $side = this.$side = $(side),
-            options = this.options = $.extend({}, Plugin.defaults, options || {});
+        this.$side = $(side);
+        this.options = options = $.extend({}, Plugin.defaults, options || {});
 
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
             contentClass: options.namespace + '-' + options.contentClass,
-			scrollableClass : options.namespace + '-' + options.scrollableClass
+            scrollableClass: options.namespace + '-' + options.scrollableClass
         };
 
         if (options.skin) {
@@ -25,15 +25,15 @@
             this.$side.addClass(this.classes.skinClass);
         }
 
-        $side.css({
+        this.$side.css({
             position: 'fixed',
             top: 0
         });
 
 
-        $side.wrapInner($('<div/>').addClass(this.classes.contentClass));
+        this.$side.wrapInner($('<div/>').addClass(this.classes.contentClass));
 
-        this.$content = $side.find('.' + this.classes.contentClass).css({
+        this.$content = this.$side.find('.' + this.classes.contentClass).css({
             position: 'absolute',
             top: 0,
             width: '100%'
@@ -117,18 +117,17 @@
                 }
                 this.$bar.css('visibility', 'visible');
                 this.hasBar = true;
-				this.$wrapper.addClass(this.classes.scrollableClass);
+                this.$wrapper.addClass(this.classes.scrollableClass);
                 this.hideBar();
             } else {
                 this.hasBar = false;
-				this.$wrapper.removeClass(this.classes.scrollableClass);
+                this.$wrapper.removeClass(this.classes.scrollableClass);
                 this.hideBar();
             }
         },
 
         initEvent: function() {
             var self = this,
-                $scrollbar = this.$scrollbar,
                 $bar = this.$bar,
                 $content = this.$content,
                 $side = this.$side;
@@ -148,7 +147,7 @@
                 }
             });
 
-            $bar.on('mousedown', function(e) {
+            $bar.on('mousedown', function() {
                 self.$side.css({
                     'user-focus': 'ignore',
                     'user-input': 'disabled',
@@ -258,7 +257,7 @@
         barClass: 'scrollbar',
         handleClass: 'handle',
         contentClass: 'content',
-		scrollableClass : 'is-scrollable',
+        scrollableClass: 'is-scrollable',
         adjust: 0
     };
     $.fn[pluginName] = function(options) {

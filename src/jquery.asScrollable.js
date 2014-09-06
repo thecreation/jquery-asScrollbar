@@ -22,7 +22,7 @@
              barClass: options.namespace + '-' + options.barClass,
              handleClass: options.namespace + '-' + options.handleClass,
              directionClass: options.namespace + '-' + options.direction,
-			 scrollableClass : options.namespace + '-' + options.scrollableClass
+             scrollableClass: options.namespace + '-' + options.scrollableClass
          };
 
          if (options.skin) {
@@ -107,7 +107,7 @@
          contentClass: 'content',
          wrapperClass: 'wrapper',
          barClass: 'scrollbar',
-		 scrollableClass : 'is-scrollable',
+         scrollableClass: 'is-scrollable',
          barTmpl: '<div class="{{scrollbar}}"><div class="{{handle}}"></div></div>',
          handleClass: 'handle',
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
@@ -180,11 +180,11 @@
                  }
 
                  this.hasBar = true;
-				 this.$wrapper.addClass(this.classes.scrollableClass);
+                 this.$wrapper.addClass(this.classes.scrollableClass);
                  this.hideBar();
              } else {
                  this.hasBar = false;
-				 this.$wrapper.removeClass(this.classes.scrollableClass);
+                 this.$wrapper.removeClass(this.classes.scrollableClass);
                  this.hideBar();
              }
          },
@@ -200,8 +200,7 @@
                  $(this).trigger(self.eventName('change'), [percent, 'content']);
              });
 
-             $bar.on('mousedown', function(e) {
-
+             $bar.on('mousedown', function() {
                  self.$container.css({
                      'user-focus': 'ignore',
                      'user-input': 'disabled',
