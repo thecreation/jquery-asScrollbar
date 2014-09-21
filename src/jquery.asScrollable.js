@@ -113,6 +113,7 @@
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
          namespace: 'asScrollable',
          mousewheel: 10,
+         duration : 500,
          skin: false,
          responsive: false,
          showOnhover: true
@@ -288,8 +289,10 @@
              }
              return events.join(' ');
          },
-         move: function(value, isPercent) {
+
+         move: function(value, isPercent, animate) {
              var oriAttr = this.oriAttr,
+                 options = this.options,
                  wrapper = this.$wrapper[0],
                  content = this.$content[0];
              if (isPercent) {
@@ -300,7 +303,33 @@
                  value = -value * (wrapper[oriAttr.offset] - content[oriAttr.client]);
              }
 
-             wrapper[oriAttr.scroll] = value;
+             var params = {};
+             params[oriAttr.scroll] = value
+
+            if(animate){
+                this.$wrapper.stop().animate(params, options.duration);
+            }else{
+                wrapper[oriAttr.scroll] = value;
+            }
+         },
+
+         to : function(selector, animate){
+            var oriAttr = this.oriAttr,
+                wrapper = this.$wrapper[0],
+                $item, offset, size, diff;
+            if (typeof selector === 'string') $item = $(selector, this.$content);
+            else $item = selector;
+
+
+            if($item.length === 0) return;
+            if ($item.length > 1) $item = $item.get(0);
+
+           offset = $item.position()[oriAttr.pos];           
+           size = $item[oriAttr.size]();
+           diff = size - wrapper[oriAttr.offset];
+
+           if(diff > 0) this.move(offset, false, animate);
+           else this.move(offset + diff /2, false, animate);
          },
          destory: function() {
              this.$bar.remove();
