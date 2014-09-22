@@ -140,8 +140,7 @@
 
                     $(document).on(self.eventName('mousemove'), function(e) {
                         if (self.isDrag) {
-                            var oriAttr = self.oriAttr,
-                                bLength = self.bLength;
+                            var oriAttr = self.oriAttr;
 
                             var stop = e[oriAttr.mouseAttr],
                                 start = self.dragStart;
@@ -216,7 +215,6 @@
                 params = {},
                 offset = this.getHanldeOffset(),
                 bLength = this.bLength,
-                hLength = this.hLength,
                 oriAttr = this.oriAttr,
                 $bar = this.$bar;
             if (isPercent) {
