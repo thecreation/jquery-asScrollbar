@@ -132,10 +132,10 @@
                 $content = this.$content,
                 $side = this.$side;
 
-			 $side.on(self.eventName('scroll'), function() {
-                 var percent = self.getPercentOffset();
-                 $(this).trigger(self.eventName('change'), [percent, 'content']);
-             });
+            $side.on(self.eventName('scroll'), function() {
+                var percent = self.getPercentOffset();
+                $(this).trigger(self.eventName('change'), [percent, 'content']);
+            });
 
             $content.on('mousewheel', function(e, delta) {
 
@@ -169,7 +169,6 @@
                 });
             });
             $side.on(self.eventName('change'), function(e, value, type) {
-				console.log(value);
                 if (type === 'bar') {
                     self.move(value, true);
                 } else if (type === 'content') {
@@ -203,17 +202,17 @@
 
         },
 
-		getPercentOffset: function() {
-             return -this.getOffset() / (this.$content.height() - this.$side.height());
-         },
+        getPercentOffset: function() {
+            return -this.getOffset() / (this.$content.height() - this.$side.height());
+        },
 
         getOffset: function() {
             return parseInt(this.$content.css('top').replace('px', ''), 10);
         },
 
         move: function(value, isPercent, animate) {
-			var self = this,
-				options = this.options;
+            var self = this,
+                options = this.options;
             if (isPercent) {
                 if (value > 1 || value < 0) {
                     return false;
@@ -228,40 +227,42 @@
             }
 
             if (this.getOffset() !== value) {
-				if (animate) {
-					this.$content.animate({'top':value}, {
-						speed : options.duration,
-						step: function(){
-							self.$content.trigger(self.eventName('scroll'));
-						}
-					});
-				}else{
-					this.$content.css('top', value);
-					this.$content.trigger(self.eventName('scroll'));
-				}
-				return value;
+                if (animate) {
+                    this.$content.animate({
+                        'top': value
+                    }, {
+                        speed: options.duration,
+                        step: function() {
+                            self.$content.trigger(self.eventName('scroll'));
+                        }
+                    });
+                } else {
+                    this.$content.css('top', value);
+                    this.$content.trigger(self.eventName('scroll'));
+                }
+                return value;
             }
 
             return false;
         },
 
-		 to: function(selector, animate) {
-             var side = this.$side[0],
-                 $item, offset, size, diff;
-             if (typeof selector === 'string') $item = $(selector, this.$content);
-             else $item = selector;
+        to: function(selector, animate) {
+            var side = this.$side[0],
+                $item, offset, size, diff;
+            if (typeof selector === 'string') $item = $(selector, this.$content);
+            else $item = selector;
 
 
-             if ($item.length === 0) return;
-             if ($item.length > 1) $item = $item.get(0);
+            if ($item.length === 0) return;
+            if ($item.length > 1) $item = $item.get(0);
 
-             offset = $item[0].offsetTop;
-             size = $item.height();
-             diff = size - side.offsetHeight;
+            offset = $item[0].offsetTop;
+            size = $item.height();
+            diff = size - side.offsetHeight;
 
-             if (diff > 0) this.move(-offset, false, animate);
-             else this.move(-(offset + diff / 2), false, animate);
-         },
+            if (diff > 0) this.move(-offset, false, animate);
+            else this.move(-(offset + diff / 2), false, animate);
+        },
 
         showBar: function() {
             if (this.hasBar) {
@@ -298,7 +299,7 @@
         contentClass: 'content',
         scrollableClass: 'is-scrollable',
         adjust: 0,
-		duration: 500
+        duration: 500
     };
     $.fn[pluginName] = function(options) {
         if (typeof options === 'string') {
