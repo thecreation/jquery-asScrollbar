@@ -1,4 +1,4 @@
-/*! jQuery plugin - v0.1.1 - 2014-08-29
+/*! jQuery Scrollbar - v0.1.1 - 2014-10-08
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -7,9 +7,10 @@
     var pluginName = 'asScrollbar';
 
     var Plugin = $[pluginName] = function(options, bar) {
-        var oriAttr,
-            $bar = this.$bar = $(bar),
-            options = this.options = $.extend({}, Plugin.defaults, options || {});
+        this.$bar = $(bar);
+
+        options = this.options = $.extend({}, Plugin.defaults, options || {});
+
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
@@ -20,7 +21,7 @@
             this.classes.skinClass = options.namespace + '-' + options.skin;
         }
 
-
+        var oriAttr;
         if (this.options.direction === 'vertical') {
             oriAttr = this.oriAttr = {
                 x: 'Y',
@@ -60,8 +61,8 @@
         }
 
         var $handle = this.$handle = this.$bar.find('.' + this.classes.handleClass),
-            bar = this.$bar[0],
             handle = $handle[0];
+        bar = this.$bar[0];
 
         this.$bar.addClass(this.classes.barClass).addClass(this.classes.directionClass).attr('draggable', false);
 
@@ -91,7 +92,7 @@
         barClass: 'scrollbar',
         handleClass: 'handle',
         minHandleLength: 30,
-        direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
+        direction: 'vertical' //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
     };
 
     Plugin.prototype = {
@@ -112,8 +113,7 @@
 
         initEvent: function() {
             var self = this,
-                $bar = this.$bar,
-                $handle = this.$handle;
+                $bar = this.$bar;
 
             $bar.on('mousedown', function(e) {
                 var oriAttr = self.oriAttr,
@@ -135,8 +135,7 @@
 
                     $(document).on(self.eventName('mousemove'), function(e) {
                         if (self.isDrag) {
-                            var oriAttr = self.oriAttr,
-                                bLength = self.bLength;
+                            var oriAttr = self.oriAttr;
 
                             var stop = e[oriAttr.mouseAttr],
                                 start = self.dragStart;
@@ -211,7 +210,6 @@
                 params = {},
                 offset = this.getHanldeOffset(),
                 bLength = this.bLength,
-                hLength = this.hLength,
                 oriAttr = this.oriAttr,
                 $bar = this.$bar;
             if (isPercent) {
@@ -285,7 +283,7 @@
              barClass: options.namespace + '-' + options.barClass,
              handleClass: options.namespace + '-' + options.handleClass,
              directionClass: options.namespace + '-' + options.direction,
-			 scrollableClass : options.namespace + '-' + options.scrollableClass
+             scrollableClass: options.namespace + '-' + options.scrollableClass
          };
 
          if (options.skin) {
@@ -370,12 +368,13 @@
          contentClass: 'content',
          wrapperClass: 'wrapper',
          barClass: 'scrollbar',
-		 scrollableClass : 'is-scrollable',
+         scrollableClass: 'is-scrollable',
          barTmpl: '<div class="{{scrollbar}}"><div class="{{handle}}"></div></div>',
          handleClass: 'handle',
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
          namespace: 'asScrollable',
          mousewheel: 10,
+         duration: 500,
          skin: false,
          responsive: false,
          showOnhover: true
@@ -443,11 +442,11 @@
                  }
 
                  this.hasBar = true;
-				 this.$wrapper.addClass(this.classes.scrollableClass);
+                 this.$wrapper.addClass(this.classes.scrollableClass);
                  this.hideBar();
              } else {
                  this.hasBar = false;
-				 this.$wrapper.removeClass(this.classes.scrollableClass);
+                 this.$wrapper.removeClass(this.classes.scrollableClass);
                  this.hideBar();
              }
          },
@@ -463,8 +462,7 @@
                  $(this).trigger(self.eventName('change'), [percent, 'content']);
              });
 
-             $bar.on('mousedown', function(e) {
-
+             $bar.on('mousedown', function() {
                  self.$container.css({
                      'user-focus': 'ignore',
                      'user-input': 'disabled',
@@ -552,8 +550,10 @@
              }
              return events.join(' ');
          },
-         move: function(value, isPercent) {
+
+         move: function(value, isPercent, animate) {
              var oriAttr = this.oriAttr,
+                 options = this.options,
                  wrapper = this.$wrapper[0],
                  content = this.$content[0];
              if (isPercent) {
@@ -564,8 +564,35 @@
                  value = -value * (wrapper[oriAttr.offset] - content[oriAttr.client]);
              }
 
-             wrapper[oriAttr.scroll] = value;
+             var params = {};
+             params[oriAttr.scroll] = value
+
+             if (animate) {
+                 this.$wrapper.stop().animate(params, options.duration);
+             } else {
+                 wrapper[oriAttr.scroll] = value;
+             }
          },
+
+         to: function(selector, animate) {
+             var oriAttr = this.oriAttr,
+                 wrapper = this.$wrapper[0],
+                 $item, offset, size, diff;
+             if (typeof selector === 'string') $item = $(selector, this.$content);
+             else $item = selector;
+
+
+             if ($item.length === 0) return;
+             if ($item.length > 1) $item = $item.get(0);
+
+             offset = $item[0][oriAttr.offsetPos];
+             size = $item[oriAttr.size]();
+             diff = size - wrapper[oriAttr.offset];
+
+             if (diff > 0) this.move(offset, false, animate);
+             else this.move(offset + diff / 2, false, animate);
+         },
+
          destory: function() {
              this.$bar.remove();
              this.$container.html(this.$content.html());
@@ -608,14 +635,14 @@
     var pluginName = 'asScrollSide';
 
     var Plugin = $[pluginName] = function(options, side) {
-        var $side = this.$side = $(side),
-            options = this.options = $.extend({}, Plugin.defaults, options || {});
+        this.$side = $(side);
+        this.options = options = $.extend({}, Plugin.defaults, options || {});
 
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
             contentClass: options.namespace + '-' + options.contentClass,
-			scrollableClass : options.namespace + '-' + options.scrollableClass
+            scrollableClass: options.namespace + '-' + options.scrollableClass
         };
 
         if (options.skin) {
@@ -629,15 +656,15 @@
             this.$side.addClass(this.classes.skinClass);
         }
 
-        $side.css({
+        this.$side.css({
             position: 'fixed',
             top: 0
         });
 
 
-        $side.wrapInner($('<div/>').addClass(this.classes.contentClass));
+        this.$side.wrapInner($('<div/>').addClass(this.classes.contentClass));
 
-        this.$content = $side.find('.' + this.classes.contentClass).css({
+        this.$content = this.$side.find('.' + this.classes.contentClass).css({
             position: 'absolute',
             top: 0,
             width: '100%'
@@ -721,18 +748,17 @@
                 }
                 this.$bar.css('visibility', 'visible');
                 this.hasBar = true;
-				this.$wrapper.addClass(this.classes.scrollableClass);
+                this.$wrapper.addClass(this.classes.scrollableClass);
                 this.hideBar();
             } else {
                 this.hasBar = false;
-				this.$wrapper.removeClass(this.classes.scrollableClass);
+                this.$wrapper.removeClass(this.classes.scrollableClass);
                 this.hideBar();
             }
         },
 
         initEvent: function() {
             var self = this,
-                $scrollbar = this.$scrollbar,
                 $bar = this.$bar,
                 $content = this.$content,
                 $side = this.$side;
@@ -752,7 +778,7 @@
                 }
             });
 
-            $bar.on('mousedown', function(e) {
+            $bar.on('mousedown', function() {
                 self.$side.css({
                     'user-focus': 'ignore',
                     'user-input': 'disabled',
@@ -862,7 +888,7 @@
         barClass: 'scrollbar',
         handleClass: 'handle',
         contentClass: 'content',
-		scrollableClass : 'is-scrollable',
+        scrollableClass: 'is-scrollable',
         adjust: 0
     };
     $.fn[pluginName] = function(options) {

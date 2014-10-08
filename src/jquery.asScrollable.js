@@ -116,7 +116,7 @@
          duration: 500,
          skin: false,
          responsive: false,
-         showOnhover: true
+         showOnhover: false
      };
 
      Plugin.prototype = {
