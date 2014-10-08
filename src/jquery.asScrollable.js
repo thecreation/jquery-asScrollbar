@@ -113,7 +113,7 @@
          direction: 'vertical', //if it's 0, scroll orientation is 'horizontal',else scroll orientation is 'vertical'.
          namespace: 'asScrollable',
          mousewheel: 10,
-         duration : 500,
+         duration: 500,
          skin: false,
          responsive: false,
          showOnhover: true
@@ -306,31 +306,32 @@
              var params = {};
              params[oriAttr.scroll] = value
 
-            if(animate){
-                this.$wrapper.stop().animate(params, options.duration);
-            }else{
-                wrapper[oriAttr.scroll] = value;
-            }
+             if (animate) {
+                 this.$wrapper.stop().animate(params, options.duration);
+             } else {
+                 wrapper[oriAttr.scroll] = value;
+             }
          },
 
-         to : function(selector, animate){
-            var oriAttr = this.oriAttr,
-                wrapper = this.$wrapper[0],
-                $item, offset, size, diff;
-            if (typeof selector === 'string') $item = $(selector, this.$content);
-            else $item = selector;
+         to: function(selector, animate) {
+             var oriAttr = this.oriAttr,
+                 wrapper = this.$wrapper[0],
+                 $item, offset, size, diff;
+             if (typeof selector === 'string') $item = $(selector, this.$content);
+             else $item = selector;
 
 
-            if($item.length === 0) return;
-            if ($item.length > 1) $item = $item.get(0);
+             if ($item.length === 0) return;
+             if ($item.length > 1) $item = $item.get(0);
 
-           offset = $item.position()[oriAttr.pos];           
-           size = $item[oriAttr.size]();
-           diff = size - wrapper[oriAttr.offset];
+             offset = $item[0][oriAttr.offsetPos];
+             size = $item[oriAttr.size]();
+             diff = size - wrapper[oriAttr.offset];
 
-           if(diff > 0) this.move(offset, false, animate);
-           else this.move(offset + diff /2, false, animate);
+             if (diff > 0) this.move(offset, false, animate);
+             else this.move(offset + diff / 2, false, animate);
          },
+
          destory: function() {
              this.$bar.remove();
              this.$container.html(this.$content.html());
