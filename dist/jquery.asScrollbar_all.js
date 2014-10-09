@@ -1,4 +1,4 @@
-/*! jQuery Scrollbar - v0.1.1 - 2014-10-08
+/*! jQuery Scrollbar - v0.1.1 - 2014-10-09
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -537,6 +537,28 @@
                  content = this.$content[0];
              return this.getContentOffset() / (content[oriAttr.client] - wrapper[oriAttr.offset]);
          },
+
+         getElementOffset: function($target) {
+             var offset = 0,
+                 oriAttr = this.oriAttr,
+                 $parent;
+
+             while (true) {
+                 offset += $target.position()[oriAttr.pos];
+                 if ($target.is(this.$container)) break;
+                 $parent = $target.offsetParent();
+
+                 if ($parent.is('html')) {
+                     if ($target.parent().is('html')) break;
+                     $target = $target.parent();
+                 } else {
+                     $target = $parent;
+                 }
+             }
+
+             return offset;
+         },
+
          eventName: function(events) {
              if (typeof events !== 'string' || events === '') {
                  return false;
@@ -585,7 +607,7 @@
              if ($item.length === 0) return;
              if ($item.length > 1) $item = $item.get(0);
 
-             offset = $item[0][oriAttr.offsetPos];
+             offset = this.getElementOffset($item) + this.getContentOffset();
              size = $item[oriAttr.size]();
              diff = size - wrapper[oriAttr.offset];
 
@@ -841,6 +863,26 @@
             return parseInt(this.$content.css('top').replace('px', ''), 10);
         },
 
+        getElementOffset: function($target) {
+            var offset = 0,
+                $parent;
+
+            while (true) {
+                offset += $target.position().top;
+                if ($target.is(this.$side)) break;
+                $parent = $target.offsetParent();
+
+                if ($parent.is('html')) {
+                    if ($target.parent().is('html')) break;
+                    $target = $target.parent();
+                } else {
+                    $target = $parent;
+                }
+            }
+
+            return offset;
+        },
+
         move: function(value, isPercent, animate) {
             var self = this,
                 options = this.options;
@@ -887,7 +929,8 @@
             if ($item.length === 0) return;
             if ($item.length > 1) $item = $item.get(0);
 
-            offset = $item[0].offsetTop;
+            /*offset = $item[0].offsetTop;*/
+            offset = this.getElementOffset($item) + this.getOffset();
             size = $item.height();
             diff = size - side.offsetHeight;
 

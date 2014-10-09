@@ -276,6 +276,28 @@
                  content = this.$content[0];
              return this.getContentOffset() / (content[oriAttr.client] - wrapper[oriAttr.offset]);
          },
+
+         getElementOffset: function($target) {
+             var offset = 0,
+                 oriAttr = this.oriAttr,
+                 $parent;
+
+             while (true) {
+                 offset += $target.position()[oriAttr.pos];
+                 if ($target.is(this.$container)) break;
+                 $parent = $target.offsetParent();
+
+                 if ($parent.is('html')) {
+                     if ($target.parent().is('html')) break;
+                     $target = $target.parent();
+                 } else {
+                     $target = $parent;
+                 }
+             }
+
+             return offset;
+         },
+
          eventName: function(events) {
              if (typeof events !== 'string' || events === '') {
                  return false;
@@ -324,7 +346,7 @@
              if ($item.length === 0) return;
              if ($item.length > 1) $item = $item.get(0);
 
-             offset = $item[0][oriAttr.offsetPos];
+             offset = this.getElementOffset($item) + this.getContentOffset();
              size = $item[oriAttr.size]();
              diff = size - wrapper[oriAttr.offset];
 
