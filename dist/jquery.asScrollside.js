@@ -548,10 +548,10 @@
             /*offset = $item[0].offsetTop;*/
             offset = this.getElementOffset($item) + this.getOffset();
             size = $item.height();
-            diff = size - side.offsetHeight;
+            diff = size + offset - side.offsetHeight;
 
             if (diff > 0) this.move(-offset, false, animate);
-            else this.move(-(offset + diff / 2), false, animate);
+            // else this.move(-(offset + diff / 2), false, animate);
         },
 
         showBar: function() {

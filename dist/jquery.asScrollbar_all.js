@@ -607,12 +607,12 @@
              if ($item.length === 0) return;
              if ($item.length > 1) $item = $item.get(0);
 
-             offset = this.getElementOffset($item) + this.getContentOffset();
+             offset = this.getElementOffset($item);
              size = $item[oriAttr.size]();
-             diff = size - wrapper[oriAttr.offset];
+             diff = size + offset - wrapper[oriAttr.offset];
 
-             if (diff > 0) this.move(offset, false, animate);
-             else this.move(offset + diff / 2, false, animate);
+             if (diff > 0) this.move(offset + this.getContentOffset(), false, animate);
+             // else if( diff < 0 && ) this.move(offset + diff / 2, false, animate);
          },
 
          destory: function() {
@@ -932,10 +932,10 @@
             /*offset = $item[0].offsetTop;*/
             offset = this.getElementOffset($item) + this.getOffset();
             size = $item.height();
-            diff = size - side.offsetHeight;
+            diff = size + offset - side.offsetHeight;
 
             if (diff > 0) this.move(-offset, false, animate);
-            else this.move(-(offset + diff / 2), false, animate);
+            // else this.move(-(offset + diff / 2), false, animate);
         },
 
         showBar: function() {
