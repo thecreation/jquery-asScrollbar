@@ -116,7 +116,8 @@
          duration: 500,
          skin: false,
          responsive: false,
-         showOnhover: false
+         showOnhover: false,
+		 toOffset : 50
      };
 
      Plugin.prototype = {
@@ -350,7 +351,9 @@
              size = $item[oriAttr.size]();
              diff = size + offset - wrapper[oriAttr.offset];
 
-             if (diff > 0) this.move(offset + this.getContentOffset(), false, animate);
+             if (diff > 0) this.move(offset + this.getContentOffset() - this.opts.toOffset, false, animate);
+			  else if(offset < 0) this.move(offset + this.getContentOffset()  - this.opts.toOffset, false, animate);
+
              // else if( diff < 0 && ) this.move(offset + diff / 2, false, animate);
          },
 
