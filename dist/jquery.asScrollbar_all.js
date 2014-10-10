@@ -612,8 +612,8 @@
              size = $item[oriAttr.size]();
              diff = size + offset - wrapper[oriAttr.offset];
 
-             if (diff > 0) this.move(offset + this.getContentOffset() - this.opts.toOffset, false, animate);
-             else if (offset < 0) this.move(offset + this.getContentOffset() - this.opts.toOffset, false, animate);
+             if (diff > 0) this.move(offset + this.getContentOffset() - this.options.toOffset, false, animate);
+             else if (offset < 0) this.move(offset + this.getContentOffset() - this.options.toOffset, false, animate);
 
              // else if( diff < 0 && ) this.move(offset + diff / 2, false, animate);
          },
@@ -937,8 +937,8 @@
             size = $item.height();
             diff = size + offset - side.offsetHeight;
 
-            if (diff > 0) this.move(-offset - this.opts.toOffset, false, animate);
-            else if (offset < 0) this.move(-offset - this.opts.toOffset, false, animate);
+            if (diff > 0) this.move(-offset - this.options.toOffset, false, animate);
+            else if (offset < 0) this.move(-offset - this.options.toOffset, false, animate);
 
             // else this.move(-(offset + diff / 2), false, animate);
         },
