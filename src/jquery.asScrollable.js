@@ -117,7 +117,7 @@
          skin: false,
          responsive: false,
          showOnhover: false,
-		 toOffset : 50
+         toOffset: 50
      };
 
      Plugin.prototype = {
@@ -352,7 +352,7 @@
              diff = size + offset - wrapper[oriAttr.offset];
 
              if (diff > 0) this.move(offset + this.getContentOffset() - this.opts.toOffset, false, animate);
-			  else if(offset < 0) this.move(offset + this.getContentOffset()  - this.opts.toOffset, false, animate);
+             else if (offset < 0) this.move(offset + this.getContentOffset() - this.opts.toOffset, false, animate);
 
              // else if( diff < 0 && ) this.move(offset + diff / 2, false, animate);
          },

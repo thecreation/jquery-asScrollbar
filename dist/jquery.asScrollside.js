@@ -1,4 +1,4 @@
-/*! jQuery Scrollbar - v0.1.1 - 2014-10-09
+/*! jQuery Scrollbar - v0.1.1 - 2014-10-10
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -550,7 +550,9 @@
             size = $item.height();
             diff = size + offset - side.offsetHeight;
 
-            if (diff > 0) this.move(-offset, false, animate);
+            if (diff > 0) this.move(-offset - this.opts.toOffset, false, animate);
+            else if (offset < 0) this.move(-offset - this.opts.toOffset, false, animate);
+
             // else this.move(-(offset + diff / 2), false, animate);
         },
 
@@ -589,7 +591,8 @@
         contentClass: 'content',
         scrollableClass: 'is-scrollable',
         adjust: 0,
-        duration: 500
+        duration: 500,
+        toOffset: 50
     };
     $.fn[pluginName] = function(options) {
         if (typeof options === 'string') {

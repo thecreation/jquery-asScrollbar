@@ -282,7 +282,7 @@
             diff = size + offset - side.offsetHeight;
 
             if (diff > 0) this.move(-offset - this.opts.toOffset, false, animate);
-			else if(offset < 0) this.move(-offset  - this.opts.toOffset, false, animate);
+            else if (offset < 0) this.move(-offset - this.opts.toOffset, false, animate);
 
             // else this.move(-(offset + diff / 2), false, animate);
         },
@@ -323,7 +323,7 @@
         scrollableClass: 'is-scrollable',
         adjust: 0,
         duration: 500,
-		toOffset : 50
+        toOffset: 50
     };
     $.fn[pluginName] = function(options) {
         if (typeof options === 'string') {
