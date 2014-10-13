@@ -284,8 +284,9 @@
                  $parent;
 
              while (true) {
-                 offset += $target.position()[oriAttr.pos];
+                 
                  if ($target.is(this.$container)) break;
+                 offset += $target.position()[oriAttr.pos];
                  $parent = $target.offsetParent();
 
                  if ($parent.is('html')) {
