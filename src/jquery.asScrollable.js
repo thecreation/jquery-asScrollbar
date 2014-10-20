@@ -81,7 +81,7 @@
              $wrapper = this.$wrapper = $content.parents('.' + this.classes.wrapperClass);
          }
 
-         $container.css({
+		 $container.css({
              'overflow': 'hidden',
              'position': 'relative'
          })

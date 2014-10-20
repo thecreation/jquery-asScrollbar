@@ -19,9 +19,8 @@
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
-            directionClass: options.namespace + '-' + options.direction
+            directionClass: options.directionClass ? options.namespace + '-' + options.directionClass : options.namespace + '-' + options.direction
         };
-
         if (options.skin) {
             this.classes.skinClass = options.namespace + '-' + options.skin;
         }

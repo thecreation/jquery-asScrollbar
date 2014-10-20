@@ -63,7 +63,7 @@
             this.height = this.$content.height();
             this.wHeight = document.body.clientHeight;
 
-            if (this.options.adjust > 0) {
+            if (this.options.adjust !== 0) {
                 this.wHeight = this.wHeight - this.options.adjust;
             }
             this.max = this.height - this.wHeight;
