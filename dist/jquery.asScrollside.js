@@ -1,4 +1,4 @@
-/*! jQuery Scrollbar - v0.1.1 - 2014-10-10
+/*! jQuery Scrollbar - v0.1.1 - 2014-10-22
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -14,9 +14,8 @@
         this.classes = {
             barClass: options.namespace + '-' + options.barClass,
             handleClass: options.namespace + '-' + options.handleClass,
-            directionClass: options.namespace + '-' + options.direction
+            directionClass: options.directionClass ? options.namespace + '-' + options.directionClass : options.namespace + '-' + options.direction
         };
-
         if (options.skin) {
             this.classes.skinClass = options.namespace + '-' + options.skin;
         }
@@ -332,7 +331,7 @@
             this.height = this.$content.height();
             this.wHeight = document.body.clientHeight;
 
-            if (this.options.adjust > 0) {
+            if (this.options.adjust !== 0) {
                 this.wHeight = this.wHeight - this.options.adjust;
             }
             this.max = this.height - this.wHeight;

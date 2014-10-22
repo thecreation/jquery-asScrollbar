@@ -88,17 +88,6 @@
              position: 'relative'
          });
 
-         var containerWidth = this.containerWidth = $container.width(),
-             containerHeight = this.containerHeight = $container.height();
-
-         this.contentWidth = $content.width(),
-         this.contentHeight = $content.height();
-
-         $container.css({
-             width: containerWidth,
-             height: containerHeight
-         });
-
          if (options.skin) {
              $container.addClass(this.classes.skinClass);
          }
@@ -292,9 +281,16 @@
                  $container.removeClass(self.classes.scrollingClass);
              });
 
-             if (this.options.responsive) {
+             if (options.responsive) {
                  $(window).resize(function() {
-                     self.initLayout();
+                     $container.removeAttr('style');
+                     $wrapper.removeAttr('style');
+                     if (options.direction === 'horizontal' || options.direction === 'vertical') {
+                         self.initLayout(options.direction);
+                     } else {
+                         self.initLayout('vertical');
+                         self.initLayout('horizontal');
+                     }
                  });
              }
 
