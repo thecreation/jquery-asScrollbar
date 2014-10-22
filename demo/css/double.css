@@ -2,10 +2,34 @@
 	width:500px;
 	height:500px;
 	overflow:auto;
+	margin:0 auto;
 }
 
-.asScrollable-inner{
+#container1{
+	margin-top:100px;
+	width:500px;
+	height:500px;
+	margin:0 auto;
+	overflow:auto;
+	display:none;
+}
+
+.is-scrolling{
+	-webkit-user-focus: ignore;
+	-webkit-user-input: disabled;
+	-webkit-user-select: none;
+	-moz-user-focus: ignore;
+	-moz-user-input: disabled;
+	-moz-user-select: none;
+	user-focus: ignore;
+	user-input: disabled;
+	user-select: none;
+}
+
+.asScrollable-inner {
 	min-width:1000px;
 }
-
+.inner{
+	min-width:1000px;
+}
 

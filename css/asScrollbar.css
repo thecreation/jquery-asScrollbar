@@ -13,8 +13,11 @@
   border: 2px solid #808080;
   border-top-color: #666;
   overflow: hidden;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
   border-radius: 4px;
   -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 .asScrollable-handle {
@@ -24,8 +27,11 @@
   line-height: 0;
   background: #fff;
   cursor: pointer;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 0 #555;
+  -moz-box-shadow: 0 1px 0 #555;
   box-shadow: 0 1px 0 #555;
 }
 .asScrollable-vertical.asScrollable-scrollbar {
@@ -46,3 +52,15 @@
 .asScrollable-wrapper::-webkit-scrollbar {
   width: 0;
 }
+.asScrollable-is_scrolling {
+  -webkit-user-focus: ignore;
+  -webkit-user-input: disabled;
+  -webkit-user-select: none;
+  -moz-user-focus: ignore;
+  -moz-user-input: disabled;
+  -moz-user-select: none;
+  user-focus: ignore;
+  user-input: disabled;
+  user-select: none;
+}
+

@@ -1,9 +1,9 @@
 $(document).ready(function($){
-	$('#container').asScrollable({
+	/*$('#container').asScrollable({
 		contentClass : 'inner',
 		direction : 'auto',
-		contentClass : 'inner',
 		verticalBarClass : 'vertical',
 		horizontalBarClass : 'horizontal'
-	});
+	});*/
 });
+
