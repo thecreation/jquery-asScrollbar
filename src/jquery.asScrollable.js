@@ -102,14 +102,15 @@
              this.initLayout('horizontal');
          }
 
+         this.initEvent();
      };
 
      Plugin.defaults = {
          contentClass: 'content',
          wrapperClass: 'wrapper',
          barClass: 'scrollbar',
-         verticalBarClass: 'vertical-bar',
-         horizontalBarClass: 'horizontal-bar',
+         verticalBarClass: 'vertical',
+         horizontalBarClass: 'horizontal',
          scrollableClass: 'is-scrollable',
          scrollingClass: 'is_scrolling',
          barTmpl: '<div class="{{scrollbar}}"><div class="{{handle}}"></div></div>',
@@ -127,15 +128,22 @@
      Plugin.prototype = {
          constructor: Plugin,
          initLayout: function(direction) {
+             if (typeof direction === 'undefined') {
+                 if (this.options.direction === 'horizontal' && this.options.direction === 'vertical') {
+                     this.initLayout(this.options.direction);
+                 } else {
+                     this.initLayout('vertical');
+                     this.initLayout('horizontal');
+                 }
+                 return;
+             }
              var $wrapper = this.$wrapper,
                  wrapper = $wrapper[0],
                  $container = this.$container,
                  oriAttr = this.oriAttr[direction];
 
 
-             if (direction === 'horizontal') {
-                 $container.css('height', $container.height());
-             } else {
+             if (direction === 'vertical') {
                  $wrapper.css('height', $container.height());
              }
 
@@ -143,23 +151,23 @@
              $wrapper.css(oriAttr.crossSize, wrapper.parentNode[oriAttr.crossClient] + wrapper[oriAttr.crossOffset] - wrapper[oriAttr.crossClient] + 'px');
 
              this.initBarLayout(direction);
-             this.initEvent();
+
          },
 
          initBarLayout: function(direction) {
              var oriAttr = this.oriAttr[direction],
                  options = this.options,
-                 $wrapper = this.$wrapper,
                  wrapper = this.$wrapper[0],
                  content = this.$content[0],
+				 classes = this.classes,
                  $bar;
 
              if (typeof this.getBar('direction') === 'undefined') {
-                 $bar = this.$container.find('.' + this.classes[direction + 'BarClass']);
+                 $bar = this.$container.find('.' + classes[direction + 'BarClass']);
 
                  if ($bar.length === 0) {
-                     $bar = $(options.barTmpl.replace(/\{\{scrollbar\}\}/g, this.classes.barClass).replace(/\{\{handle\}\}/g, this.classes.handleClass));
-                     $bar.appendTo($wrapper);
+                     $bar = $(options.barTmpl.replace(/\{\{scrollbar\}\}/g, classes.barClass).replace(/\{\{handle\}\}/g, classes.handleClass));
+                     $bar.appendTo(this.$container);
                  }
 
                  $bar.asScrollbar({
@@ -195,12 +203,22 @@
                  }
 
                  this.hasBar(direction, true);
-                 this.$wrapper.addClass(this.classes.scrollableClass);
+                 this.$container.addClass(classes.scrollableClass);
                  this.hideBar(direction);
              } else {
                  this.hasBar(direction, false);
-                 this.$wrapper.removeClass(this.classes.scrollableClass);
+                 this.$container.removeClass(classes.scrollableClass);
                  this.hideBar(direction);
+             }
+         },
+
+         reInitLayout: function() {
+             this.$wrapper.removeAttr('style');
+             if (this.options.direction === 'horizontal' || this.options.direction === 'vertical') {
+                 this.initLayout(this.options.direction);
+             } else {
+                 this.initLayout('vertical');
+                 this.initLayout('horizontal');
              }
          },
 
@@ -283,14 +301,7 @@
 
              if (options.responsive) {
                  $(window).resize(function() {
-                     $container.removeAttr('style');
-                     $wrapper.removeAttr('style');
-                     if (options.direction === 'horizontal' || options.direction === 'vertical') {
-                         self.initLayout(options.direction);
-                     } else {
-                         self.initLayout('vertical');
-                         self.initLayout('horizontal');
-                     }
+                     self.reInitLayout();
                  });
              }
 
@@ -383,6 +394,15 @@
          },
 
          move: function(value, isPercent, direction, animate) {
+             if (typeof direction === 'undefined') {
+                 if (this.options.direction === 'horizontal' && this.options.direction === 'vertical') {
+                     this.move(value, isPercent, this.options.direction, animate);
+                 } else {
+                     this.move(value, isPercent, 'vertical', animate);
+                     this.move(value, isPercent, 'horizontal', animate);
+                 }
+                 return;
+             }
              var oriAttr = this.oriAttr[direction],
                  options = this.options,
                  wrapper = this.$wrapper[0],
@@ -406,6 +426,15 @@
          },
 
          to: function(selector, direction, animate) {
+             if (typeof direction === 'undefined') {
+                 if (this.options.direction === 'horizontal' && this.options.direction === 'vertical') {
+                     this.to(selector, this.options.direction, animate);
+                 } else {
+                     this.to(selector, 'vertical', animate);
+                     this.to(selector, 'horizontal', animate);
+                 }
+                 return;
+             }
              var oriAttr = this.oriAttr[direction],
                  wrapper = this.$wrapper[0],
                  $item, offset, size, diff;
@@ -456,7 +485,7 @@
                  if (!$(this).data(pluginName)) {
                      $(this).data(pluginName, new Plugin(options, this));
                  } else {
-                     $(this).data(pluginName).initLayout();
+                     $(this).data(pluginName).reInitLayout();
                  }
              });
 

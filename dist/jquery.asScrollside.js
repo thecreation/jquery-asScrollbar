@@ -1,4 +1,4 @@
-/*! jQuery Scrollbar - v0.1.1 - 2014-10-22
+/*! jQuery Scrollbar - v0.1.1 - 2014-10-23
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -483,8 +483,9 @@
                 $parent;
 
             while (true) {
-                offset += $target.position().top;
+
                 if ($target.is(this.$side)) break;
+                offset += $target.position().top;
                 $parent = $target.offsetParent();
 
                 if ($parent.is('html')) {
