@@ -215,7 +215,7 @@
                 $parent;
 
             while (true) {
-                
+
                 if ($target.is(this.$side)) break;
                 offset += $target.position().top;
                 $parent = $target.offsetParent();

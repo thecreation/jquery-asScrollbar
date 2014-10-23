@@ -360,13 +360,13 @@
              return this.getContentOffset(direction) / (content[oriAttr.client] - wrapper[oriAttr.offset]);
          },
 
-		 getElementOffset: function($target, direction) {
+         getElementOffset: function($target, direction) {
              var offset = 0,
                  oriAttr = this.oriAttr[direction],
                  $parent;
 
              while (true) {
-                 
+
                  if ($target.is(this.$container)) break;
                  offset += $target.position()[oriAttr.pos];
                  $parent = $target.offsetParent();
