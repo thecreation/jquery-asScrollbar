@@ -360,6 +360,28 @@
              return this.getContentOffset(direction) / (content[oriAttr.client] - wrapper[oriAttr.offset]);
          },
 
+		 getElementOffset: function($target, direction) {
+             var offset = 0,
+                 oriAttr = this.oriAttr[direction],
+                 $parent;
+
+             while (true) {
+                 
+                 if ($target.is(this.$container)) break;
+                 offset += $target.position()[oriAttr.pos];
+                 $parent = $target.offsetParent();
+
+                 if ($parent.is('html')) {
+                     if ($target.parent().is('html')) break;
+                     $target = $target.parent();
+                 } else {
+                     $target = $parent;
+                 }
+             }
+
+             return offset;
+         },
+
          move: function(value, isPercent, direction, animate) {
              var oriAttr = this.oriAttr[direction],
                  options = this.options,
@@ -394,7 +416,7 @@
              if ($item.length === 0) return;
              if ($item.length > 1) $item = $item.get(0);
 
-             offset = this.getElementOffset($item);
+             offset = this.getElementOffset($item, direction);
              size = $item[oriAttr.size]();
              diff = size + offset - wrapper[oriAttr.offset];
 
