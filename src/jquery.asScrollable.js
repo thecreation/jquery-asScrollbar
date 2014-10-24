@@ -186,7 +186,7 @@
 
              var bar = $bar[0],
                  $scrollbar = this.getBarPlugin(direction),
-                 contentLength = content[oriAttr.offset],
+                 contentLength = content[oriAttr.scrollSize],
                  wrapperLength = wrapper[oriAttr.client],
                  percent, hPosition;
 
@@ -412,7 +412,7 @@
                      return false;
                  }
 
-                 value = -value * (wrapper[oriAttr.offset] - content[oriAttr.client]);
+                 value = -value * (wrapper[oriAttr.offset] - content[oriAttr.scrollSize]);
              }
 
              var params = {};
@@ -423,6 +423,7 @@
              } else {
                  wrapper[oriAttr.scroll] = value;
              }
+			 this[oriAttr.offsetPos] = this.getContentOffset(direction);
          },
 
          to: function(selector, direction, animate) {
