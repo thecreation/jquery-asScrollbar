@@ -1,4 +1,4 @@
-/*! jQuery Scrollbar - v0.1.1 - 2014-10-23
+/*! jQuery Scrollbar - v0.1.1 - 2014-10-24
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -419,7 +419,7 @@
                  options = this.options,
                  wrapper = this.$wrapper[0],
                  content = this.$content[0],
-				 classes = this.classes,
+                 classes = this.classes,
                  $bar;
 
              if (typeof this.getBar('direction') === 'undefined') {
@@ -446,7 +446,7 @@
 
              var bar = $bar[0],
                  $scrollbar = this.getBarPlugin(direction),
-                 contentLength = content[oriAttr.offset],
+                 contentLength = content[oriAttr.scrollSize],
                  wrapperLength = wrapper[oriAttr.client],
                  percent, hPosition;
 
@@ -672,7 +672,7 @@
                      return false;
                  }
 
-                 value = -value * (wrapper[oriAttr.offset] - content[oriAttr.client]);
+                 value = -value * (wrapper[oriAttr.offset] - content[oriAttr.scrollSize]);
              }
 
              var params = {};
@@ -683,6 +683,7 @@
              } else {
                  wrapper[oriAttr.scroll] = value;
              }
+             this[oriAttr.offsetPos] = this.getContentOffset(direction);
          },
 
          to: function(selector, direction, animate) {
@@ -709,8 +710,8 @@
              size = $item[oriAttr.size]();
              diff = size + offset - wrapper[oriAttr.offset];
 
-             if (diff > 0) this.move(offset + this.getContentOffset() - this.options.toOffset, false, animate);
-             else if (offset < 0) this.move(offset + this.getContentOffset() - this.options.toOffset, false, animate);
+             if (diff > 0) this.move(offset + this.getContentOffset(direction) - this.options.toOffset, false, direction, animate);
+             else if (offset < 0) this.move(offset + this.getContentOffset(direction) - this.options.toOffset, false, direction, animate);
          },
 
          destory: function() {

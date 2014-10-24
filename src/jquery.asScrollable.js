@@ -159,7 +159,7 @@
                  options = this.options,
                  wrapper = this.$wrapper[0],
                  content = this.$content[0],
-				 classes = this.classes,
+                 classes = this.classes,
                  $bar;
 
              if (typeof this.getBar('direction') === 'undefined') {
@@ -423,7 +423,7 @@
              } else {
                  wrapper[oriAttr.scroll] = value;
              }
-			 this[oriAttr.offsetPos] = this.getContentOffset(direction);
+             this[oriAttr.offsetPos] = this.getContentOffset(direction);
          },
 
          to: function(selector, direction, animate) {
@@ -450,8 +450,8 @@
              size = $item[oriAttr.size]();
              diff = size + offset - wrapper[oriAttr.offset];
 
-             if (diff > 0) this.move(offset + this.getContentOffset() - this.options.toOffset, false, animate);
-             else if (offset < 0) this.move(offset + this.getContentOffset() - this.options.toOffset, false, animate);
+             if (diff > 0) this.move(offset + this.getContentOffset(direction) - this.options.toOffset, false, direction, animate);
+             else if (offset < 0) this.move(offset + this.getContentOffset(direction) - this.options.toOffset, false, direction, animate);
          },
 
          destory: function() {
