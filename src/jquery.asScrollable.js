@@ -24,7 +24,9 @@
              handleClass: options.namespace + '-' + options.handleClass,
              directionClass: options.namespace + '-' + options.direction,
              scrollableClass: options.namespace + '-' + options.scrollableClass,
-             scrollingClass: options.namespace + '-' + options.scrollingClass
+             scrollingClass: options.namespace + '-' + options.scrollingClass,
+			 verticalScrollingClass : options.namespace + '-' + options.verticalBarClass + '-' + options.scrollingClass,
+			 horizontalScrollingClass : options.namespace + '-' + options.horizontalBarClass + '-' + options.scrollingClass,
          };
 
          this.oriAttr = {
@@ -150,8 +152,8 @@
              $wrapper.css(oriAttr.overflow, 'scroll');
              $wrapper.css(oriAttr.crossSize, wrapper.parentNode[oriAttr.crossClient] + wrapper[oriAttr.crossOffset] - wrapper[oriAttr.crossClient] + 'px');
 
+			 this[oriAttr.offsetPos] = this.getContentOffset(direction);
              this.initBarLayout(direction);
-
          },
 
          initBarLayout: function(direction) {
@@ -236,8 +238,8 @@
 
                  self.offsetTop = self.getContentOffset('vertical');
                  self.offsetLeft = self.getContentOffset('horizontal');
-
-                 if (self.offsetTop !== origOffsetTop) {
+                 
+				 if (self.offsetTop !== origOffsetTop) {
                      percent = self.getPercentOffset('vertical');
                      $(this).trigger(self.eventName('change'), [percent, 'content', 'vertical']);
                  }
@@ -254,14 +256,19 @@
 
                      if ($target.hasClass(self.classes.verticalBarClass)) {
                          self.move(value, true, 'vertical');
+						 $container.addClass(self.classes.verticalScrollingClass);
                      } else if ($target.hasClass(self.classes.horizontalBarClass)) {
                          self.move(value, true, 'horizontal');
+						 $container.addClass(self.classes.horizontalScrollingClass);
                      }
                  } else if (type === 'content') {
                      self.getBarPlugin(direction).handleMove(value, true);
+					 $container.addClass(self.classes[direction+'ScrollingClass']);
                      clearTimeout(timeoutId);
                      timeoutId = setTimeout(function() {
                          $container.removeClass(self.classes.scrollingClass);
+						 $container.removeClass(self.classes.verticalScrollingClass);
+						 $container.removeClass(self.classes.horizontalBarClass);
                      }, 200);
                  }
 
@@ -297,6 +304,8 @@
 
              $(document).on('blur mouseup', function() {
                  $container.removeClass(self.classes.scrollingClass);
+				 $container.removeClass(self.classes.verticalScrollingClass);
+				 $container.removeClass(self.classes.horizontalBarClass);
              });
 
              if (options.responsive) {
@@ -414,16 +423,16 @@
 
                  value = -value * (wrapper[oriAttr.offset] - content[oriAttr.scrollSize]);
              }
-
+			 
              var params = {};
              params[oriAttr.scroll] = value
-
              if (animate) {
                  this.$wrapper.stop().animate(params, options.duration);
              } else {
                  wrapper[oriAttr.scroll] = value;
              }
-             this[oriAttr.offsetPos] = this.getContentOffset(direction);
+
+			 this[oriAttr.offsetPos] = this.getContentOffset(direction);
          },
 
          to: function(selector, direction, animate) {
