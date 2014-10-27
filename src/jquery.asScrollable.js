@@ -25,8 +25,8 @@
              directionClass: options.namespace + '-' + options.direction,
              scrollableClass: options.namespace + '-' + options.scrollableClass,
              scrollingClass: options.namespace + '-' + options.scrollingClass,
-			 verticalScrollingClass : options.namespace + '-' + options.verticalBarClass + '-' + options.scrollingClass,
-			 horizontalScrollingClass : options.namespace + '-' + options.horizontalBarClass + '-' + options.scrollingClass,
+             verticalScrollingClass: options.namespace + '-' + options.verticalBarClass + '-' + options.scrollingClass,
+             horizontalScrollingClass: options.namespace + '-' + options.horizontalBarClass + '-' + options.scrollingClass
          };
 
          this.oriAttr = {
@@ -152,7 +152,7 @@
              $wrapper.css(oriAttr.overflow, 'scroll');
              $wrapper.css(oriAttr.crossSize, wrapper.parentNode[oriAttr.crossClient] + wrapper[oriAttr.crossOffset] - wrapper[oriAttr.crossClient] + 'px');
 
-			 this[oriAttr.offsetPos] = this.getContentOffset(direction);
+             this[oriAttr.offsetPos] = this.getContentOffset(direction);
              this.initBarLayout(direction);
          },
 
@@ -238,8 +238,8 @@
 
                  self.offsetTop = self.getContentOffset('vertical');
                  self.offsetLeft = self.getContentOffset('horizontal');
-                 
-				 if (self.offsetTop !== origOffsetTop) {
+
+                 if (self.offsetTop !== origOffsetTop) {
                      percent = self.getPercentOffset('vertical');
                      $(this).trigger(self.eventName('change'), [percent, 'content', 'vertical']);
                  }
@@ -256,19 +256,19 @@
 
                      if ($target.hasClass(self.classes.verticalBarClass)) {
                          self.move(value, true, 'vertical');
-						 $container.addClass(self.classes.verticalScrollingClass);
+                         $container.addClass(self.classes.verticalScrollingClass);
                      } else if ($target.hasClass(self.classes.horizontalBarClass)) {
                          self.move(value, true, 'horizontal');
-						 $container.addClass(self.classes.horizontalScrollingClass);
+                         $container.addClass(self.classes.horizontalScrollingClass);
                      }
                  } else if (type === 'content') {
                      self.getBarPlugin(direction).handleMove(value, true);
-					 $container.addClass(self.classes[direction+'ScrollingClass']);
+                     $container.addClass(self.classes[direction + 'ScrollingClass']);
                      clearTimeout(timeoutId);
                      timeoutId = setTimeout(function() {
                          $container.removeClass(self.classes.scrollingClass);
-						 $container.removeClass(self.classes.verticalScrollingClass);
-						 $container.removeClass(self.classes.horizontalBarClass);
+                         $container.removeClass(self.classes.verticalScrollingClass);
+                         $container.removeClass(self.classes.horizontalBarClass);
                      }, 200);
                  }
 
@@ -304,8 +304,8 @@
 
              $(document).on('blur mouseup', function() {
                  $container.removeClass(self.classes.scrollingClass);
-				 $container.removeClass(self.classes.verticalScrollingClass);
-				 $container.removeClass(self.classes.horizontalBarClass);
+                 $container.removeClass(self.classes.verticalScrollingClass);
+                 $container.removeClass(self.classes.horizontalBarClass);
              });
 
              if (options.responsive) {
@@ -348,22 +348,22 @@
 
          showBar: function(direction) {
              if (this.hasBar(direction)) {
-                typeof this.getBar(direction)!=='undefined' ? this.getBar(direction).show() : '';
+                 typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).show() : '';
              }
          },
 
          hideBar: function(direction) {
              if (this.options.showOnhover && this.hasBar(direction)) {
                  if (!this.isOverContainer && !this.getBarPlugin(direction).isDrag) {
-                     typeof this.getBar(direction)!=='undefined' ?  this.getBar(direction).hide() : '';
+                     typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).hide() : '';
                  }
              } else if (!this.hasBar(direction)) {
-                 typeof this.getBar(direction)!=='undefined' ?  this.getBar(direction).hide() : '';
+                 typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).hide() : '';
              }
          },
 
          getBarPlugin: function(direction) {
-             return typeof this.getBar(direction)!=='undefined' ?  this.getBar(direction).data('asScrollbar') : '';
+             return typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).data('asScrollbar') : '';
          },
 
          getContentOffset: function(direction) {
@@ -423,7 +423,7 @@
 
                  value = -value * (wrapper[oriAttr.offset] - content[oriAttr.scrollSize]);
              }
-			 
+
              var params = {};
              params[oriAttr.scroll] = value
              if (animate) {
@@ -432,7 +432,7 @@
                  wrapper[oriAttr.scroll] = value;
              }
 
-			 this[oriAttr.offsetPos] = this.getContentOffset(direction);
+             this[oriAttr.offsetPos] = this.getContentOffset(direction);
          },
 
          to: function(selector, direction, animate) {
@@ -467,8 +467,8 @@
              if (this.options.direction === 'horizontal' || this.options.direction === 'vertical') {
                  this.getBar(this.options.direction);
              } else {
-                 typeof this.getBar('vertical')!=='undefined' ?  this.getBar('vertical').remove() : '';
-                 typeof this.getBar('horizontal')!=='undefined' ?  this.getBar('horizontal').remove() : '';
+                 typeof this.getBar('vertical') !== 'undefined' ? this.getBar('vertical').remove() : '';
+                 typeof this.getBar('horizontal') !== 'undefined' ? this.getBar('horizontal').remove() : '';
              }
              this.$container.html(this.$content.html());
              this.$container.removeData(pluginName);

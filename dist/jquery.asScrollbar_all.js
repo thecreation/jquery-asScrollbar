@@ -1,4 +1,4 @@
-/*! jQuery Scrollbar - v0.1.1 - 2014-10-24
+/*! jQuery Scrollbar - v0.1.1 - 2014-10-27
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function($, document, window, undefined) {
@@ -284,7 +284,9 @@
              handleClass: options.namespace + '-' + options.handleClass,
              directionClass: options.namespace + '-' + options.direction,
              scrollableClass: options.namespace + '-' + options.scrollableClass,
-             scrollingClass: options.namespace + '-' + options.scrollingClass
+             scrollingClass: options.namespace + '-' + options.scrollingClass,
+             verticalScrollingClass: options.namespace + '-' + options.verticalBarClass + '-' + options.scrollingClass,
+             horizontalScrollingClass: options.namespace + '-' + options.horizontalBarClass + '-' + options.scrollingClass
          };
 
          this.oriAttr = {
@@ -358,7 +360,7 @@
          if (options.direction === 'horizontal' || options.direction === 'vertical') {
              this.initLayout(options.direction);
          } else {
-             this.initLayout('vertical');
+             /*this.initLayout('vertical');*/
              this.initLayout('horizontal');
          }
 
@@ -410,8 +412,8 @@
              $wrapper.css(oriAttr.overflow, 'scroll');
              $wrapper.css(oriAttr.crossSize, wrapper.parentNode[oriAttr.crossClient] + wrapper[oriAttr.crossOffset] - wrapper[oriAttr.crossClient] + 'px');
 
+             this[oriAttr.offsetPos] = this.getContentOffset(direction);
              this.initBarLayout(direction);
-
          },
 
          initBarLayout: function(direction) {
@@ -422,7 +424,7 @@
                  classes = this.classes,
                  $bar;
 
-             if (typeof this.getBar('direction') === 'undefined') {
+             if (typeof this.getBar(direction) === 'undefined') {
                  $bar = this.$container.find('.' + classes[direction + 'BarClass']);
 
                  if ($bar.length === 0) {
@@ -514,14 +516,19 @@
 
                      if ($target.hasClass(self.classes.verticalBarClass)) {
                          self.move(value, true, 'vertical');
+                         $container.addClass(self.classes.verticalScrollingClass);
                      } else if ($target.hasClass(self.classes.horizontalBarClass)) {
                          self.move(value, true, 'horizontal');
+                         $container.addClass(self.classes.horizontalScrollingClass);
                      }
                  } else if (type === 'content') {
                      self.getBarPlugin(direction).handleMove(value, true);
+                     $container.addClass(self.classes[direction + 'ScrollingClass']);
                      clearTimeout(timeoutId);
                      timeoutId = setTimeout(function() {
                          $container.removeClass(self.classes.scrollingClass);
+                         $container.removeClass(self.classes.verticalScrollingClass);
+                         $container.removeClass(self.classes.horizontalBarClass);
                      }, 200);
                  }
 
@@ -557,6 +564,8 @@
 
              $(document).on('blur mouseup', function() {
                  $container.removeClass(self.classes.scrollingClass);
+                 $container.removeClass(self.classes.verticalScrollingClass);
+                 $container.removeClass(self.classes.horizontalBarClass);
              });
 
              if (options.responsive) {
@@ -599,22 +608,22 @@
 
          showBar: function(direction) {
              if (this.hasBar(direction)) {
-                 this.getBar(direction).show();
+                 typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).show() : '';
              }
          },
 
          hideBar: function(direction) {
              if (this.options.showOnhover && this.hasBar(direction)) {
                  if (!this.isOverContainer && !this.getBarPlugin(direction).isDrag) {
-                     this.getBar(direction).hide();
+                     typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).hide() : '';
                  }
              } else if (!this.hasBar(direction)) {
-                 this.getBar(direction).hide();
+                 typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).hide() : '';
              }
          },
 
          getBarPlugin: function(direction) {
-             return this.getBar(direction).data('asScrollbar');
+             return typeof this.getBar(direction) !== 'undefined' ? this.getBar(direction).data('asScrollbar') : '';
          },
 
          getContentOffset: function(direction) {
@@ -677,12 +686,12 @@
 
              var params = {};
              params[oriAttr.scroll] = value
-
              if (animate) {
                  this.$wrapper.stop().animate(params, options.duration);
              } else {
                  wrapper[oriAttr.scroll] = value;
              }
+
              this[oriAttr.offsetPos] = this.getContentOffset(direction);
          },
 
@@ -718,8 +727,8 @@
              if (this.options.direction === 'horizontal' || this.options.direction === 'vertical') {
                  this.getBar(this.options.direction);
              } else {
-                 this.getBar('vertical').remove();
-                 this.getBar('horizontal').remove();
+                 typeof this.getBar('vertical') !== 'undefined' ? this.getBar('vertical').remove() : '';
+                 typeof this.getBar('horizontal') !== 'undefined' ? this.getBar('horizontal').remove() : '';
              }
              this.$container.html(this.$content.html());
              this.$container.removeData(pluginName);
