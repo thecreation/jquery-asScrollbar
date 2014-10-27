@@ -1,17 +1,16 @@
 #container{
-	width:500px;
-	height:100%;
+	width:1000px;
+	height:500px;
 	margin:0 auto;
 	overflow:auto;
 }
 
 #container1{
 	margin-top:100px;
-	width:500px;
+	width:1000px;
 	height:500px;
-	margin:0 auto;
+	margin:100px auto 100px;
 	overflow:auto;
-	display:none;
 }
 
 .is-scrolling{
@@ -27,9 +26,9 @@
 }
 
 .asScrollable-inner {
-	min-width:1000px;
+	width:1000px;
 }
 .inner{
-	min-width:1000px;
+	width:1000px;
 }
 

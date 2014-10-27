@@ -100,7 +100,7 @@
          if (options.direction === 'horizontal' || options.direction === 'vertical') {
              this.initLayout(options.direction);
          } else {
-             this.initLayout('vertical');
+             /*this.initLayout('vertical');*/
              this.initLayout('horizontal');
          }
 
@@ -164,7 +164,7 @@
                  classes = this.classes,
                  $bar;
 
-             if (typeof this.getBar('direction') === 'undefined') {
+             if (typeof this.getBar(direction) === 'undefined') {
                  $bar = this.$container.find('.' + classes[direction + 'BarClass']);
 
                  if ($bar.length === 0) {
@@ -348,22 +348,22 @@
 
          showBar: function(direction) {
              if (this.hasBar(direction)) {
-                 this.getBar(direction).show();
+                typeof this.getBar(direction)!=='undefined' ? this.getBar(direction).show() : '';
              }
          },
 
          hideBar: function(direction) {
              if (this.options.showOnhover && this.hasBar(direction)) {
                  if (!this.isOverContainer && !this.getBarPlugin(direction).isDrag) {
-                     this.getBar(direction).hide();
+                     typeof this.getBar(direction)!=='undefined' ?  this.getBar(direction).hide() : '';
                  }
              } else if (!this.hasBar(direction)) {
-                 this.getBar(direction).hide();
+                 typeof this.getBar(direction)!=='undefined' ?  this.getBar(direction).hide() : '';
              }
          },
 
          getBarPlugin: function(direction) {
-             return this.getBar(direction).data('asScrollbar');
+             return typeof this.getBar(direction)!=='undefined' ?  this.getBar(direction).data('asScrollbar') : '';
          },
 
          getContentOffset: function(direction) {
@@ -467,8 +467,8 @@
              if (this.options.direction === 'horizontal' || this.options.direction === 'vertical') {
                  this.getBar(this.options.direction);
              } else {
-                 this.getBar('vertical').remove();
-                 this.getBar('horizontal').remove();
+                 typeof this.getBar('vertical')!=='undefined' ?  this.getBar('vertical').remove() : '';
+                 typeof this.getBar('horizontal')!=='undefined' ?  this.getBar('horizontal').remove() : '';
              }
              this.$container.html(this.$content.html());
              this.$container.removeData(pluginName);
