@@ -1,30 +1,18 @@
-@scrollable : asScrollbar;
+@scrollbar: asScrollbar;
 
-/* element */
-#scroller{
-	height: 300px;  /* It's necessary */
-}
+@scrollbar-size: 8px;
 
-/* asScrollable */
-.@{scrollable} {
-	&-scrollbar {
-		position: absolute;
-		top: 0;
-		right: 0;
-		line-height: 0;
-		background: #808080;
-		border: 2px solid #808080;
-		border-top-color: #666;
-		overflow:hidden;
-
-		-webkit-border-radius: 4px;
-		   -moz-border-radius: 4px;
-				border-radius: 4px;
-
-		-webkit-box-sizing:border-box;
-		   -moz-box-sizing:border-box;
-				box-sizing:border-box;
-	}
+.@{scrollbar} {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	line-height: 0;
+	background: #808080;
+	border: 2px solid #808080;
+	border-top-color: #666;
+	overflow:hidden;
+	border-radius: 4px;
+	box-sizing:border-box;
 
 	&-handle {
 		position: absolute;
@@ -34,35 +22,27 @@
 		background: #fff; 
 		cursor: pointer; 
 
-		-webkit-border-radius: 4px;
-		   -moz-border-radius: 4px;
-				border-radius: 4px;
-
-		-webkit-box-shadow: 0 1px 0 #555;
-		   -moz-box-shadow: 0 1px 0 #555;
-				box-shadow: 0 1px 0 #555;
+		border-radius: 4px;
+		box-shadow: 0 1px 0 #555;
 	}
 
-	&-vertical&-scrollbar {
+	&-vertical {
 		height:100%;
-		width: 8px;
+		width: @scrollbar-size;
+		margin: 0 5px;
 	}
 
 	&-vertical &-handle {
 		width: 100%;
 	}
 
-	&-horizontal&-scrollbar {
-	    height: 8px;
-	    margin: 1em 0;
+	&-horizontal {
+	    height: @scrollbar-size;
+	    margin: 5px 0;
 		width:100%;
 	}
 
-	&-horizontal&-scrollbar &-handle { 
+	&-horizontal &-handle { 
 		height: 100%; 
-	}
-
-	&-wrapper::-webkit-scrollbar{
-		width:0;
 	}
 }
