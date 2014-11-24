@@ -60,6 +60,21 @@ body {
                         
                     </div>
                 </div>
+                <div>
+                    <button class="api-move-to" data-to="0">Move to 0</button>
+                    <button class="api-move-to" data-to="50">Move to 50</button>
+                    <button class="api-move-to" data-to="0%">Move to 0%</button>
+                    <button class="api-move-to" data-to="100%">Move to 100%</button>
+                    <button class="api-move-to" data-to="50%">Move to 50%</button>
+                </div>
+                <div>
+                    <button class="api-move-by" data-by="10">Move by 10</button>
+                    <button class="api-move-by" data-by="+10">Move by +10</button>
+                    <button class="api-move-by" data-by="-10">Move by -10</button>
+                    <button class="api-move-by" data-by="10%">Move by 10%</button>
+                    <button class="api-move-by" data-by="+10%">Move by +10%</button>
+                    <button class="api-move-by" data-by="-10%">Move by -10%</button>
+                </div>
             </section>
 
 	        <section>
@@ -74,15 +89,31 @@ body {
     </div>
     <script src="../libs/jquery.min.js"></script>
     <script src="../libs/jquery.mousewheel.min.js"></script>
+    <script src="../src/jquery.asScrollbar.support.js"></script>
     <script src="../src/jquery.asScrollbar.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function(){
             $('.example-scrollbar-horizontal').asScrollbar({
-                direction: 'horizontal'
+                direction: 'horizontal',
+                minHandleLength: 200,
+                handleLength: 100
+            });
+
+            var api = $('.example-scrollbar-horizontal').data('asScrollbar');
+
+            $('.api-move-to').on('click', function(){
+                var to = $(this).data('to');
+                api.moveTo(to);
+            });
+
+            $('.api-move-by').on('click', function(){
+                var to = $(this).data('by');
+                api.moveBy(to);
             });
 
             $('.example-scrollbar-vertical').asScrollbar({
-                direction: 'vertical'
+                direction: 'vertical',
+                handleLength: 100
             });
         });
     </script>
