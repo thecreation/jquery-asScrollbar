@@ -10,6 +10,7 @@
 
     var pluginName = 'asScrollbar';
 
+
     function isPercentage(n) {
         return typeof n === 'string' && n.indexOf('%') != -1;
     }
@@ -70,6 +71,9 @@
             pointer: null
         };
 
+        // Current timeout
+        this._frameId = null;
+
         // Current handle position
         this.handlePosition = 0;
 
@@ -103,7 +107,10 @@
 
         useCssTransforms3d: true,
         useCssTransforms: true,
-        useCssTransitions: true
+        useCssTransitions: true,
+
+        duration: '500',
+        easing: 'swing'
     };
 
     Plugin.prototype = {
@@ -434,8 +441,8 @@
             return parseFloat(value.replace('px', ''));
         },
 
-        setHandlePosition: function(value) {
-            var x = '0px', y = '0px';
+        makeHandlePositionStyle: function(value) {
+            var property, x = '0px', y = '0px';
 
             if(this.options.useCssTransforms && $.support.transform){
                 if(this.attributes.axis === 'X') {
@@ -444,14 +451,27 @@
                     y = value;
                 }
 
+                property = $.support.transform.toString();
+
                 if(this.options.useCssTransforms3d && $.support.transform3d) {
-                    this.$handle.css($.support.transform, "translate3d(" + x + "," + y + ",0px)");
+                    value = "translate3d(" + x + "," + y + ",0px)";
                 } else {
-                    this.$handle.css($.support.transform, "translate(" + x + "," + y + ")");
+                    value = "translate(" + x + "," + y + ")";
                 }
             } else {
-                this.$handle.css(this.attributes.position, value);
+                property = this.attributes.position;
             }
+
+            var temp = {};
+            temp[property] = value;
+
+            return temp;
+        },
+
+        setHandlePosition: function(value) {
+            var style = this.makeHandlePositionStyle(value);
+
+            this.$handle.css(style);
 
             if (!this.is('dragging')) {
                 this.handlePosition = this.getHandlePosition();
@@ -511,7 +531,57 @@
                 this.trigger(this.eventName('change'), [value/(this.barLength - this.handleLength)]);
             }
 
-            this.setHandlePosition(value + "px");
+            this.animate(value)
+            //this.setHandlePosition(value + "px");
+        },
+
+        animate: function(value, duration, easing) {
+            duration = duration?duration: this.options.duration;
+            easing = easing?easing: this.options.easing;
+
+            //this.prepareTransition();
+            var style = this.makeHandlePositionStyle(value);
+            
+            // if(this.useCssTransitions && $.support.transition){
+
+            // } else {
+                for (var property in style) break;
+                if(property === $.support.transform){
+                    
+                } else {
+                    this.$handle.animate(style, {
+                        duration: duration,
+                        easing: easing
+                    });
+                }
+                
+            //}
+        },
+
+        prepareTransition: function(property, duration, easing, delay){
+            var temp = [];
+            if(property) {
+                temp.push(property);
+            }
+            if(duration) {
+                if($.isNumeric(duration)) {
+                    duration = duration + 'ms';
+                }
+                temp.push(duration);
+            }
+            if(easing) {
+                temp.push(easing);
+            } else {
+                temp.push('ease-out');
+            }
+            if(delay) {
+                temp.push(delay);
+            }
+            this.$handle.css($support.transition, temp.join(' '));
+        },
+
+        onTransitionEnd: function(){
+
         },
 
         destory: function() {
