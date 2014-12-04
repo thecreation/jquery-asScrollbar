@@ -27,6 +27,13 @@
         return parseFloat(n.slice(0, -1) / 100, 10);
     }
 
+    function convertMatrixToArray(value) {
+        if (value && (value.substr(0, 6) == "matrix")) {
+            return value.replace(/^.*\((.*)\)$/g, "$1").replace(/px/g, '').split(/, +/);
+        }
+        return false;
+    }
+
     var Plugin = $[pluginName] = function(options, bar) {
         this.$bar = $(bar);
 
@@ -40,12 +47,14 @@
 
         if (this.options.direction === 'vertical') {
             this.attributes = {
+                axis: 'Y',
                 position: 'top',
                 length: 'height',
                 clientLength: 'clientHeight'
             };
         } else if (this.options.direction === 'horizontal') {
             this.attributes = {
+                axis: 'X',
                 position: 'left',
                 length: 'width',
                 clientLength: 'clientWidth'
@@ -83,14 +92,18 @@
 
         minHandleLength: 30,
         maxHandleLength: null,
-
+        
         mouseDrag: true,
         touchDrag: true,
         pointerDrag: true,
         clickMove: true,
         clickMoveStep: 0.3, // 0 - 1
         mousewheel: true,
-        mousewheelSpeed: 10
+        mousewheelSpeed: 10,
+
+        useCssTransforms3d: true,
+        useCssTransforms: true,
+        useCssTransitions: true
     };
 
     Plugin.prototype = {
@@ -397,11 +410,48 @@
         },
 
         getHandlePosition: function() {
-            return parseFloat(this.$handle.css(this.attributes.position).replace('px', ''));
+            var value;
+
+            if(this.options.useCssTransforms && $.support.transform){
+                if(this.options.useCssTransforms3d && $.support.transform3d) {
+                    value = convertMatrixToArray(this.$handle.css($.support.transform));
+                } else {
+                    value = convertMatrixToArray(this.$handle.css($.support.transform));
+                }
+                if(!value) {
+                    return false;
+                }
+                
+                if(this.attributes.axis === 'X') {
+                    value = value[4];
+                } else {
+                    value = value[5];
+                }
+            } else {
+                value = this.$handle.css(this.attributes.position);
+            }
+
+            return parseFloat(value.replace('px', ''));
         },
 
         setHandlePosition: function(value) {
-            this.$handle.css(this.attributes.position, value);
+            var x = '0px', y = '0px';
+
+            if(this.options.useCssTransforms && $.support.transform){
+                if(this.attributes.axis === 'X') {
+                    x = value;
+                } else {
+                    y = value;
+                }
+
+                if(this.options.useCssTransforms3d && $.support.transform3d) {
+                    this.$handle.css($.support.transform, "translate3d(" + x + "," + y + ",0px)");
+                } else {
+                    this.$handle.css($.support.transform, "translate(" + x + "," + y + ")");
+                }
+            } else {
+                this.$handle.css(this.attributes.position, value);
+            }
 
             if (!this.is('dragging')) {
                 this.handlePosition = this.getHandlePosition();
