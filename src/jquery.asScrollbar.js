@@ -10,7 +10,47 @@
 
     var pluginName = 'asScrollbar';
 
+    /**
+     * Animation Frame
+     **/
+    if (!Date.now) {
+        Date.now = function() {
+            return new Date().getTime();
+        };
+    }
 
+    function getTime() {
+        if (typeof window.performance !== 'undefined' && window.performance.now) {
+            return window.performance.now();
+        } else {
+            return Date.now();
+        }
+    }
+
+    var vendors = ['webkit', 'moz'];
+    for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+        var vp = vendors[i];
+        window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
+        window.cancelAnimationFrame = (window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame']);
+    }
+    if (/iP(ad|hone|od).*OS (6|7)/.test(window.navigator.userAgent)
+        || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+        var lastTime = 0;
+        window.requestAnimationFrame = function(callback) {
+            var now = getTime();
+            var nextTime = Math.max(lastTime + 16, now);
+            return setTimeout(function() {
+                    callback(lastTime = nextTime);
+                },
+                nextTime - now);
+        };
+        window.cancelAnimationFrame = clearTimeout;
+    }
+
+
+    /**
+     * Helper functions
+     **/
     function isPercentage(n) {
         return typeof n === 'string' && n.indexOf('%') != -1;
     }
@@ -79,6 +119,103 @@
 
         this.init();
     };
+
+    /**
+     * css features detect
+     **/
+    var support = {}; Plugin.support = support;
+    (function(support) {
+        /**
+         * Borrowed from Owl carousel
+         **/
+        var style = $('<support>').get(0).style,
+            prefixes = ['webkit', 'Moz', 'O', 'ms'],
+            events = {
+                transition: {
+                    end: {
+                        WebkitTransition: 'webkitTransitionEnd',
+                        MozTransition: 'transitionend',
+                        OTransition: 'oTransitionEnd',
+                        transition: 'transitionend'
+                    }
+                },
+                animation: {
+                    end: {
+                        WebkitAnimation: 'webkitAnimationEnd',
+                        MozAnimation: 'animationend',
+                        OAnimation: 'oAnimationEnd',
+                        animation: 'animationend'
+                    }
+                }
+            },
+            tests = {
+                csstransforms: function() {
+                    return !!test('transform');
+                },
+                csstransforms3d: function() {
+                    return !!test('perspective');
+                },
+                csstransitions: function() {
+                    return !!test('transition');
+                },
+                cssanimations: function() {
+                    return !!test('animation');
+                }
+            };
+
+        function test(property, prefixed) {
+            var result = false,
+                upper = property.charAt(0).toUpperCase() + property.slice(1);
+            $.each((property + ' ' + prefixes.join(upper + ' ') + upper).split(' '), function(i, property) {
+                if (style[property] !== undefined) {
+                    result = prefixed ? property : true;
+                    return false;
+                }
+            });
+
+            return result;
+        }
+
+        function prefixed(property) {
+            return test(property, true);
+        }
+
+        if (tests.csstransitions()) {
+            /* jshint -W053 */
+            support.transition = new String(prefixed('transition'))
+            support.transition.end = events.transition.end[ support.transition ];
+        }
+
+        if (tests.cssanimations()) {
+            /* jshint -W053 */
+            support.animation = new String(prefixed('animation'))
+            support.animation.end = events.animation.end[ support.animation ];
+        }
+
+        if (tests.csstransforms()) {
+            /* jshint -W053 */
+            support.transform = new String(prefixed('transform'));
+            support.transform3d = tests.csstransforms3d();
+        }
+
+        if(('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch) {
+            support.touch = true;
+        } else {
+            support.touch = false;
+        }
+
+        if(window.PointerEvent || window.MSPointerEvent) {
+            support.pointer = true;
+        } else {
+            support.pointer = false;
+        }
+
+        support.prefixPointerEvent = function (pointerEvent) {
+            return window.MSPointerEvent ? 
+                'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10):
+                pointerEvent;
+        }
+    })(support);
 
     Plugin.defaults = {
         namespace: 'asScrollbar',
@@ -205,14 +342,14 @@
                 this.$handle.on(this.eventName('dragstart selectstart'), function() { return false });
             }
 
-            if (this.options.touchDrag && $.support.touch){
+            if (this.options.touchDrag && support.touch){
                 this.$handle.on(this.eventName('touchstart'), $.proxy(this.onDragStart, this));
                 this.$handle.on(this.eventName('touchcancel'), $.proxy(this.onDragEnd, this));
             }
 
-            if(this.options.pointerDrag && $.support.pointer){
-                his.$handle.on(this.eventName($.support.prefixPointerEvent('pointerdown')), $.proxy(this.onDragStart, this));
-                this.$handle.on(this.eventName($.support.prefixPointerEvent('pointercancel')), $.proxy(this.onDragEnd, this));
+            if(this.options.pointerDrag && support.pointer){
+                his.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), $.proxy(this.onDragStart, this));
+                this.$handle.on(this.eventName(support.prefixPointerEvent('pointercancel')), $.proxy(this.onDragEnd, this));
             }
 
             if(this.options.clickMove){
@@ -299,7 +436,7 @@
                 }, this));
             }
 
-            if (this.options.touchDrag && $.support.touch){
+            if (this.options.touchDrag && support.touch){
                 $(document).on(self.eventName('touchend'), $.proxy(this.onDragEnd, this));
 
                 $(document).one(self.eventName('touchmove'), $.proxy(function(event) {
@@ -309,11 +446,11 @@
                 }, this));
             }
 
-            if(this.options.pointerDrag && $.support.pointer){
-                $(document).on(self.eventName($.support.prefixPointerEvent('pointerup')), $.proxy(this.onDragEnd, this));
+            if(this.options.pointerDrag && support.pointer){
+                $(document).on(self.eventName(support.prefixPointerEvent('pointerup')), $.proxy(this.onDragEnd, this));
 
-                $(document).one(self.eventName($.support.prefixPointerEvent('pointermove')), $.proxy(function(event) {
-                    $(document).on(self.eventName($.support.prefixPointerEvent('pointermove')), $.proxy(this.onDragMove, this));
+                $(document).one(self.eventName(support.prefixPointerEvent('pointermove')), $.proxy(function(event) {
+                    $(document).on(self.eventName(support.prefixPointerEvent('pointermove')), $.proxy(this.onDragMove, this));
 
                     callback();
                 }, this));
@@ -419,11 +556,11 @@
         getHandlePosition: function() {
             var value;
 
-            if(this.options.useCssTransforms && $.support.transform){
-                if(this.options.useCssTransforms3d && $.support.transform3d) {
-                    value = convertMatrixToArray(this.$handle.css($.support.transform));
+            if(this.options.useCssTransforms && support.transform){
+                if(this.options.useCssTransforms3d && support.transform3d) {
+                    value = convertMatrixToArray(this.$handle.css(support.transform));
                 } else {
-                    value = convertMatrixToArray(this.$handle.css($.support.transform));
+                    value = convertMatrixToArray(this.$handle.css(support.transform));
                 }
                 if(!value) {
                     return false;
@@ -444,16 +581,16 @@
         makeHandlePositionStyle: function(value) {
             var property, x = '0px', y = '0px';
 
-            if(this.options.useCssTransforms && $.support.transform){
+            if(this.options.useCssTransforms && support.transform){
                 if(this.attributes.axis === 'X') {
                     x = value;
                 } else {
                     y = value;
                 }
 
-                property = $.support.transform.toString();
+                property = support.transform.toString();
 
-                if(this.options.useCssTransforms3d && $.support.transform3d) {
+                if(this.options.useCssTransforms3d && support.transform3d) {
                     value = "translate3d(" + x + "," + y + ",0px)";
                 } else {
                     value = "translate(" + x + "," + y + ")";
@@ -542,11 +679,12 @@
             //this.prepareTransition();
             var style = this.makeHandlePositionStyle(value);
             
-            // if(this.useCssTransitions && $.support.transition){
+            // if(this.useCssTransitions && support.transition){
 
             // } else {
                 for (var property in style) break;
-                if(property === $.support.transform){
+                if(property === support.transform){
+                    // jquery animate don't support transform. So it use requestAnimationFrame instead of.
                     
                 } else {
                     this.$handle.animate(style, {
@@ -589,6 +727,46 @@
         }
     };
 
+
+    $.extend(Plugin.easing = {}, {
+        'bounce': {
+            style: 'cubic-bezier(0.0, 0.35, .5, 1.3)', 
+            fn: function(){
+
+            }
+        ,
+        'ease': {
+            style: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+            fn: function(){
+
+            }
+        },
+        'linear': {
+            style: 'cubic-bezier(0, 0, 1, 1)',
+            fn: function(){
+
+            }
+        },
+        'ease-in': {
+            style: 'cubic-bezier(0.42, 0, 1, 1)',
+            fn: function(){
+
+            }
+        },
+        'ease-out': {
+            style: 'cubic-bezier(0, 0, 0.58, 1)',
+            fn: function(){
+
+            }
+        },
+        'ease-in-out': {//swing
+            style: 'cubic-bezier(0.42, 0, 0.58, 1)',
+            fn: function(){
+
+            }
+        }
+    });
+
     $.fn[pluginName] = function(options) {
         if (typeof options === 'string') {
             var args = Array.prototype.slice.call(arguments, 1);
@@ -613,5 +791,7 @@
         }
         return this;
     };
+
+    console.dir($[pluginName]);
 
 })(jQuery, document, window, undefined);
