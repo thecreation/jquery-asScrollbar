@@ -78,7 +78,7 @@
     var Plugin = $[pluginName] = function(options, bar) {
         this.$bar = $(bar);
 
-        options = this.options = $.extend({}, Plugin.defaults, options || {});
+        options = this.options = $.extend({}, Plugin.defaults, options || {}, this.$bar.data('options') || {});
 
         this.classes = {
             directionClass: options.namespace + '-' + options.direction,
@@ -116,6 +116,8 @@
 
         // Current handle position
         this.handlePosition = 0;
+
+        this.easing = Plugin.easing[this.options.easing] || Plugin.easing["ease"];
 
         this.init();
     };
@@ -247,8 +249,60 @@
         useCssTransitions: true,
 
         duration: '500',
-        easing: 'swing'
+        easing: 'ease'
     };
+
+    var easingBezier = function (mX1, mY1, mX2, mY2) {    
+        function A(aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
+        function B(aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
+        function C(aA1)      { return 3.0 * aA1; }
+       
+        // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
+        function CalcBezier(aT, aA1, aA2) {
+          return ((A(aA1, aA2)*aT + B(aA1, aA2))*aT + C(aA1))*aT;
+        }
+       
+        // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
+        function GetSlope(aT, aA1, aA2) {
+          return 3.0 * A(aA1, aA2)*aT*aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
+        }
+       
+        function GetTForX(aX) {
+          // Newton raphson iteration
+          var aGuessT = aX;
+          for (var i = 0; i < 4; ++i) {
+            var currentSlope = GetSlope(aGuessT, mX1, mX2);
+            if (currentSlope === 0.0) return aGuessT;
+            var currentX = CalcBezier(aGuessT, mX1, mX2) - aX;
+            aGuessT -= currentX / currentSlope;
+          }
+          return aGuessT;
+        }
+
+        if (mX1 === mY1 && mX2 === mY2) {
+            return {
+                css: 'linear',
+                fn: function(aX){
+                    return aX;
+                }
+            };
+        } else {
+            return {
+                css: 'cubic-bezier('+mX1+','+mY1+','+mX2+','+mY2+')',
+                fn: function (aX) {
+                    return CalcBezier(GetTForX(aX), mY1, mY2);
+                }
+            }
+        }
+    };
+
+    $.extend(Plugin.easing = {}, {
+        "ease":        easingBezier(0.25, 0.1, 0.25, 1.0), 
+        "linear":      easingBezier(0.00, 0.0, 1.00, 1.0),
+        "ease-in":     easingBezier(0.42, 0.0, 1.00, 1.0),
+        "ease-out":    easingBezier(0.00, 0.0, 0.58, 1.0),
+        "ease-in-out": easingBezier(0.42, 0.0, 0.58, 1.0)
+    });
 
     Plugin.prototype = {
         constructor: Plugin,
@@ -348,7 +402,7 @@
             }
 
             if(this.options.pointerDrag && support.pointer){
-                his.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), $.proxy(this.onDragStart, this));
+                this.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), $.proxy(this.onDragStart, this));
                 this.$handle.on(this.eventName(support.prefixPointerEvent('pointercancel')), $.proxy(this.onDragEnd, this));
             }
 
@@ -563,13 +617,13 @@
                     value = convertMatrixToArray(this.$handle.css(support.transform));
                 }
                 if(!value) {
-                    return false;
+                    return 0;
                 }
                 
                 if(this.attributes.axis === 'X') {
-                    value = value[4];
+                    value = value[12] || value[4];
                 } else {
-                    value = value[5];
+                    value = value[13] || value[5];
                 }
             } else {
                 value = this.$handle.css(this.attributes.position);
@@ -583,9 +637,9 @@
 
             if(this.options.useCssTransforms && support.transform){
                 if(this.attributes.axis === 'X') {
-                    x = value;
+                    x = value + 'px';
                 } else {
-                    y = value;
+                    y = value + 'px';
                 }
 
                 property = support.transform.toString();
@@ -598,7 +652,6 @@
             } else {
                 property = this.attributes.position;
             }
-
             var temp = {};
             temp[property] = value;
 
@@ -607,7 +660,6 @@
 
         setHandlePosition: function(value) {
             var style = this.makeHandlePositionStyle(value);
-
             this.$handle.css(style);
 
             if (!this.is('dragging')) {
@@ -668,32 +720,59 @@
                 this.trigger(this.eventName('change'), [value/(this.barLength - this.handleLength)]);
             }
 
-            this.animate(value)
-            //this.setHandlePosition(value + "px");
+            if (!this.is('dragging')) {
+                this.animate(value);
+            } else {
+                this.setHandlePosition(value);
+            }
         },
 
         animate: function(value, duration, easing) {
             duration = duration?duration: this.options.duration;
             easing = easing?easing: this.options.easing;
 
-            //this.prepareTransition();
-            var style = this.makeHandlePositionStyle(value);
-            
-            // if(this.useCssTransitions && support.transition){
+            var self = this, style = this.makeHandlePositionStyle(value);
+            for (var property in style) {
+                break;
+            }
 
-            // } else {
-                for (var property in style) break;
-                if(property === support.transform){
+            if(this.options.useCssTransitions && support.transition){
+                this.prepareTransition(property, duration, easing);
+
+            } else {
+                if(property === support.transform.toString()){
                     // jquery animate don't support transform. So it use requestAnimationFrame instead of.
-                    
+                    var startTime = getTime();
+                    var start = self.getHandlePosition();
+                    var end = value;
+
+                    var run = function(time) {
+                        var percent = (time - startTime) / self.options.duration;
+                        
+                        if(percent > 1) {
+                            percent = 1;
+                        }
+
+                        var current = parseFloat(start + self.easing.fn(percent) * (end-start), 10).toFixed(2);
+
+                        self.setHandlePosition(current);
+
+                        if (percent === 1) {
+                            window.cancelAnimationFrame(self._frameId);
+                            self._frameId = null;
+                        } else {
+                            self._frameId = window.requestAnimationFrame(run);
+                        }
+                    };
+
+                    self._frameId = window.requestAnimationFrame(run);                    
                 } else {
                     this.$handle.animate(style, {
                         duration: duration,
-                        easing: easing
+                        easing: 'swing'
                     });
                 }
-                
-            //}
+            }
         },
 
         prepareTransition: function(property, duration, easing, delay){
@@ -710,12 +789,12 @@
             if(easing) {
                 temp.push(easing);
             } else {
-                temp.push('ease-out');
+                temp.push(this.easing.css);
             }
             if(delay) {
                 temp.push(delay);
             }
-            this.$handle.css($support.transition, temp.join(' '));
+            this.$handle.css(support.transition, temp.join(' '));
         },
 
         onTransitionEnd: function(){
@@ -726,46 +805,6 @@
             this.$bar.on(this.eventName());
         }
     };
-
-
-    $.extend(Plugin.easing = {}, {
-        'bounce': {
-            style: 'cubic-bezier(0.0, 0.35, .5, 1.3)', 
-            fn: function(){
-
-            }
-        ,
-        'ease': {
-            style: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-            fn: function(){
-
-            }
-        },
-        'linear': {
-            style: 'cubic-bezier(0, 0, 1, 1)',
-            fn: function(){
-
-            }
-        },
-        'ease-in': {
-            style: 'cubic-bezier(0.42, 0, 1, 1)',
-            fn: function(){
-
-            }
-        },
-        'ease-out': {
-            style: 'cubic-bezier(0, 0, 0.58, 1)',
-            fn: function(){
-
-            }
-        },
-        'ease-in-out': {//swing
-            style: 'cubic-bezier(0.42, 0, 0.58, 1)',
-            fn: function(){
-
-            }
-        }
-    });
 
     $.fn[pluginName] = function(options) {
         if (typeof options === 'string') {

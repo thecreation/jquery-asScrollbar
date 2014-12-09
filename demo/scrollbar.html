@@ -56,10 +56,26 @@ body {
             <section>
                 <h3>Horizontal scrollbar</h3>
                 <div class="example" style="height: 50px">
-                    <div class="example-scrollbar-horizontal">
+                    <div class="example-scrollbar-horizontal" data-options='{"easing": "ease"}'>
                         
                     </div>
                 </div>
+                <div class="example" style="height: 50px">
+                    <div class="example-scrollbar-horizontal" data-options='{"easing": "ease-in"}'>
+                        
+                    </div>
+                </div>
+                <div class="example" style="height: 50px">
+                    <div class="example-scrollbar-horizontal" data-options='{"easing": "ease-out"}'>
+                        
+                    </div>
+                </div>
+                <div class="example" style="height: 50px">
+                    <div class="example-scrollbar-horizontal" data-options='{"easing": "ease-in-out"}'>
+                        
+                    </div>
+                </div>
+
                 <div>
                     <button class="api-move-to" data-to="0">Move to 0</button>
                     <button class="api-move-to" data-to="50">Move to 50</button>
@@ -102,12 +118,16 @@ body {
 
             $('.api-move-to').on('click', function(){
                 var to = $(this).data('to');
-                api.moveTo(to);
+
+                $('.example-scrollbar-horizontal, .example-scrollbar-vertical').asScrollbar('moveTo', to);
+                //api.moveTo(to);
             });
 
             $('.api-move-by').on('click', function(){
                 var to = $(this).data('by');
-                api.moveBy(to);
+                //api.moveBy(to);
+
+                $('.example-scrollbar-horizontal, .example-scrollbar-vertical').asScrollbar('moveBy', to);
             });
 
             $('.example-scrollbar-vertical').asScrollbar({
