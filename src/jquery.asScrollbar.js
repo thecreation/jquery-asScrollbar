@@ -663,7 +663,7 @@
             this.$handle.css(style);
 
             if (!this.is('dragging')) {
-                this.handlePosition = value;
+                this.handlePosition = parseFloat(value);
             }
         },
 
