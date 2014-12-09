@@ -663,7 +663,7 @@
             this.$handle.css(style);
 
             if (!this.is('dragging')) {
-                this.handlePosition = this.getHandlePosition();
+                this.handlePosition = value;
             }
         },
 
@@ -721,13 +721,14 @@
             }
 
             if (!this.is('dragging')) {
-                this.animate(value);
+                this.doMove(value);
             } else {
                 this.setHandlePosition(value);
             }
         },
 
-        animate: function(value, duration, easing) {
+        doMove: function(value, duration, easing) {
+            this.enter('moving');
             duration = duration?duration: this.options.duration;
             easing = easing?easing: this.options.easing;
 
@@ -737,10 +738,20 @@
             }
 
             if(this.options.useCssTransitions && support.transition){
+                self.enter('transition');
                 this.prepareTransition(property, duration, easing);
 
+                this.$handle.one(support.transition.end, function(){
+                    self.$handle.css(support.transition, '');
+                    self.leave('transition');
+
+                    self.leave('moving');
+                });
+
+                self.setHandlePosition(value);
             } else {
                 if(property === support.transform.toString()){
+                    self.enter('transform');
                     // jquery animate don't support transform. So it use requestAnimationFrame instead of.
                     var startTime = getTime();
                     var start = self.getHandlePosition();
@@ -760,6 +771,9 @@
                         if (percent === 1) {
                             window.cancelAnimationFrame(self._frameId);
                             self._frameId = null;
+                            
+                            self.leave('transform');
+                            self.leave('moving');
                         } else {
                             self._frameId = window.requestAnimationFrame(run);
                         }
@@ -767,9 +781,14 @@
 
                     self._frameId = window.requestAnimationFrame(run);                    
                 } else {
+                    self.leave('animating');
                     this.$handle.animate(style, {
                         duration: duration,
                         easing: 'swing'
+                    }, function(){
+                        self.setHandlePosition(current);
+                        self.leave('animating');
+                        self.leave('moving');
                     });
                 }
             }
@@ -795,10 +814,6 @@
                 temp.push(delay);
             }
             this.$handle.css(support.transition, temp.join(' '));
-        },
-
-        onTransitionEnd: function(){
-
         },
 
         destory: function() {
