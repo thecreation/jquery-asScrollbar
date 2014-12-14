@@ -242,7 +242,9 @@
         clickMove: true,
         clickMoveStep: 0.3, // 0 - 1
         mousewheel: true,
-        mousewheelSpeed: 10,
+        mousewheelSpeed: 50,
+
+        keyboard: true,
 
         useCssTransforms3d: true,
         useCssTransforms: true,
@@ -420,8 +422,83 @@
                     } else {
                         offset = offset - self.options.mousewheelSpeed * delta;
 
-                        self.move(offset, false, true);
+                        self.move(offset, true);
                         return false;
+                    }
+                });
+            }
+
+            if(this.options.keyboard) {
+                this.$bar.on(this.eventName('mouseenter'), function(e){
+                    self.enter('hovered');
+                });
+
+                this.$bar.on(this.eventName('mouseleave'), function(e){
+                    self.leave('hovered');
+                });
+
+                $(document).on(this.eventName('keydown'), function(e){
+                    if (e.isDefaultPrevented && e.isDefaultPrevented()) {
+                        return;
+                    }
+
+                    if(!self.is('hovered')){
+                        return;
+                    }
+                    var activeElement = document.activeElement;
+                    // go deeper if element is a webcomponent
+                    while (activeElement.shadowRoot) {
+                        activeElement = activeElement.shadowRoot.activeElement;
+                    }
+                    if ($(activeElement).is(":input,select,option,[contenteditable]")) {
+                        return;
+                    }
+                    var by = 0, to = null;
+                    switch (e.which) {
+                    case 37: // left
+                    case 63232:
+                        by = -30;
+                        break;
+                    case 38: // up
+                    case 63233:
+                        by = -30;
+                        break;
+                    case 39: // right
+                    case 63234:
+                        by = 30;
+                        break;
+                    case 40: // down
+                    case 63235:
+                        by = 30;
+                        break;
+                    case 33: // page up
+                    case 63276:
+                        by = -90;
+                        break;
+                    case 32: // space bar
+                    case 34: // page down
+                    case 63277:
+                        by = -90;
+                        break;
+                    case 35: // end
+                    case 63275:
+                        to = '100%';
+                        break;
+                    case 36: // home
+                    case 63273:
+                        to = 0;
+                        break;
+                    default:
+                        return;
+                    }
+
+                    if(by || to !== null) {
+                        if(by) {
+                            self.moveBy(by, true);
+                        }else if(to !== null){
+                            self.moveTo(to, true);
+                        }
+                        e.preventDefault();
                     }
                 });
             }
