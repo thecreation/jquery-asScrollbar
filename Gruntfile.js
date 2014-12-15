@@ -23,36 +23,21 @@ module.exports = function(grunt) {
                 banner: '<%= banner %>',
                 stripBanners: true
             },
-            scrollbar: {
+            dist: {
                 src: ['src/jquery.asScrollbar.js'],
                 dest: 'dist/jquery.asScrollbar.js',
-            },
-            scrollable: {
-                src: ['src/jquery.asScrollable.js'],
-                dest: 'dist/jquery.asScrollable.js',
-            },
-            all: {
-                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollable.js'],
-                dest: 'dist/jquery.asScrollable.all.js',
             }
         },
+
         // -- uglify config -------------------------------------------------------
         uglify: {
             options: {
                 banner: '<%= banner %>'
             },
-            scrollbar: {
-                src: '<%= concat.scrollbar.dest %>',
+            dist: {
+                src: '<%= concat.dist.dest %>',
                 dest: 'dist/jquery.asScrollbar.min.js',
-            },
-            scrollable: {
-                src: '<%= concat.scrollable.dest %>',
-                dest: 'dist/jquery.asScrollable.min.js',
-            },
-            all: {
-                src: '<%= concat.all.dest %>',
-                dest: 'dist/jquery.asScrollable.all.min.js',
-            },
+            }
         },
 
         // -- copy config -------------------------------------------------------

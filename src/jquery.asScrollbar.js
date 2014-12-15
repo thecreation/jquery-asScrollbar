@@ -33,8 +33,7 @@
         window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
         window.cancelAnimationFrame = (window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame']);
     }
-    if (/iP(ad|hone|od).*OS (6|7)/.test(window.navigator.userAgent)
-        || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+    if (/iP(ad|hone|od).*OS (6|7)/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
         var lastTime = 0;
         window.requestAnimationFrame = function(callback) {
             var now = getTime();
@@ -125,7 +124,8 @@
     /**
      * css features detect
      **/
-    var support = {}; Plugin.support = support;
+    var support = {};
+    Plugin.support = support;
     (function(support) {
         /**
          * Borrowed from Owl carousel
@@ -185,13 +185,13 @@
         if (tests.csstransitions()) {
             /* jshint -W053 */
             support.transition = new String(prefixed('transition'))
-            support.transition.end = events.transition.end[ support.transition ];
+            support.transition.end = events.transition.end[support.transition];
         }
 
         if (tests.cssanimations()) {
             /* jshint -W053 */
             support.animation = new String(prefixed('animation'))
-            support.animation.end = events.animation.end[ support.animation ];
+            support.animation.end = events.animation.end[support.animation];
         }
 
         if (tests.csstransforms()) {
@@ -200,28 +200,28 @@
             support.transform3d = tests.csstransforms3d();
         }
 
-        if(('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch) {
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch) {
             support.touch = true;
         } else {
             support.touch = false;
         }
 
-        if(window.PointerEvent || window.MSPointerEvent) {
+        if (window.PointerEvent || window.MSPointerEvent) {
             support.pointer = true;
         } else {
             support.pointer = false;
         }
 
-        support.prefixPointerEvent = function (pointerEvent) {
-            return window.MSPointerEvent ? 
-                'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10):
+        support.prefixPointerEvent = function(pointerEvent) {
+            return window.MSPointerEvent ?
+                'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10) :
                 pointerEvent;
         }
     })(support);
 
     Plugin.defaults = {
         namespace: 'asScrollbar',
-        
+
         skin: false,
         template: '<div class="{{handle}}"></div>',
         barClass: null,
@@ -235,7 +235,7 @@
 
         minHandleLength: 30,
         maxHandleLength: null,
-        
+
         mouseDrag: true,
         touchDrag: true,
         pointerDrag: true,
@@ -254,44 +254,52 @@
         easing: 'ease'
     };
 
-    var easingBezier = function (mX1, mY1, mX2, mY2) {    
-        function A(aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
-        function B(aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
-        function C(aA1)      { return 3.0 * aA1; }
-       
+    var easingBezier = function(mX1, mY1, mX2, mY2) {
+        function A(aA1, aA2) {
+            return 1.0 - 3.0 * aA2 + 3.0 * aA1;
+        }
+
+        function B(aA1, aA2) {
+            return 3.0 * aA2 - 6.0 * aA1;
+        }
+
+        function C(aA1) {
+            return 3.0 * aA1;
+        }
+
         // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
         function CalcBezier(aT, aA1, aA2) {
-          return ((A(aA1, aA2)*aT + B(aA1, aA2))*aT + C(aA1))*aT;
+            return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
         }
-       
+
         // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
         function GetSlope(aT, aA1, aA2) {
-          return 3.0 * A(aA1, aA2)*aT*aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
+            return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
         }
-       
+
         function GetTForX(aX) {
-          // Newton raphson iteration
-          var aGuessT = aX;
-          for (var i = 0; i < 4; ++i) {
-            var currentSlope = GetSlope(aGuessT, mX1, mX2);
-            if (currentSlope === 0.0) return aGuessT;
-            var currentX = CalcBezier(aGuessT, mX1, mX2) - aX;
-            aGuessT -= currentX / currentSlope;
-          }
-          return aGuessT;
+            // Newton raphson iteration
+            var aGuessT = aX;
+            for (var i = 0; i < 4; ++i) {
+                var currentSlope = GetSlope(aGuessT, mX1, mX2);
+                if (currentSlope === 0.0) return aGuessT;
+                var currentX = CalcBezier(aGuessT, mX1, mX2) - aX;
+                aGuessT -= currentX / currentSlope;
+            }
+            return aGuessT;
         }
 
         if (mX1 === mY1 && mX2 === mY2) {
             return {
                 css: 'linear',
-                fn: function(aX){
+                fn: function(aX) {
                     return aX;
                 }
             };
         } else {
             return {
-                css: 'cubic-bezier('+mX1+','+mY1+','+mX2+','+mY2+')',
-                fn: function (aX) {
+                css: 'cubic-bezier(' + mX1 + ',' + mY1 + ',' + mX2 + ',' + mY2 + ')',
+                fn: function(aX) {
                     return CalcBezier(GetTForX(aX), mY1, mY2);
                 }
             }
@@ -299,10 +307,10 @@
     };
 
     $.extend(Plugin.easing = {}, {
-        "ease":        easingBezier(0.25, 0.1, 0.25, 1.0), 
-        "linear":      easingBezier(0.00, 0.0, 1.00, 1.0),
-        "ease-in":     easingBezier(0.42, 0.0, 1.00, 1.0),
-        "ease-out":    easingBezier(0.00, 0.0, 0.58, 1.0),
+        "ease": easingBezier(0.25, 0.1, 0.25, 1.0),
+        "linear": easingBezier(0.00, 0.0, 1.00, 1.0),
+        "ease-in": easingBezier(0.42, 0.0, 1.00, 1.0),
+        "ease-out": easingBezier(0.00, 0.0, 0.58, 1.0),
         "ease-in-out": easingBezier(0.42, 0.0, 0.58, 1.0)
     });
 
@@ -367,14 +375,14 @@
                 this._states[state] = 0;
             }
 
-            this._states[state]++;
+            this._states[state] ++;
         },
 
         /**
          * Leaves a state.
          */
         leave: function(state) {
-            this._states[state]--;
+            this._states[state] --;
         },
 
         eventName: function(events) {
@@ -395,24 +403,26 @@
 
             if (this.options.mouseDrag) {
                 this.$handle.on(this.eventName('mousedown'), $.proxy(this.onDragStart, this));
-                this.$handle.on(this.eventName('dragstart selectstart'), function() { return false });
+                this.$handle.on(this.eventName('dragstart selectstart'), function() {
+                    return false
+                });
             }
 
-            if (this.options.touchDrag && support.touch){
+            if (this.options.touchDrag && support.touch) {
                 this.$handle.on(this.eventName('touchstart'), $.proxy(this.onDragStart, this));
                 this.$handle.on(this.eventName('touchcancel'), $.proxy(this.onDragEnd, this));
             }
 
-            if(this.options.pointerDrag && support.pointer){
+            if (this.options.pointerDrag && support.pointer) {
                 this.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), $.proxy(this.onDragStart, this));
                 this.$handle.on(this.eventName(support.prefixPointerEvent('pointercancel')), $.proxy(this.onDragEnd, this));
             }
 
-            if(this.options.clickMove){
+            if (this.options.clickMove) {
                 this.$bar.on(this.eventName('mousedown'), $.proxy(this.onClick, this));
             }
 
-            if(this.options.mousewheel){
+            if (this.options.mousewheel) {
                 this.$bar.on(this.eventName('mousewheel'), function(e, delta) {
                     var offset = self.getHandlePosition();
                     if (offset <= 0 && delta > 0) {
@@ -428,21 +438,21 @@
                 });
             }
 
-            if(this.options.keyboard) {
-                this.$bar.on(this.eventName('mouseenter'), function(e){
+            if (this.options.keyboard) {
+                this.$bar.on(this.eventName('mouseenter'), function(e) {
                     self.enter('hovered');
                 });
 
-                this.$bar.on(this.eventName('mouseleave'), function(e){
+                this.$bar.on(this.eventName('mouseleave'), function(e) {
                     self.leave('hovered');
                 });
 
-                $(document).on(this.eventName('keydown'), function(e){
+                $(document).on(this.eventName('keydown'), function(e) {
                     if (e.isDefaultPrevented && e.isDefaultPrevented()) {
                         return;
                     }
 
-                    if(!self.is('hovered')){
+                    if (!self.is('hovered')) {
                         return;
                     }
                     var activeElement = document.activeElement;
@@ -453,49 +463,50 @@
                     if ($(activeElement).is(":input,select,option,[contenteditable]")) {
                         return;
                     }
-                    var by = 0, to = null;
+                    var by = 0,
+                        to = null;
                     switch (e.which) {
-                    case 37: // left
-                    case 63232:
-                        by = -30;
-                        break;
-                    case 38: // up
-                    case 63233:
-                        by = -30;
-                        break;
-                    case 39: // right
-                    case 63234:
-                        by = 30;
-                        break;
-                    case 40: // down
-                    case 63235:
-                        by = 30;
-                        break;
-                    case 33: // page up
-                    case 63276:
-                        by = -90;
-                        break;
-                    case 32: // space bar
-                    case 34: // page down
-                    case 63277:
-                        by = -90;
-                        break;
-                    case 35: // end
-                    case 63275:
-                        to = '100%';
-                        break;
-                    case 36: // home
-                    case 63273:
-                        to = 0;
-                        break;
-                    default:
-                        return;
+                        case 37: // left
+                        case 63232:
+                            by = -30;
+                            break;
+                        case 38: // up
+                        case 63233:
+                            by = -30;
+                            break;
+                        case 39: // right
+                        case 63234:
+                            by = 30;
+                            break;
+                        case 40: // down
+                        case 63235:
+                            by = 30;
+                            break;
+                        case 33: // page up
+                        case 63276:
+                            by = -90;
+                            break;
+                        case 32: // space bar
+                        case 34: // page down
+                        case 63277:
+                            by = -90;
+                            break;
+                        case 35: // end
+                        case 63275:
+                            to = '100%';
+                            break;
+                        case 36: // home
+                        case 63273:
+                            to = 0;
+                            break;
+                        default:
+                            return;
                     }
 
-                    if(by || to !== null) {
-                        if(by) {
+                    if (by || to !== null) {
+                        if (by) {
                             self.moveBy(by, true);
-                        }else if(to !== null){
+                        } else if (to !== null) {
                             self.moveTo(to, true);
                         }
                         e.preventDefault();
@@ -511,26 +522,28 @@
                 return;
             }
 
-            if(event.target === this.$handle[0]) {
+            if (event.target === this.$handle[0]) {
                 return;
             }
 
             this._drag.time = new Date().getTime();
             this._drag.pointer = this.pointer(event);
 
-            var offset = this.$handle.offset(), distance = this.distance({
-                x: offset.left,
-                y: offset.top
-            }, this._drag.pointer), factor = 1;
+            var offset = this.$handle.offset(),
+                distance = this.distance({
+                    x: offset.left,
+                    y: offset.top
+                }, this._drag.pointer),
+                factor = 1;
 
-            if(distance > 0){
+            if (distance > 0) {
                 distance -= this.handleLength;
             } else {
                 distance = Math.abs(distance);
                 factor = -1;
             }
 
-            if(distance > this.barLength * this.options.clickMoveStep) {
+            if (distance > this.barLength * this.options.clickMoveStep) {
                 distance = this.barLength * this.options.clickMoveStep;
             }
             this.moveBy(factor * distance, true);
@@ -552,7 +565,7 @@
             this._drag.time = new Date().getTime();
             this._drag.pointer = this.pointer(event);
 
-            var callback = function(){
+            var callback = function() {
                 self.enter('dragging');
                 self.trigger('drag');
             }
@@ -567,7 +580,7 @@
                 }, this));
             }
 
-            if (this.options.touchDrag && support.touch){
+            if (this.options.touchDrag && support.touch) {
                 $(document).on(self.eventName('touchend'), $.proxy(this.onDragEnd, this));
 
                 $(document).one(self.eventName('touchmove'), $.proxy(function(event) {
@@ -577,7 +590,7 @@
                 }, this));
             }
 
-            if(this.options.pointerDrag && support.pointer){
+            if (this.options.pointerDrag && support.pointer) {
                 $(document).on(self.eventName(support.prefixPointerEvent('pointerup')), $.proxy(this.onDragEnd, this));
 
                 $(document).one(self.eventName(support.prefixPointerEvent('pointermove')), $.proxy(function(event) {
@@ -626,13 +639,16 @@
          * @returns {Object} - Contains `x` and `y` coordinates of current pointer position.
          */
         pointer: function(event) {
-            var result = { x: null, y: null };
+            var result = {
+                x: null,
+                y: null
+            };
 
             event = event.originalEvent || event || window.event;
 
             event = event.touches && event.touches.length ?
                 event.touches[0] : event.changedTouches && event.changedTouches.length ?
-                    event.changedTouches[0] : event;
+                event.changedTouches[0] : event;
 
             if (event.pageX) {
                 result.x = event.pageX;
@@ -649,7 +665,7 @@
          * Gets the distance of two pointer.
          */
         distance: function(first, second) {
-            if(this.options.direction === 'vertical'){
+            if (this.options.direction === 'vertical') {
                 return second.y - first.y;
             } else {
                 return second.x - first.x;
@@ -660,7 +676,7 @@
             if (typeof length !== 'undefined') {
                 this.$bar.css(this.attributes.length, length);
             }
-            if (update !== false){
+            if (update !== false) {
                 this.updateLength();
             }
         },
@@ -669,12 +685,12 @@
             if (typeof length !== 'undefined') {
                 if (length < this.options.minHandleLength) {
                     length = this.options.minHandleLength;
-                } else if(this.options.maxHandleLength && length > this.options.maxHandleLength){
+                } else if (this.options.maxHandleLength && length > this.options.maxHandleLength) {
                     length = this.options.maxHandleLength;
                 }
                 this.$handle.css(this.attributes.length, length);
             }
-            if (update !== false){
+            if (update !== false) {
                 this.updateLength();
             }
         },
@@ -687,17 +703,17 @@
         getHandlePosition: function() {
             var value;
 
-            if(this.options.useCssTransforms && support.transform){
-                if(this.options.useCssTransforms3d && support.transform3d) {
+            if (this.options.useCssTransforms && support.transform) {
+                if (this.options.useCssTransforms3d && support.transform3d) {
                     value = convertMatrixToArray(this.$handle.css(support.transform));
                 } else {
                     value = convertMatrixToArray(this.$handle.css(support.transform));
                 }
-                if(!value) {
+                if (!value) {
                     return 0;
                 }
-                
-                if(this.attributes.axis === 'X') {
+
+                if (this.attributes.axis === 'X') {
                     value = value[12] || value[4];
                 } else {
                     value = value[13] || value[5];
@@ -710,10 +726,11 @@
         },
 
         makeHandlePositionStyle: function(value) {
-            var property, x = '0px', y = '0px';
+            var property, x = '0px',
+                y = '0px';
 
-            if(this.options.useCssTransforms && support.transform){
-                if(this.attributes.axis === 'X') {
+            if (this.options.useCssTransforms && support.transform) {
+                if (this.attributes.axis === 'X') {
                     x = value + 'px';
                 } else {
                     y = value + 'px';
@@ -721,7 +738,7 @@
 
                 property = support.transform.toString();
 
-                if(this.options.useCssTransforms3d && support.transform3d) {
+                if (this.options.useCssTransforms3d && support.transform3d) {
                     value = "translate3d(" + x + "," + y + ",0px)";
                 } else {
                     value = "translate(" + x + "," + y + ")";
@@ -747,8 +764,8 @@
         moveTo: function(value, trigger) {
             var type = typeof value;
 
-            if(type === "string") {
-                if(isPercentage(value)){
+            if (type === "string") {
+                if (isPercentage(value)) {
                     value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
                 }
 
@@ -756,7 +773,7 @@
                 type = "number";
             }
 
-            if(type !== "number") {
+            if (type !== "number") {
                 return;
             }
 
@@ -767,7 +784,7 @@
             var type = typeof value;
 
             if (type === "string") {
-                if(isPercentage(value)){
+                if (isPercentage(value)) {
                     value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
                 }
 
@@ -775,7 +792,7 @@
                 type = "number";
             }
 
-            if (type !== "number"){
+            if (type !== "number") {
                 return;
             }
 
@@ -783,18 +800,18 @@
         },
 
         move: function(value, trigger) {
-            if ( typeof value !== "number") {
+            if (typeof value !== "number") {
                 return;
             }
 
             if (value < 0) {
                 value = 0;
-            } else if(value + this.handleLength > this.barLength) {
+            } else if (value + this.handleLength > this.barLength) {
                 value = this.barLength - this.handleLength;
             }
 
             if (trigger) {
-                this.trigger(this.eventName('change'), [value/(this.barLength - this.handleLength)]);
+                this.trigger(this.eventName('change'), [value / (this.barLength - this.handleLength)]);
             }
 
             if (!this.is('dragging')) {
@@ -806,19 +823,20 @@
 
         doMove: function(value, duration, easing) {
             this.enter('moving');
-            duration = duration?duration: this.options.duration;
-            easing = easing?easing: this.options.easing;
+            duration = duration ? duration : this.options.duration;
+            easing = easing ? easing : this.options.easing;
 
-            var self = this, style = this.makeHandlePositionStyle(value);
+            var self = this,
+                style = this.makeHandlePositionStyle(value);
             for (var property in style) {
                 break;
             }
 
-            if(this.options.useCssTransitions && support.transition){
+            if (this.options.useCssTransitions && support.transition) {
                 self.enter('transition');
                 this.prepareTransition(property, duration, easing);
 
-                this.$handle.one(support.transition.end, function(){
+                this.$handle.one(support.transition.end, function() {
                     self.$handle.css(support.transition, '');
                     self.leave('transition');
 
@@ -827,7 +845,7 @@
 
                 self.setHandlePosition(value);
             } else {
-                if(property === support.transform.toString()){
+                if (property === support.transform.toString()) {
                     self.enter('transform');
                     // jquery animate don't support transform. So it use requestAnimationFrame instead of.
                     var startTime = getTime();
@@ -836,19 +854,19 @@
 
                     var run = function(time) {
                         var percent = (time - startTime) / self.options.duration;
-                        
-                        if(percent > 1) {
+
+                        if (percent > 1) {
                             percent = 1;
                         }
 
-                        var current = parseFloat(start + self.easing.fn(percent) * (end-start), 10).toFixed(2);
+                        var current = parseFloat(start + self.easing.fn(percent) * (end - start), 10).toFixed(2);
 
                         self.setHandlePosition(current);
 
                         if (percent === 1) {
                             window.cancelAnimationFrame(self._frameId);
                             self._frameId = null;
-                            
+
                             self.leave('transform');
                             self.leave('moving');
                         } else {
@@ -856,13 +874,13 @@
                         }
                     };
 
-                    self._frameId = window.requestAnimationFrame(run);                    
+                    self._frameId = window.requestAnimationFrame(run);
                 } else {
                     self.leave('animating');
                     this.$handle.animate(style, {
                         duration: duration,
                         easing: 'swing'
-                    }, function(){
+                    }, function() {
                         self.setHandlePosition(current);
                         self.leave('animating');
                         self.leave('moving');
@@ -871,23 +889,23 @@
             }
         },
 
-        prepareTransition: function(property, duration, easing, delay){
+        prepareTransition: function(property, duration, easing, delay) {
             var temp = [];
-            if(property) {
+            if (property) {
                 temp.push(property);
             }
-            if(duration) {
-                if($.isNumeric(duration)) {
+            if (duration) {
+                if ($.isNumeric(duration)) {
                     duration = duration + 'ms';
                 }
                 temp.push(duration);
             }
-            if(easing) {
+            if (easing) {
                 temp.push(easing);
             } else {
                 temp.push(this.easing.css);
             }
-            if(delay) {
+            if (delay) {
                 temp.push(delay);
             }
             this.$handle.css(support.transition, temp.join(' '));
