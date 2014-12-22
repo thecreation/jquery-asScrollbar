@@ -1,35 +1,76 @@
 @scrollbar: asScrollbar;
 
-@scrollbar-size: 8px;
+@scrollbar-size: 4px;
+@scrollbar-dragging-size: 10px;
+
+@scrollbar-dragging-color: rgba(238, 238, 238, 0.6);
+@scrollbar-hovering-color: rgba(238, 238, 238, 0.4);
+
+@scrollbar-handle-offset: 5px;
+
+@scrollbar-handle-color: rgba(224, 224, 224, 0.6);
+@scrollbar-handle-dragging-color: rgba(200, 200, 200, 0.8);
 
 .@{scrollbar} {
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	line-height: 0;
-	background: #808080;
-	border: 2px solid #808080;
-	border-top-color: #666;
+	
 	overflow:hidden;
-	border-radius: 4px;
+	border-radius: @scrollbar-size/2;
 	box-sizing:border-box;
 
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	&.is-hovering {
+		background: @scrollbar-hovering-color;
+	}
+
+	&.is-dragging {
+		background: @scrollbar-dragging-color !important;
+		border-radius: @scrollbar-dragging-size/2;
+		border: none;
+
+		opacity: 1;
+	}
+
+	&.is-disabled {
+		display: none;
+	}
+	
 	&-handle {
 		position: absolute;
 		top: 0;
 		left: 0;
 		line-height: 0;
-		background: #fff; 
+		background: @scrollbar-handle-color; 
 		cursor: pointer; 
 
-		border-radius: 4px;
-		box-shadow: 0 1px 0 #555;
+		border-radius: @scrollbar-size/2px;
+	}
+	
+	&.is-dragging &-handle {
+		background: @scrollbar-handle-dragging-color !important;
+		border-radius: @scrollbar-dragging-size/2px;
 	}
 
-	&-vertical {
-		height:100%;
+	&-vertical {			
 		width: @scrollbar-size;
-		margin: 0 5px;
+		margin: @scrollbar-handle-offset (@scrollbar-dragging-size - @scrollbar-size)/2;
+
+		height: 100%;
+		height: ~"calc(100% - 2*@{scrollbar-handle-offset})";
+	}
+
+	&-vertical.is-dragging {
+		width: @scrollbar-dragging-size;
+
+		margin: @scrollbar-handle-offset 1px;
 	}
 
 	&-vertical &-handle {
@@ -38,12 +79,19 @@
 
 	&-horizontal {
 	    height: @scrollbar-size;
-	    margin: 5px 0;
+	    margin: (@scrollbar-dragging-size - @scrollbar-size)/2 @scrollbar-handle-offset;
+
 		width:100%;
+		width: ~"calc(100% - 2*@{scrollbar-handle-offset})";
+	}
+
+	&-horizontal.is-dragging {
+		height: @scrollbar-dragging-size;
+
+		margin: 1px @scrollbar-handle-offset;
 	}
 
 	&-horizontal &-handle { 
 		height: 100%; 
 	}
 }
-

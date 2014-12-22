@@ -46,7 +46,6 @@
         window.cancelAnimationFrame = clearTimeout;
     }
 
-
     /**
      * Helper functions
      **/
@@ -74,6 +73,9 @@
         return false;
     }
 
+    /**
+     * Plugin constructor
+     **/
     var Plugin = $[pluginName] = function(options, bar) {
         this.$bar = $(bar);
 
@@ -123,8 +125,46 @@
         this.init();
     };
 
+    Plugin.defaults = {
+        namespace: 'asScrollbar',
+
+        skin: false,
+        template: '<div class="{{handle}}"></div>',
+        barClass: null,
+        handleClass: null,
+
+        disabledClass: 'is-disabled',
+        draggingClass: 'is-dragging',
+        hoveringClass: 'is-hovering',
+
+        direction: 'vertical',
+
+        barLength: null,
+        handleLength: null,
+
+        minHandleLength: 30,
+        maxHandleLength: null,
+
+        mouseDrag: true,
+        touchDrag: true,
+        pointerDrag: true,
+        clickMove: true,
+        clickMoveStep: 0.3, // 0 - 1
+        mousewheel: true,
+        mousewheelSpeed: 50,
+
+        keyboard: true,
+
+        useCssTransforms3d: true,
+        useCssTransforms: true,
+        useCssTransitions: true,
+
+        duration: '500',
+        easing: 'ease'
+    };
+
     /**
-     * css features detect
+     * Css features detect
      **/
     var support = {};
     Plugin.support = support;
@@ -220,42 +260,6 @@
                 pointerEvent;
         }
     })(support);
-
-    Plugin.defaults = {
-        namespace: 'asScrollbar',
-
-        skin: false,
-        template: '<div class="{{handle}}"></div>',
-        barClass: null,
-        handleClass: null,
-        draggingClass: 'is-dragging',
-        hoveringClass: 'is-hovering',
-
-        direction: 'vertical',
-
-        barLength: null,
-        handleLength: null,
-
-        minHandleLength: 30,
-        maxHandleLength: null,
-
-        mouseDrag: true,
-        touchDrag: true,
-        pointerDrag: true,
-        clickMove: true,
-        clickMoveStep: 0.3, // 0 - 1
-        mousewheel: true,
-        mousewheelSpeed: 50,
-
-        keyboard: true,
-
-        useCssTransforms3d: true,
-        useCssTransforms: true,
-        useCssTransitions: true,
-
-        duration: '500',
-        easing: 'ease'
-    };
 
     var easingBezier = function(mX1, mY1, mX2, mY2) {
         function A(aA1, aA2) {
@@ -780,7 +784,7 @@
             }
         },
 
-        moveTo: function(value, trigger, directly) {
+        moveTo: function(value, trigger, sync) {
             var type = typeof value;
 
             if (type === "string") {
@@ -796,10 +800,10 @@
                 return;
             }
 
-            this.move(value, trigger, directly);
+            this.move(value, trigger, sync);
         },
 
-        moveBy: function(value, trigger, directly) {
+        moveBy: function(value, trigger, sync) {
             var type = typeof value;
 
             if (type === "string") {
@@ -815,11 +819,11 @@
                 return;
             }
 
-            this.move(this.handlePosition + value, trigger);
+            this.move(this.handlePosition + value, trigger, sync);
         },
 
-        move: function(value, trigger, directly) {
-            if (typeof value !== "number") {
+        move: function(value, trigger, sync) {
+            if (typeof value !== "number" || this.is('disabled')) {
                 return;
             }
 
@@ -829,18 +833,18 @@
                 value = this.barLength - this.handleLength;
             }
 
-            if (trigger) {
-                this.trigger('change', value / (this.barLength - this.handleLength));
-            }
-
-            if (!this.is('dragging') && directly !== true) {
-                this.doMove(value);
+            if (!this.is('dragging') && sync !== true) {
+                this.doMove(value, this.options.duration, this.options.easing, trigger);
             } else {
                 this.setHandlePosition(value);
+
+                if (trigger) {
+                    this.trigger('change', value / (this.barLength - this.handleLength));
+                }
             }
         },
 
-        doMove: function(value, duration, easing) {
+        doMove: function(value, duration, easing, trigger) {
             this.enter('moving');
             duration = duration ? duration : this.options.duration;
             easing = easing ? easing : this.options.easing;
@@ -857,8 +861,11 @@
 
                 this.$handle.one(support.transition.end, function() {
                     self.$handle.css(support.transition, '');
-                    self.leave('transition');
 
+                    if (trigger) {
+                        self.trigger('change', value / (self.barLength - self.handleLength));
+                    }
+                    self.leave('transition');
                     self.leave('moving');
                 });
 
@@ -878,9 +885,15 @@
                             percent = 1;
                         }
 
+                        percent = self.easing.fn(percent);
+
                         var current = parseFloat(start + self.easing.fn(percent) * (end - start), 10).toFixed(2);
 
                         self.setHandlePosition(current);
+
+                        if (trigger) {
+                            self.trigger('change', current / (self.barLength - self.handleLength));
+                        }
 
                         if (percent === 1) {
                             window.cancelAnimationFrame(self._frameId);
@@ -895,14 +908,19 @@
 
                     self._frameId = window.requestAnimationFrame(run);
                 } else {
-                    self.leave('animating');
+                    self.enter('animating');
                     this.$handle.animate(style, {
                         duration: duration,
-                        easing: 'swing'
-                    }, function() {
-                        self.setHandlePosition(current);
-                        self.leave('animating');
-                        self.leave('moving');
+                        easing: 'swing',
+                        step: function(now, fx) {
+                            if (trigger) {
+                                self.trigger('change', now / (self.barLength - self.handleLength));
+                            }
+                        },
+                        always: function() {
+                            self.leave('animating');
+                            self.leave('moving');
+                        }
                     });
                 }
             }
@@ -930,6 +948,18 @@
             this.$handle.css(support.transition, temp.join(' '));
         },
 
+        enable: function() {
+            this._states['disabled'] = 0;
+
+            this.$bar.removeClass(this.options.disabledClass);
+        },
+
+        disable: function() {
+            this._states['disabled'] = 1;
+
+            this.$bar.addClass(this.options.disabledClass);
+        },
+
         destory: function() {
             this.$bar.on(this.eventName());
         }
@@ -950,13 +980,11 @@
                 instance[options].apply(instance, args);
             });
         } else {
-            this.each(function() {
+            return this.each(function() {
                 if (!$(this).data(pluginName)) {
                     $(this).data(pluginName, new Plugin(options, this));
                 }
             });
-
         }
-        return this;
     };
 })(window, document, jQuery, undefined);
