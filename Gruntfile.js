@@ -23,36 +23,37 @@ module.exports = function(grunt) {
                 banner: '<%= banner %>',
                 stripBanners: true
             },
-            dist_basic: {
-                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollable.js'],
-                dest: 'dist/jquery.asScrollable.js',
-            },
-            dist_extras: {
-                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollside.js'],
-                dest: 'dist/jquery.asScrollside.js',
-            },
-            dist_all: {
-                src: ['src/jquery.asScrollbar.js', 'src/jquery.asScrollable.js', 'src/jquery.asScrollside.js'],
-                dest: 'dist/jquery.asScrollbar_all.js',
+            dist: {
+                src: ['src/jquery.asScrollbar.js'],
+                dest: 'dist/jquery.asScrollbar.js',
             }
         },
+
         // -- uglify config -------------------------------------------------------
         uglify: {
             options: {
                 banner: '<%= banner %>'
             },
-            dist_basic: {
-                src: '<%= concat.dist_basic.dest %>',
-                dest: 'dist/jquery.asScrollable.min.js',
-            },
-            dist_extras: {
-                src: '<%= concat.dist_extras.dest %>',
-                dest: 'dist/jquery.asScrollside.min.js',
-            },
-            dist_all: {
-                src: '<%= concat.dist_all.dest %>',
-                dest: 'dist/jquery.asScrollbar_all.min.js',
-            },
+            dist: {
+                src: '<%= concat.dist.dest %>',
+                dest: 'dist/jquery.asScrollbar.min.js',
+            }
+        },
+
+        // -- copy config -------------------------------------------------------
+        copy: {
+            bower: {
+                files: [{
+                    expand: true,
+                    flatten: true,
+                    cwd: 'bower_components/',
+                    src: [
+                        'jquery/dist/jquery.min.js',
+                        'jquery-wheel/jquery.mousewheel.min.js'
+                    ],
+                    dest: 'libs/'
+                }]
+            }
         },
 
         // -- jsbeautifier config --------------------------------------------------
@@ -116,7 +117,16 @@ module.exports = function(grunt) {
         // -- autoprefixer config ----------------------------------------------------------
         autoprefixer: {
             options: {
-                browsers: ['last 2 versions', 'ie 8', 'ie 9', 'android 2.3', 'android 4', 'opera 12']
+                browsers: [
+                    "Android 2.3",
+                    "Android >= 4",
+                    "Chrome >= 20",
+                    "Firefox >= 24",
+                    "Explorer >= 8",
+                    "iOS >= 6",
+                    "Opera >= 12",
+                    "Safari >= 6"
+                ]
             },
             src: {
                 expand: true,

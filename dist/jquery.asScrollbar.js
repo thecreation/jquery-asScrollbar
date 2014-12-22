@@ -1,10 +1,6 @@
-/*
- * asScrollbar
- * https://github.com/amazingSurge/jquery-asScrollable
- *
- * Copyright (c) 2015 amazingSurge
- * Licensed under the GPL license.
- */
+/*! jQuery Scrollbar - v0.2.0 - 2014-12-23
+* https://github.com/amazingSurge/jquery-asScrollbar
+* Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function(window, document, $, undefined) {
     "use strict";
 
