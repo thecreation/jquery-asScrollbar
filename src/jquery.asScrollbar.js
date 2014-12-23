@@ -150,7 +150,7 @@
 
         useCssTransforms3d: true,
         useCssTransforms: true,
-        useCssTransitions: true,
+        useCssTransitions: false,
 
         duration: '500',
         easing: 'ease' // linear, ease-in, ease-out, ease-in-out
@@ -879,7 +879,7 @@
 
                     percent = self.easing.fn(percent);
 
-                    var current = parseFloat(start + self.easing.fn(percent) * (end - start), 10);
+                    var current = parseFloat(start + percent * (end - start), 10);
                     self.setHandlePosition(current);
 
                     if (trigger) {
