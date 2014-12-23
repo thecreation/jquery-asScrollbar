@@ -19,8 +19,6 @@
 }
 .asScrollbar.is-dragging {
   background: rgba(238, 238, 238, 0.6) !important;
-  border-radius: 5px;
-  border: none;
   opacity: 1;
 }
 .asScrollbar.is-disabled {
@@ -36,7 +34,17 @@
   border-radius: 2px;
 }
 .asScrollbar.is-dragging .asScrollbar-handle {
-  background: rgba(200, 200, 200, 0.8) !important;
+  background: rgba(150, 150, 150, 0.8) !important;
+}
+.asScrollbar.is-hovering .asScrollbar-handle {
+  background: rgba(150, 150, 150, 0.6) !important;
+}
+.asScrollbar.is-dragging,
+.asScrollbar.is-hovering {
+  border-radius: 5px;
+}
+.asScrollbar.is-dragging .asScrollbar-handle,
+.asScrollbar.is-hovering .asScrollbar-handle {
   border-radius: 5px;
 }
 .asScrollbar-vertical {
@@ -46,7 +54,8 @@
   height: -webkit-calc(100% - 2*5px);
   height: calc(100% - 2*5px);
 }
-.asScrollbar-vertical.is-dragging {
+.asScrollbar-vertical.is-dragging,
+.asScrollbar-vertical.is-hovering {
   width: 10px;
   margin: 5px 1px;
 }
@@ -60,7 +69,8 @@
   width: -webkit-calc(100% - 2*5px);
   width: calc(100% - 2*5px);
 }
-.asScrollbar-horizontal.is-dragging {
+.asScrollbar-horizontal.is-dragging,
+.asScrollbar-horizontal.is-hovering {
   height: 10px;
   margin: 1px 5px;
 }

@@ -1,4 +1,4 @@
-/*! jQuery Scrollbar - v0.2.0 - 2014-12-23
+/*! jQuery Scrollbar - v0.3.0 - 2014-12-23
 * https://github.com/amazingSurge/jquery-asScrollbar
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function(window, document, $, undefined) {
@@ -47,15 +47,6 @@
      **/
     function isPercentage(n) {
         return typeof n === 'string' && n.indexOf('%') != -1;
-    }
-
-    function conventToPercentage(n) {
-        if (n < 0) {
-            n = 0;
-        } else if (n > 1) {
-            n = 1;
-        }
-        return n * 100 + '%';
     }
 
     function convertPercentageToFloat(n) {
@@ -116,7 +107,7 @@
         // Current handle position
         this.handlePosition = 0;
 
-        this.easing = Plugin.easing[this.options.easing] || Plugin.easing["ease"];
+        this.easing = Plugin.easing[this.options.easing] || Plugin.easing.ease;
 
         this.init();
     };
@@ -124,8 +115,10 @@
     Plugin.defaults = {
         namespace: 'asScrollbar',
 
-        skin: false,
-        template: '<div class="{{handle}}"></div>',
+        skin: null,
+        handleSelector: null,
+        handleTemplate: '<div class="{{handle}}"></div>',
+
         barClass: null,
         handleClass: null,
 
@@ -156,7 +149,7 @@
         useCssTransitions: true,
 
         duration: '500',
-        easing: 'ease'
+        easing: 'ease' // linear, ease-in, ease-out, ease-in-out
     };
 
     /**
@@ -258,35 +251,35 @@
     })(support);
 
     var easingBezier = function(mX1, mY1, mX2, mY2) {
-        function A(aA1, aA2) {
+        function a(aA1, aA2) {
             return 1.0 - 3.0 * aA2 + 3.0 * aA1;
         }
 
-        function B(aA1, aA2) {
+        function b(aA1, aA2) {
             return 3.0 * aA2 - 6.0 * aA1;
         }
 
-        function C(aA1) {
+        function c(aA1) {
             return 3.0 * aA1;
         }
 
         // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
-        function CalcBezier(aT, aA1, aA2) {
-            return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
+        function calcBezier(aT, aA1, aA2) {
+            return ((a(aA1, aA2) * aT + b(aA1, aA2)) * aT + c(aA1)) * aT;
         }
 
         // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
-        function GetSlope(aT, aA1, aA2) {
-            return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
+        function getSlope(aT, aA1, aA2) {
+            return 3.0 * a(aA1, aA2) * aT * aT + 2.0 * b(aA1, aA2) * aT + c(aA1);
         }
 
-        function GetTForX(aX) {
+        function getTForX(aX) {
             // Newton raphson iteration
             var aGuessT = aX;
             for (var i = 0; i < 4; ++i) {
-                var currentSlope = GetSlope(aGuessT, mX1, mX2);
+                var currentSlope = getSlope(aGuessT, mX1, mX2);
                 if (currentSlope === 0.0) return aGuessT;
-                var currentX = CalcBezier(aGuessT, mX1, mX2) - aX;
+                var currentX = calcBezier(aGuessT, mX1, mX2) - aX;
                 aGuessT -= currentX / currentSlope;
             }
             return aGuessT;
@@ -303,18 +296,18 @@
             return {
                 css: 'cubic-bezier(' + mX1 + ',' + mY1 + ',' + mX2 + ',' + mY2 + ')',
                 fn: function(aX) {
-                    return CalcBezier(GetTForX(aX), mY1, mY2);
+                    return calcBezier(getTForX(aX), mY1, mY2);
                 }
             }
         }
     };
 
     $.extend(Plugin.easing = {}, {
-        "ease": easingBezier(0.25, 0.1, 0.25, 1.0),
-        "linear": easingBezier(0.00, 0.0, 1.00, 1.0),
-        "ease-in": easingBezier(0.42, 0.0, 1.00, 1.0),
-        "ease-out": easingBezier(0.00, 0.0, 0.58, 1.0),
-        "ease-in-out": easingBezier(0.42, 0.0, 0.58, 1.0)
+        'ease': easingBezier(0.25, 0.1, 0.25, 1.0),
+        'linear': easingBezier(0.00, 0.0, 1.00, 1.0),
+        'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
+        'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
+        'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
     });
 
     Plugin.prototype = {
@@ -322,9 +315,11 @@
         init: function() {
             var options = this.options;
 
-            this.$handle = this.$bar.find('.' + this.classes.handleClass);
+            this.$handle = this.$bar.find(this.options.handleSelector);
             if (this.$handle.length === 0) {
-                this.$handle = $(options.template.replace(/\{\{handle\}\}/g, this.classes.handleClass)).appendTo(this.$bar);
+                this.$handle = $(options.handleTemplate.replace(/\{\{handle\}\}/g, this.classes.handleClass)).appendTo(this.$bar);
+            } else {
+                this.$handle.addClass(this.classes.handleClass);
             }
 
             this.$bar.addClass(this.classes.barClass).addClass(this.classes.directionClass).attr('draggable', false);
@@ -441,13 +436,13 @@
                 });
             }
 
-            this.$bar.on(this.eventName('mouseenter'), function(e) {
+            this.$bar.on(this.eventName('mouseenter'), function() {
                 self.$bar.addClass(self.options.hoveringClass);
                 self.enter('hovering');
                 self.trigger('hover');
             });
 
-            this.$bar.on(this.eventName('mouseleave'), function(e) {
+            this.$bar.on(this.eventName('mouseleave'), function() {
                 self.$bar.removeClass(self.options.hoveringClass);
 
                 if (!self.is('hovering')) {
@@ -527,8 +522,6 @@
         },
 
         onClick: function(event) {
-            var self = this;
-
             if (event.which === 3) {
                 return;
             }
@@ -584,7 +577,7 @@
             if (this.options.mouseDrag) {
                 $(document).on(self.eventName('mouseup'), $.proxy(this.onDragEnd, this));
 
-                $(document).one(self.eventName('mousemove'), $.proxy(function(event) {
+                $(document).one(self.eventName('mousemove'), $.proxy(function() {
                     $(document).on(self.eventName('mousemove'), $.proxy(this.onDragMove, this));
 
                     callback();
@@ -594,7 +587,7 @@
             if (this.options.touchDrag && support.touch) {
                 $(document).on(self.eventName('touchend'), $.proxy(this.onDragEnd, this));
 
-                $(document).one(self.eventName('touchmove'), $.proxy(function(event) {
+                $(document).one(self.eventName('touchmove'), $.proxy(function() {
                     $(document).on(self.eventName('touchmove'), $.proxy(this.onDragMove, this));
 
                     callback();
@@ -604,7 +597,7 @@
             if (this.options.pointerDrag && support.pointer) {
                 $(document).on(self.eventName(support.prefixPointerEvent('pointerup')), $.proxy(this.onDragEnd, this));
 
-                $(document).one(self.eventName(support.prefixPointerEvent('pointermove')), $.proxy(function(event) {
+                $(document).one(self.eventName(support.prefixPointerEvent('pointermove')), $.proxy(function() {
                     $(document).on(self.eventName(support.prefixPointerEvent('pointermove')), $.proxy(this.onDragMove, this));
 
                     callback();
@@ -631,7 +624,7 @@
         /**
          * Handles the `touchend` and `mouseup` events.
          */
-        onDragEnd: function(event) {
+        onDragEnd: function() {
             $(document).off(this.eventName('mousemove mouseup touchmove touchend pointermove pointerup MSPointerMove MSPointerUp blur'));
 
             this.$bar.removeClass(this.options.draggingClass);
@@ -867,58 +860,40 @@
 
                 self.setHandlePosition(value);
             } else {
-                if (property === support.transform.toString()) {
-                    self.enter('transform');
-                    // jquery animate don't support transform. So it use requestAnimationFrame instead of.
-                    var startTime = getTime();
-                    var start = self.getHandlePosition();
-                    var end = value;
+                self.enter('animating');
 
-                    var run = function(time) {
-                        var percent = (time - startTime) / self.options.duration;
+                var startTime = getTime();
+                var start = self.getHandlePosition();
+                var end = value;
 
-                        if (percent > 1) {
-                            percent = 1;
-                        }
+                var run = function(time) {
+                    var percent = (time - startTime) / self.options.duration;
 
-                        percent = self.easing.fn(percent);
+                    if (percent > 1) {
+                        percent = 1;
+                    }
 
-                        var current = parseFloat(start + self.easing.fn(percent) * (end - start), 10).toFixed(2);
+                    percent = self.easing.fn(percent);
 
-                        self.setHandlePosition(current);
+                    var current = parseFloat(start + self.easing.fn(percent) * (end - start), 10);
+                    self.setHandlePosition(current);
 
-                        if (trigger) {
-                            self.trigger('change', current / (self.barLength - self.handleLength));
-                        }
+                    if (trigger) {
+                        self.trigger('change', current / (self.barLength - self.handleLength));
+                    }
 
-                        if (percent === 1) {
-                            window.cancelAnimationFrame(self._frameId);
-                            self._frameId = null;
+                    if (percent === 1) {
+                        window.cancelAnimationFrame(self._frameId);
+                        self._frameId = null;
 
-                            self.leave('transform');
-                            self.leave('moving');
-                        } else {
-                            self._frameId = window.requestAnimationFrame(run);
-                        }
-                    };
+                        self.leave('animating');
+                        self.leave('moving');
+                    } else {
+                        self._frameId = window.requestAnimationFrame(run);
+                    }
+                };
 
-                    self._frameId = window.requestAnimationFrame(run);
-                } else {
-                    self.enter('animating');
-                    this.$handle.animate(style, {
-                        duration: duration,
-                        easing: 'swing',
-                        step: function(now, fx) {
-                            if (trigger) {
-                                self.trigger('change', now / (self.barLength - self.handleLength));
-                            }
-                        },
-                        always: function() {
-                            self.leave('animating');
-                            self.leave('moving');
-                        }
-                    });
-                }
+                self._frameId = window.requestAnimationFrame(run);
             }
         },
 
@@ -945,13 +920,13 @@
         },
 
         enable: function() {
-            this._states['disabled'] = 0;
+            this._states.disabled = 0;
 
             this.$bar.removeClass(this.options.disabledClass);
         },
 
         disable: function() {
-            this._states['disabled'] = 1;
+            this._states.disabled = 1;
 
             this.$bar.addClass(this.options.disabledClass);
         },
