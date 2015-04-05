@@ -5,7 +5,9 @@
   line-height: 0;
   overflow: hidden;
   border-radius: 2px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -23,7 +25,9 @@
   display: none;
 }
 .asScrollbar-handle {
-  transition: width,height 0.5s;
+  -webkit-transition: width,height 0.5s;
+       -o-transition: width,height 0.5s;
+          transition: width,height 0.5s;
   position: absolute;
   top: 0;
   left: 0;
@@ -50,6 +54,7 @@
   width: 4px;
   margin: 5px 3px;
   height: 100%;
+  height: -webkit-calc(100% - 2*5px);
   height: calc(100% - 2*5px);
 }
 .asScrollbar-vertical.is-dragging,
@@ -64,6 +69,7 @@
   height: 4px;
   margin: 3px 5px;
   width: 100%;
+  width: -webkit-calc(100% - 2*5px);
   width: calc(100% - 2*5px);
 }
 .asScrollbar-horizontal.is-dragging,
