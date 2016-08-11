@@ -2,7 +2,7 @@
   "name": "jquery-asScrollbar",
   "title": "jQuery Scrollbar",
   "description": "a jquery plugin",
-  "version":"0.4.0",
+  "version": "0.4.0",
   "homepage": "https://github.com/amazingSurge/jquery-asScrollbar",
   "author": {
     "name": "amazingSurge",
@@ -14,10 +14,12 @@
     "url": "git@github.com:amazingSurge/jquery-asScrollbar.git"
   },
   "bugs": "https://github.com/amazingSurge/jquery-asScrollbar/issues",
-  "licenses": [{
-    "type": "LGPL-3.0",
-    "url": "https://github.com/amazingSurge/jquery-asScrollbar/blob/master/LICENSE"
-  }],
+  "licenses": [
+    {
+      "type": "LGPL-3.0",
+      "url": "https://github.com/amazingSurge/jquery-asScrollbar/blob/master/LICENSE"
+    }
+  ],
   "license": "LGPL-3.0",
   "files": [
     "dist",
@@ -63,10 +65,10 @@
     "gulp-plumber": "*",
     "gulp-rename": "*",
     "gulp-replace": "*",
+    "gulp-rollup": "*",
     "gulp-sass": "*",
     "gulp-sass-unicode": "*",
     "gulp-scss-lint": "*",
-    "gulp-rollup": "*",
     "gulp-size": "*",
     "gulp-sourcemaps": "*",
     "gulp-stylelint": "*",
@@ -96,6 +98,7 @@
     "rollup-plugin-istanbul": "*",
     "sinon": "*",
     "sinon-chai": "*",
+    "stylelint-config-bootstrap": "*",
     "stylelint-scss": "*",
     "through2": "*"
   },

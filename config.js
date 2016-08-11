@@ -26,6 +26,7 @@ export default {
         srcDir: `${src}/`,
         destDir: `${dest}/`,
       },
+
       styles: {
         files: '**/*.scss',
         src: `${src}/scss`,
@@ -37,6 +38,7 @@ export default {
           browsers: ['last 2 versions', 'ie >= 9', 'Android >= 2.3']
         }
       },
+
       scripts: {
         entry: 'jquery-asScrollbar.js',
         files: '**/*.js',
