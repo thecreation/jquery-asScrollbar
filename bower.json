@@ -1,16 +1,30 @@
 {
   "name": "jquery-asScrollbar",
-  "version": "0.3.1",
+  "version":"0.3.1",
+  "description": "a jquery plugin",
   "main": "dist/jquery-asScrollbar.js",
+  "copyright": "amazingSurge",
+  "license": "LGPL-3.0",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
+    "demo",
+    "libs",
+    "package.json",
+    "gulpfile.babel.js",
     "tests"
+  ],
+  "homepage": "https://github.com/amazingSurge/jquery-asScrollbar",
+  "authors": [
+    "amazingSurge <amazingSurge@gmail.com>"
+  ],
+  "moduleType": [
+    "globals"
   ],
   "dependencies": {
     "jquery": ">=2.1.1",
-	  "jquery-wheel" : "git@github.com:brandonaaron/jquery-mousewheel.git"
+    "jquery-wheel" : "git@github.com:brandonaaron/jquery-mousewheel.git"
   }
 }

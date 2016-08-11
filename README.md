@@ -17,8 +17,8 @@ In your web page:
 <script src="dist/jquery-asScrollbar.min.js"></script>
 <script>
 jQuery(function($) {
-  	$('.example').asScrollbar({
-		namespace: 'asScrollbar',
+    $('.example').asScrollbar({
+        namespace: 'asScrollbar',
 
         skin: null,
         handleSelector: null,
@@ -55,7 +55,7 @@ jQuery(function($) {
 
         duration: '500',
         easing: 'ease' // linear, ease-in, ease-out, ease-in-out
-	}); 
+    }); 
 });
 </script>
 ```

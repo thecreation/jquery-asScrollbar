@@ -1,3 +1,11 @@
+/**
+* jQuery Scrollbar
+* a jquery plugin
+* Compiled: Thu Aug 11 2016 14:47:27 GMT+0800 (CST)
+* @version v0.3.1
+* @link https://github.com/amazingSurge/jquery-asScrollbar
+* @copyright LGPL-3.0
+*/
 .asScrollbar {
   position: absolute;
   bottom: 0;
@@ -6,59 +14,53 @@
   overflow: hidden;
   border-radius: 2px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .asScrollbar.is-hovering {
-  background: rgba(238, 238, 238, 0.4);
+  background: rgba(238, 238, 238, .4);
 }
 .asScrollbar.is-dragging {
-  background: rgba(238, 238, 238, 0.6) !important;
+  background: rgba(238, 238, 238, .6) !important;
   opacity: 1;
 }
 .asScrollbar.is-disabled {
   display: none;
 }
 .asScrollbar-handle {
-  -webkit-transition: width,height 0.5s;
-       -o-transition: width,height 0.5s;
-          transition: width,height 0.5s;
+  -webkit-transition: width,height .5s;
+  transition: width,height .5s;
   position: absolute;
   top: 0;
   left: 0;
   line-height: 0;
-  background: rgba(224, 224, 224, 0.6);
+  background: rgba(224, 224, 224, .6);
   cursor: pointer;
   border-radius: 2px;
 }
 .asScrollbar.is-dragging .asScrollbar-handle {
-  background: rgba(150, 150, 150, 0.8) !important;
+  background: rgba(150, 150, 150, .8) !important;
 }
 .asScrollbar.is-hovering .asScrollbar-handle {
-  background: rgba(150, 150, 150, 0.6) !important;
+  background: rgba(150, 150, 150, .6) !important;
 }
-.asScrollbar.is-dragging,
-.asScrollbar.is-hovering {
+.asScrollbar.is-dragging, .asScrollbar.is-hovering {
   border-radius: 5px;
 }
-.asScrollbar.is-dragging .asScrollbar-handle,
-.asScrollbar.is-hovering .asScrollbar-handle {
+.asScrollbar.is-dragging .asScrollbar-handle, .asScrollbar.is-hovering .asScrollbar-handle {
   border-radius: 5px;
 }
 .asScrollbar-vertical {
   width: 4px;
   margin: 5px 3px;
   height: 100%;
-  height: -webkit-calc(100% - 2*5px);
-  height: calc(100% - 2*5px);
+  height: calc(100% - 2 * 5px);
 }
-.asScrollbar-vertical.is-dragging,
-.asScrollbar-vertical.is-hovering {
+.asScrollbar-vertical.is-dragging, .asScrollbar-vertical.is-hovering {
   width: 10px;
   margin: 5px 1px;
 }
@@ -69,11 +71,9 @@
   height: 4px;
   margin: 3px 5px;
   width: 100%;
-  width: -webkit-calc(100% - 2*5px);
-  width: calc(100% - 2*5px);
+  width: calc(100% - 2 * 5px);
 }
-.asScrollbar-horizontal.is-dragging,
-.asScrollbar-horizontal.is-hovering {
+.asScrollbar-horizontal.is-dragging, .asScrollbar-horizontal.is-hovering {
   height: 10px;
   margin: 1px 5px;
 }
