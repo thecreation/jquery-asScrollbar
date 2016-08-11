@@ -1,8 +1,8 @@
 /**
 * jQuery Scrollbar
 * a jquery plugin
-* Compiled: Thu Aug 11 2016 14:47:27 GMT+0800 (CST)
-* @version v0.3.1
+* Compiled: Thu Aug 11 2016 18:15:43 GMT+0800 (CST)
+* @version v0.4.0
 * @link https://github.com/amazingSurge/jquery-asScrollbar
 * @copyright LGPL-3.0
 */
@@ -203,13 +203,13 @@ let support = {};
 
   if (tests.csstransitions()) {
     /* jshint -W053 */
-    support.transition = new String(prefixed('transition'))
+    support.transition = new String(prefixed('transition'));
     support.transition.end = events.transition.end[support.transition];
   }
 
   if (tests.cssanimations()) {
     /* jshint -W053 */
-    support.animation = new String(prefixed('animation'))
+    support.animation = new String(prefixed('animation'));
     support.animation.end = events.animation.end[support.animation];
   }
 
@@ -978,10 +978,11 @@ class asScrollbar {
     this.$bar.on(this.eventName());
   }
 
-  static _jQueryInterface(options, ...params) {
+  static _jQueryInterface(options, ...args) {
     "use strict";
+
     if (typeof options === 'string') {
-      this.each(function() {
+      return this.each(function() {
         let instance = $(this).data(NAME);
         if (!instance) {
           return false;
@@ -990,17 +991,16 @@ class asScrollbar {
           return false;
         }
         // apply method
-        instance[options].apply(instance, params);
-      })
-    } else {
-      return this.each(function() {
-        if (!$(this).data(NAME)) {
-          $(this).data(NAME, new asScrollbar(options, this));
-        }
+        return instance[options].apply(instance, args);
       });
     }
-  }
 
+    return this.each(function() {
+      if (!$(this).data(NAME)) {
+        $(this).data(NAME, new asScrollbar(options, this));
+      }
+    });
+  }
 }
 
 asScrollbar.support = support;
@@ -1016,8 +1016,8 @@ $.extend(asScrollbar.easing = {}, {
 $.fn[NAME] = asScrollbar._jQueryInterface;
 $.fn[NAME].constructor = asScrollbar;
 $.fn[NAME].noConflict = () => {
-  $.fn[NAME] = JQUERY_NO_CONFLICT
-  return asScrollbar._jQueryInterface
+  $.fn[NAME] = window.JQUERY_NO_CONFLICT;
+  return asScrollbar._jQueryInterface;
 };
 
 export default asScrollbar;

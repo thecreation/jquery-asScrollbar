@@ -77,13 +77,13 @@ let support = {};
 
   if (tests.csstransitions()) {
     /* jshint -W053 */
-    support.transition = new String(prefixed('transition'))
+    support.transition = new String(prefixed('transition'));
     support.transition.end = events.transition.end[support.transition];
   }
 
   if (tests.cssanimations()) {
     /* jshint -W053 */
-    support.animation = new String(prefixed('animation'))
+    support.animation = new String(prefixed('animation'));
     support.animation.end = events.animation.end[support.animation];
   }
 

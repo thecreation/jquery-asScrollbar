@@ -742,10 +742,11 @@ class asScrollbar {
     this.$bar.on(this.eventName());
   }
 
-  static _jQueryInterface(options, ...params) {
+  static _jQueryInterface(options, ...args) {
     "use strict";
+
     if (typeof options === 'string') {
-      this.each(function() {
+      return this.each(function() {
         let instance = $(this).data(NAME);
         if (!instance) {
           return false;
@@ -754,17 +755,16 @@ class asScrollbar {
           return false;
         }
         // apply method
-        instance[options].apply(instance, params);
-      })
-    } else {
-      return this.each(function() {
-        if (!$(this).data(NAME)) {
-          $(this).data(NAME, new asScrollbar(options, this));
-        }
+        return instance[options].apply(instance, args);
       });
     }
-  }
 
+    return this.each(function() {
+      if (!$(this).data(NAME)) {
+        $(this).data(NAME, new asScrollbar(options, this));
+      }
+    });
+  }
 }
 
 asScrollbar.support = support;
@@ -780,8 +780,8 @@ $.extend(asScrollbar.easing = {}, {
 $.fn[NAME] = asScrollbar._jQueryInterface;
 $.fn[NAME].constructor = asScrollbar;
 $.fn[NAME].noConflict = () => {
-  $.fn[NAME] = JQUERY_NO_CONFLICT
-  return asScrollbar._jQueryInterface
+  $.fn[NAME] = window.JQUERY_NO_CONFLICT;
+  return asScrollbar._jQueryInterface;
 };
 
 export default asScrollbar;
