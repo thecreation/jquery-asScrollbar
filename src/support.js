@@ -10,6 +10,8 @@ let support = {};
   /**
    * Borrowed from Owl carousel
    **/
+   'use strict';
+
   let events = {
       transition: {
         end: {
@@ -69,11 +71,11 @@ let support = {};
       return true;
     }
     return false;
-  }
+  };
 
   let prefixed = (property) => {
     return test(property, true);
-  }
+  };
 
   if (tests.csstransitions()) {
     /* jshint -W053 */
@@ -112,7 +114,7 @@ let support = {};
     return window.MSPointerEvent ?
       `MSPointer${pointerEvent.charAt(charStart).toUpperCase()}${pointerEvent.substr(subStart)}` :
       pointerEvent;
-  }
+  };
 })(support);
 
-export default support
+export default support;

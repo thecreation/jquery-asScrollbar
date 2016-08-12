@@ -2,7 +2,7 @@ import $ from 'jQuery';
 
 import defaults from './defaults';
 import easingBezier from './easingBezier';
-import { isPercentage, convertPercentageToFloat, convertMatrixToArray } from './helpers'
+import { isPercentage, convertPercentageToFloat, convertMatrixToArray } from './helpers';
 import support from './support';
 
 const NAME = 'asScrollbar';
@@ -12,16 +12,18 @@ const NAME = 'asScrollbar';
  **/
 if (!Date.now) {
   Date.now = () => {
+    'use strict';
     return new Date().getTime();
   };
 }
 
 let getTime = () => {
+  'use strict';
   if (typeof window.performance !== 'undefined' && window.performance.now) {
     return window.performance.now();
   }
   return Date.now();
-}
+};
 
 let vendors = ['webkit', 'moz'];
 for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
@@ -32,6 +34,7 @@ for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
 if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
   let lastTime = 0;
   window.requestAnimationFrame = (callback) => {
+    'use strict';
     let now = getTime();
     let timePlus = 16;
     let nextTime = Math.max(lastTime + timePlus, now);
@@ -181,7 +184,7 @@ class asScrollbar {
     if (this.options.mouseDrag) {
       this.$handle.on(this.eventName('mousedown'), $.proxy(this.onDragStart, this));
       this.$handle.on(this.eventName('dragstart selectstart'), () => {
-        return false
+        return false;
       });
     }
 
@@ -244,7 +247,7 @@ class asScrollbar {
         while (activeElement.shadowRoot) {
           activeElement = activeElement.shadowRoot.activeElement;
         }
-        if ($(activeElement).is(":input,select,option,[contenteditable]")) {
+        if ($(activeElement).is(':input,select,option,[contenteditable]')) {
           return;
         }
         let by = 0,
@@ -371,7 +374,7 @@ class asScrollbar {
     let callback = () => {
       this.enter('dragging');
       this.trigger('drag');
-    }
+    };
 
     if (this.options.mouseDrag) {
       $(document).on(this.eventName('mouseup'), $.proxy(this.onDragEnd, this));
@@ -582,16 +585,16 @@ class asScrollbar {
   moveTo(value, trigger, sync) {
     let type = typeof value;
 
-    if (type === "string") {
+    if (type === 'string') {
       if (isPercentage(value)) {
         value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
       }
 
       value = parseFloat(value);
-      type = "number";
+      type = 'number';
     }
 
-    if (type !== "number") {
+    if (type !== 'number') {
       return;
     }
 
@@ -601,16 +604,16 @@ class asScrollbar {
   moveBy(value, trigger, sync) {
     let type = typeof value;
 
-    if (type === "string") {
+    if (type === 'string') {
       if (isPercentage(value)) {
         value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
       }
 
       value = parseFloat(value);
-      type = "number";
+      type = 'number';
     }
 
-    if (type !== "number") {
+    if (type !== 'number') {
       return;
     }
 
@@ -618,7 +621,7 @@ class asScrollbar {
   }
 
   move(value, trigger, sync) {
-    if (typeof value !== "number" || this.is('disabled')) {
+    if (typeof value !== 'number' || this.is('disabled')) {
       return;
     }
     if (value < 0) {
@@ -743,7 +746,7 @@ class asScrollbar {
   }
 
   static _jQueryInterface(options, ...args) {
-    "use strict";
+    'use strict';
 
     if (typeof options === 'string') {
       return this.each(function() {
@@ -751,7 +754,7 @@ class asScrollbar {
         if (!instance) {
           return false;
         }
-        if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
+        if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
           return false;
         }
         // apply method
@@ -780,6 +783,7 @@ $.extend(asScrollbar.easing = {}, {
 $.fn[NAME] = asScrollbar._jQueryInterface;
 $.fn[NAME].constructor = asScrollbar;
 $.fn[NAME].noConflict = () => {
+  'use strict';
   $.fn[NAME] = window.JQUERY_NO_CONFLICT;
   return asScrollbar._jQueryInterface;
 };

@@ -1,25 +1,25 @@
 /**
 * jQuery Scrollbar
 * a jquery plugin
-* Compiled: Thu Aug 11 2016 18:15:43 GMT+0800 (CST)
+* Compiled: Fri Aug 12 2016 10:57:05 GMT+0800 (CST)
 * @version v0.4.0
 * @link https://github.com/amazingSurge/jquery-asScrollbar
 * @copyright LGPL-3.0
 */
 .asScrollbar {
   position: absolute;
-  bottom: 0;
   right: 0;
-  line-height: 0;
-  overflow: hidden;
-  border-radius: 2px;
+  bottom: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
+  overflow: hidden;
+  line-height: 0;
      -moz-user-select: none;
       -ms-user-select: none;
+  -webkit-user-select: none;
           user-select: none;
+  border-radius: 2px;
+  -webkit-touch-callout: none;
 }
 .asScrollbar.is-hovering {
   background: rgba(238, 238, 238, .4);
@@ -32,15 +32,15 @@
   display: none;
 }
 .asScrollbar-handle {
-  -webkit-transition: width,height .5s;
-  transition: width,height .5s;
   position: absolute;
   top: 0;
   left: 0;
   line-height: 0;
-  background: rgba(224, 224, 224, .6);
   cursor: pointer;
+  background: rgba(224, 224, 224, .6);
   border-radius: 2px;
+  -webkit-transition: width, height .5s;
+  transition: width, height .5s;
 }
 .asScrollbar.is-dragging .asScrollbar-handle {
   background: rgba(150, 150, 150, .8) !important;
@@ -56,9 +56,8 @@
 }
 .asScrollbar-vertical {
   width: 4px;
-  margin: 5px 3px;
-  height: 100%;
   height: calc(100% - 2 * 5px);
+  margin: 5px 3px;
 }
 .asScrollbar-vertical.is-dragging, .asScrollbar-vertical.is-hovering {
   width: 10px;
@@ -68,10 +67,9 @@
   width: 100%;
 }
 .asScrollbar-horizontal {
+  width: calc(100% - 2 * 5px);
   height: 4px;
   margin: 3px 5px;
-  width: 100%;
-  width: calc(100% - 2 * 5px);
 }
 .asScrollbar-horizontal.is-dragging, .asScrollbar-horizontal.is-hovering {
   height: 10px;

@@ -1,7 +1,7 @@
 /**
 * jQuery Scrollbar
 * a jquery plugin
-* Compiled: Thu Aug 11 2016 18:15:43 GMT+0800 (CST)
+* Compiled: Fri Aug 12 2016 10:57:05 GMT+0800 (CST)
 * @version v0.4.0
 * @link https://github.com/amazingSurge/jquery-asScrollbar
 * @copyright LGPL-3.0
@@ -46,43 +46,37 @@ var defaults = {
 
   duration: '500',
   easing: 'ease' // linear, ease-in, ease-out, ease-in-out
-}
-
-const num1 = 1.0;
-const num2 = 2.0;
-const num3 = 3.0;
-const num4 = 6.0;
-
-const length = 4;
-
+};
 
 let easingBezier = (mX1, mY1, mX2, mY2) => {
+  'use strict';
+
   let a = (aA1, aA2) => {
-    return num1 - num3 * aA2 + num3 * aA1;
-  }
+    return 1.0 - 3.0 * aA2 + 3.0 * aA1;
+  };
 
   let b = (aA1, aA2) => {
-    return num3 * aA2 - num4 * aA1;
-  }
+    return 3.0 * aA2 - 6.0 * aA1;
+  };
 
   let c = (aA1) => {
-    return num3 * aA1;
-  }
+    return 3.0 * aA1;
+  };
 
   // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
   let calcBezier = (aT, aA1, aA2) => {
     return ((a(aA1, aA2) * aT + b(aA1, aA2)) * aT + c(aA1)) * aT;
-  }
+  };
 
   // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
   let getSlope = (aT, aA1, aA2) => {
-    return num3 * a(aA1, aA2) * aT * aT + num2 * b(aA1, aA2) * aT + c(aA1);
-  }
+    return 3.0 * a(aA1, aA2) * aT * aT + 2.0 * b(aA1, aA2) * aT + c(aA1);
+  };
 
   let getTForX = (aX) => {
     // Newton raphson iteration
     let aGuessT = aX;
-    for (let i = 0; i < length; ++i) {
+    for (let i = 0; i < 4; ++i) {
       let currentSlope = getSlope(aGuessT, mX1, mX2);
       if (currentSlope === 0.0) {
         return aGuessT;
@@ -91,7 +85,7 @@ let easingBezier = (mX1, mY1, mX2, mY2) => {
       aGuessT -= currentX / currentSlope;
     }
     return aGuessT;
-  }
+  };
 
   if (mX1 === mY1 && mX2 === mY2) {
     return {
@@ -107,28 +101,32 @@ let easingBezier = (mX1, mY1, mX2, mY2) => {
     fn(aX) {
       return calcBezier(getTForX(aX), mY1, mY2);
     }
-  }
+  };
 };
 
 /**
  * Helper functions
  **/
-let length$1 = 6;
-
 let isPercentage = (n) => {
+  'use strict';
+
   return typeof n === 'string' && n.indexOf('%') !== -1;
-}
+};
 
 let convertPercentageToFloat = (n) => {
+  'use strict';
+
   return parseFloat(n.slice(0, -1) / 100, 10);
-}
+};
 
 let convertMatrixToArray = (value) => {
-  if (value && (value.substr(0, length$1) === "matrix")) {
-    return value.replace(/^.*\((.*)\)$/g, "$1").replace(/px/g, '').split(/, +/);
+  'use strict';
+
+  if (value && (value.substr(0, 6) === 'matrix')) {
+    return value.replace(/^.*\((.*)\)$/g, '$1').replace(/px/g, '').split(/, +/);
   }
   return false;
-}
+};
 
 let support = {};
 
@@ -136,6 +134,8 @@ let support = {};
   /**
    * Borrowed from Owl carousel
    **/
+   'use strict';
+
   let events = {
       transition: {
         end: {
@@ -195,11 +195,11 @@ let support = {};
       return true;
     }
     return false;
-  }
+  };
 
   let prefixed = (property) => {
     return test(property, true);
-  }
+  };
 
   if (tests.csstransitions()) {
     /* jshint -W053 */
@@ -238,7 +238,7 @@ let support = {};
     return window.MSPointerEvent ?
       `MSPointer${pointerEvent.charAt(charStart).toUpperCase()}${pointerEvent.substr(subStart)}` :
       pointerEvent;
-  }
+  };
 })(support);
 
 const NAME = 'asScrollbar';
@@ -248,16 +248,18 @@ const NAME = 'asScrollbar';
  **/
 if (!Date.now) {
   Date.now = () => {
+    'use strict';
     return new Date().getTime();
   };
 }
 
 let getTime = () => {
+  'use strict';
   if (typeof window.performance !== 'undefined' && window.performance.now) {
     return window.performance.now();
   }
   return Date.now();
-}
+};
 
 let vendors = ['webkit', 'moz'];
 for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
@@ -268,6 +270,7 @@ for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
 if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
   let lastTime = 0;
   window.requestAnimationFrame = (callback) => {
+    'use strict';
     let now = getTime();
     let timePlus = 16;
     let nextTime = Math.max(lastTime + timePlus, now);
@@ -417,7 +420,7 @@ class asScrollbar {
     if (this.options.mouseDrag) {
       this.$handle.on(this.eventName('mousedown'), $.proxy(this.onDragStart, this));
       this.$handle.on(this.eventName('dragstart selectstart'), () => {
-        return false
+        return false;
       });
     }
 
@@ -480,7 +483,7 @@ class asScrollbar {
         while (activeElement.shadowRoot) {
           activeElement = activeElement.shadowRoot.activeElement;
         }
-        if ($(activeElement).is(":input,select,option,[contenteditable]")) {
+        if ($(activeElement).is(':input,select,option,[contenteditable]')) {
           return;
         }
         let by = 0,
@@ -607,7 +610,7 @@ class asScrollbar {
     let callback = () => {
       this.enter('dragging');
       this.trigger('drag');
-    }
+    };
 
     if (this.options.mouseDrag) {
       $(document).on(this.eventName('mouseup'), $.proxy(this.onDragEnd, this));
@@ -818,16 +821,16 @@ class asScrollbar {
   moveTo(value, trigger, sync) {
     let type = typeof value;
 
-    if (type === "string") {
+    if (type === 'string') {
       if (isPercentage(value)) {
         value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
       }
 
       value = parseFloat(value);
-      type = "number";
+      type = 'number';
     }
 
-    if (type !== "number") {
+    if (type !== 'number') {
       return;
     }
 
@@ -837,16 +840,16 @@ class asScrollbar {
   moveBy(value, trigger, sync) {
     let type = typeof value;
 
-    if (type === "string") {
+    if (type === 'string') {
       if (isPercentage(value)) {
         value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
       }
 
       value = parseFloat(value);
-      type = "number";
+      type = 'number';
     }
 
-    if (type !== "number") {
+    if (type !== 'number') {
       return;
     }
 
@@ -854,7 +857,7 @@ class asScrollbar {
   }
 
   move(value, trigger, sync) {
-    if (typeof value !== "number" || this.is('disabled')) {
+    if (typeof value !== 'number' || this.is('disabled')) {
       return;
     }
     if (value < 0) {
@@ -979,7 +982,7 @@ class asScrollbar {
   }
 
   static _jQueryInterface(options, ...args) {
-    "use strict";
+    'use strict';
 
     if (typeof options === 'string') {
       return this.each(function() {
@@ -987,7 +990,7 @@ class asScrollbar {
         if (!instance) {
           return false;
         }
-        if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
+        if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
           return false;
         }
         // apply method
@@ -1016,6 +1019,7 @@ $.extend(asScrollbar.easing = {}, {
 $.fn[NAME] = asScrollbar._jQueryInterface;
 $.fn[NAME].constructor = asScrollbar;
 $.fn[NAME].noConflict = () => {
+  'use strict';
   $.fn[NAME] = window.JQUERY_NO_CONFLICT;
   return asScrollbar._jQueryInterface;
 };

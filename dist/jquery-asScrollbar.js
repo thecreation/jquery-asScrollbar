@@ -1,7 +1,7 @@
 /**
 * jQuery Scrollbar
 * a jquery plugin
-* Compiled: Thu Aug 11 2016 18:15:43 GMT+0800 (CST)
+* Compiled: Fri Aug 12 2016 10:57:05 GMT+0800 (CST)
 * @version v0.4.0
 * @link https://github.com/amazingSurge/jquery-asScrollbar
 * @copyright LGPL-3.0
@@ -116,24 +116,19 @@
       easing: 'ease' // linear, ease-in, ease-out, ease-in-out
     };
 
-    var num1 = 1.0;
-    var num2 = 2.0;
-    var num3 = 3.0;
-    var num4 = 6.0;
-
-    var length = 4;
-
     var easingBezier = function easingBezier(mX1, mY1, mX2, mY2) {
+      'use strict';
+
       var a = function a(aA1, aA2) {
-        return num1 - num3 * aA2 + num3 * aA1;
+        return 1.0 - 3.0 * aA2 + 3.0 * aA1;
       };
 
       var b = function b(aA1, aA2) {
-        return num3 * aA2 - num4 * aA1;
+        return 3.0 * aA2 - 6.0 * aA1;
       };
 
       var c = function c(aA1) {
-        return num3 * aA1;
+        return 3.0 * aA1;
       };
 
       // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
@@ -143,14 +138,14 @@
 
       // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
       var getSlope = function getSlope(aT, aA1, aA2) {
-        return num3 * a(aA1, aA2) * aT * aT + num2 * b(aA1, aA2) * aT + c(aA1);
+        return 3.0 * a(aA1, aA2) * aT * aT + 2.0 * b(aA1, aA2) * aT + c(aA1);
       };
 
       var getTForX = function getTForX(aX) {
         // Newton raphson iteration
         var aGuessT = aX;
 
-        for (var i = 0; i < length; ++i) {
+        for (var i = 0; i < 4; ++i) {
           var currentSlope = getSlope(aGuessT, mX1, mX2);
 
           if (currentSlope === 0.0) {
@@ -185,20 +180,24 @@
     /**
      * Helper functions
      **/
-    var length$1 = 6;
-
     var isPercentage = function isPercentage(n) {
+      'use strict';
+
       return typeof n === 'string' && n.indexOf('%') !== -1;
     };
 
     var convertPercentageToFloat = function convertPercentageToFloat(n) {
+      'use strict';
+
       return parseFloat(n.slice(0, -1) / 100, 10);
     };
 
     var convertMatrixToArray = function convertMatrixToArray(value) {
-      if (value && value.substr(0, length$1) === "matrix") {
+      'use strict';
 
-        return value.replace(/^.*\((.*)\)$/g, "$1").replace(/px/g, '').split(/, +/);
+      if (value && value.substr(0, 6) === 'matrix') {
+
+        return value.replace(/^.*\((.*)\)$/g, '$1').replace(/px/g, '').split(/, +/);
       }
 
       return false;
@@ -210,6 +209,8 @@
       /**
        * Borrowed from Owl carousel
        **/
+      'use strict';
+
       var events = {
           transition: {
             end: {
@@ -332,12 +333,16 @@
 
     if (!Date.now) {
       Date.now = function() {
+        'use strict';
+
         return new Date().getTime();
       }
       ;
     }
 
     var getTime = function getTime() {
+      'use strict';
+
       if (typeof window.performance !== 'undefined' && window.performance.now) {
 
         return window.performance.now();
@@ -358,6 +363,8 @@
       (function() {
         var lastTime = 0;
         window.requestAnimationFrame = function(callback) {
+          'use strict';
+
           var now = getTime();
           var timePlus = 16;
           var nextTime = Math.max(lastTime + timePlus, now);
@@ -617,7 +624,7 @@
                   activeElement = activeElement.shadowRoot.activeElement;
                 }
 
-                if ((0, _jQuery2.default)(activeElement).is(":input,select,option,[contenteditable]")) {
+                if ((0, _jQuery2.default)(activeElement).is(':input,select,option,[contenteditable]')) {
 
                   return;
                 }
@@ -979,17 +986,17 @@
         value: function moveTo(value, trigger, sync) {
           var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
 
-          if (type === "string") {
+          if (type === 'string') {
 
             if (isPercentage(value)) {
               value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
             }
 
             value = parseFloat(value);
-            type = "number";
+            type = 'number';
           }
 
-          if (type !== "number") {
+          if (type !== 'number') {
 
             return;
           }
@@ -1001,17 +1008,17 @@
         value: function moveBy(value, trigger, sync) {
           var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
 
-          if (type === "string") {
+          if (type === 'string') {
 
             if (isPercentage(value)) {
               value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
             }
 
             value = parseFloat(value);
-            type = "number";
+            type = 'number';
           }
 
-          if (type !== "number") {
+          if (type !== 'number') {
 
             return;
           }
@@ -1021,7 +1028,7 @@
       }, {
         key: 'move',
         value: function move(value, trigger, sync) {
-          if (typeof value !== "number" || this.is('disabled')) {
+          if (typeof value !== 'number' || this.is('disabled')) {
 
             return;
           }
@@ -1168,7 +1175,7 @@
       }], [{
         key: '_jQueryInterface',
         value: function _jQueryInterface(options) {
-          "use strict";
+          'use strict';
 
           for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
             args[_key2 - 1] = arguments[_key2];
@@ -1186,7 +1193,7 @@
                   return false;
                 }
 
-                if (!_jQuery2.default.isFunction(instance[options]) || options.charAt(0) === "_") {
+                if (!_jQuery2.default.isFunction(instance[options]) || options.charAt(0) === '_') {
 
                   return false;
                 }
@@ -1224,6 +1231,8 @@
     _jQuery2.default.fn[NAME] = asScrollbar._jQueryInterface;
     _jQuery2.default.fn[NAME].constructor = asScrollbar;
     _jQuery2.default.fn[NAME].noConflict = function() {
+      'use strict';
+
       _jQuery2.default.fn[NAME] = window.JQUERY_NO_CONFLICT;
 
       return asScrollbar._jQueryInterface;
