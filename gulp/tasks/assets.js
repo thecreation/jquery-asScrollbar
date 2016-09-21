@@ -8,14 +8,16 @@ import notify        from 'gulp-notify';
 import AssetsManager from 'assets-manager';
 import argv          from 'argv';
 
-function getPackage() {
-  let args = argv.option([
-    {
-      name: 'package',
-      type: 'string'
-    }
-  ]).run();
+argv.option([
+  {
+    name: 'package',
+    short: 'p',
+    type: 'string'
+  }
+]);
 
+function getPackage() {
+  let args = argv.run();
   if(args.options.package){
     return args.options.package;
   }
@@ -26,39 +28,35 @@ function getPackage() {
  * Checkout https://github.com/amazingSurge/assets-manager
  */
 export function copy(options = config.assets, message = 'Assets task complete') {
-  let pkgName = getPackage();
-  const manager = new AssetsManager('manifest.json', options);
+  return function (done) {
+    let pkgName = getPackage();
+    const manager = new AssetsManager('manifest.json', options);
 
-  if(pkgName) {
-    return function (done) {
+    if(pkgName) {
       manager.copyPackage(pkgName).then(()=>{
         done();
       });
-    }
-  }
-
-  return function (done) {
-    manager.copyPackages().then(()=>{
-      done();
-    });
-  };
-}
-
-export function clean(options = config.assets, message = 'Assets task complete') {
-    let pkgName = getPackage();
-  const manager = new AssetsManager('manifest.json', options);
-
-  if(pkgName) {
-    return function (done) {
-      manager.cleanPackage(pkgName).then(()=>{
+    } else {
+      manager.copyPackages().then(()=>{
         done();
       });
     }
   }
+}
 
+export function clean(options = config.assets, message = 'Assets task complete') {
   return function (done) {
-    manager.cleanPackages().then(()=>{
-      done();
-    });
-  };
+    let pkgName = getPackage();
+    const manager = new AssetsManager('manifest.json', options);
+
+    if(pkgName) {
+      manager.cleanPackage(pkgName).then(()=>{
+        done();
+      });
+    } else {
+      manager.cleanPackages().then(()=>{
+        done();
+      });
+    }
+  }
 }

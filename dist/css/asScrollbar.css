@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.4.2
+* jQuery asScrollbar v0.4.3
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge

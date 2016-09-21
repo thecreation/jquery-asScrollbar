@@ -2,7 +2,7 @@
   "name": "jquery-asScrollbar",
   "title": "jQuery asScrollbar",
   "description": "A jquery plugin that generate a styleable scrollbar.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "homepage": "https://github.com/amazingSurge/jquery-asScrollbar",
   "author": {
     "name": "amazingSurge",
@@ -96,6 +96,7 @@
     "normalize.css": "^4.2.0",
     "path-exists": "*",
     "phantomjs-prebuilt": "*",
+    "release-it": "^2.4.3",
     "rollup-plugin-babel": "*",
     "rollup-plugin-istanbul": "*",
     "sinon": "*",

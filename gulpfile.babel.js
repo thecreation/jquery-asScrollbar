@@ -15,6 +15,7 @@ import * as deploy        from './gulp/tasks/deploy';
 import * as browser       from './gulp/tasks/browser';
 import * as assets        from './gulp/tasks/assets';
 import archive            from './gulp/tasks/archive';
+import release            from './gulp/tasks/release';
 
 gulp.task('bundler', bundler());
 gulp.task('scripts', scripts());
@@ -92,6 +93,9 @@ gulp.task('watch', () => {
   gulp.watch(config.scripts.src, gulp.series('scripts', 'reload'));
   gulp.watch(config.styles.src,  gulp.series('styles', 'reload'));
 });
+
+// Release task
+gulp.task('release', release());
 
 // Register default task
 gulp.task('default', gulp.series('lint:es:src', 'serve'));
