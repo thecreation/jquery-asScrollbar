@@ -1,7 +1,7 @@
 {
   "name": "jquery-asScrollbar",
-  "version": "0.4.0",
-  "description": "a jquery plugin",
+  "version": "0.4.1",
+  "description": "A jquery plugin that generate a styleable scrollbar.",
   "main": "dist/jquery-asScrollbar.js",
   "copyright": "amazingSurge",
   "license": "LGPL-3.0",
@@ -11,7 +11,6 @@
     "bower_components",
     "test",
     "demo",
-    "libs",
     "package.json",
     "gulpfile.babel.js",
     "tests"

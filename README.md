@@ -180,6 +180,8 @@ Copyright (C) 2016 amazingSurge.
 
 Licensed under [the LGPL license](LICENSE).
 
+[⬆ back to top](#table-of-contents)
+
 [bower-image]: https://img.shields.io/bower/v/jquery-asScrollbar.svg?style=flat
 [bower-link]: https://david-dm.org/amazingSurge/jquery-asScrollbar/dev-status.svg
 [npm-image]: https://badge.fury.io/js/jquery-asScrollbar.svg

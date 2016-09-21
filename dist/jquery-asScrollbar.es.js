@@ -1,7 +1,7 @@
 /**
 * jQuery asScrollbar
 * A jquery plugin that generate a styleable scrollbar.
-* Compiled: Wed Sep 21 2016 23:06:36 GMT+0800 (CST)
+* Compiled: Thu Sep 22 2016 01:25:36 GMT+0800 (CST)
 * @version v0.4.1
 * @link https://github.com/amazingSurge/jquery-asScrollbar
 * @copyright LGPL-3.0
