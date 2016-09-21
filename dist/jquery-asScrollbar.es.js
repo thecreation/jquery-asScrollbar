@@ -1,10 +1,9 @@
 /**
-* jQuery asScrollbar
-* A jquery plugin that generate a styleable scrollbar.
-* Compiled: Thu Sep 22 2016 01:25:36 GMT+0800 (CST)
-* @version v0.4.1
-* @link https://github.com/amazingSurge/jquery-asScrollbar
-* @copyright LGPL-3.0
+* jQuery asScrollbar v0.4.1
+* https://github.com/amazingSurge/jquery-asScrollbar
+*
+* Copyright (c) amazingSurge
+* Released under the LGPL-3.0 license
 */
 var DEFAULTS = {
   namespace: 'asScrollbar',
@@ -239,19 +238,19 @@ let support = {};
   };
 
   if (tests.csstransitions()) {
-    /* jshint -W053 */
+    /*eslint no-new-wrappers: "off"*/
     support.transition = new String(prefixed('transition'));
     support.transition.end = events.transition.end[support.transition];
   }
 
   if (tests.cssanimations()) {
-    /* jshint -W053 */
+    /*eslint no-new-wrappers: "off"*/
     support.animation = new String(prefixed('animation'));
     support.animation.end = events.animation.end[support.animation];
   }
 
   if (tests.csstransforms()) {
-    /* jshint -W053 */
+    /*eslint no-new-wrappers: "off"*/
     support.transform = new String(prefixed('transform'));
     support.transform3d = tests.csstransforms3d();
   }
@@ -1008,7 +1007,7 @@ $.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
         return false;
       }
       // apply method
-      return instance[options].apply(instance, args);
+      return instance[options](...args);
     });
   }
 

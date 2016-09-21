@@ -1,4 +1,4 @@
-# [asScrollbar](https://github.com/amazingSurge/jquery-asScrollbar) ![bower][bower-image] [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# [jQuery asScrollbar](https://github.com/amazingSurge/jquery-asScrollbar) ![bower][bower-image] [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
 > A jquery plugin that generate a styleable scrollbar.
 

@@ -77,19 +77,19 @@ let support = {};
   };
 
   if (tests.csstransitions()) {
-    /* jshint -W053 */
+    /*eslint no-new-wrappers: "off"*/
     support.transition = new String(prefixed('transition'));
     support.transition.end = events.transition.end[support.transition];
   }
 
   if (tests.cssanimations()) {
-    /* jshint -W053 */
+    /*eslint no-new-wrappers: "off"*/
     support.animation = new String(prefixed('animation'));
     support.animation.end = events.animation.end[support.animation];
   }
 
   if (tests.csstransforms()) {
-    /* jshint -W053 */
+    /*eslint no-new-wrappers: "off"*/
     support.transform = new String(prefixed('transform'));
     support.transform3d = tests.csstransforms3d();
   }

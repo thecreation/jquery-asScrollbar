@@ -15,7 +15,7 @@ $.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
         return false;
       }
       // apply method
-      return instance[options].apply(instance, args);
+      return instance[options](...args);
     });
   }
 

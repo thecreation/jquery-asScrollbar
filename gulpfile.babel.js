@@ -94,4 +94,4 @@ gulp.task('watch', () => {
 });
 
 // Register default task
-gulp.task('default', gulp.series('serve'));
+gulp.task('default', gulp.series('lint:es:src', 'serve'));

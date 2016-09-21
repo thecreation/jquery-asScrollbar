@@ -12,12 +12,11 @@ export default {
       description: pkg.description,
       author: pkg.author,
       banner: `/**
-* ${pkg.title}
-* ${pkg.description}
-* Compiled: ${Date()}
-* @version v${pkg.version}
-* @link ${pkg.homepage}
-* @copyright ${pkg.license}
+* ${pkg.title} v${pkg.version}
+* ${pkg.homepage}
+*
+* Copyright (c) ${pkg.author.name}
+* Released under the ${pkg.license} license
 */
 `,
       // basic locations
