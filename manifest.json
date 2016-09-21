@@ -1,0 +1,8 @@
+{
+  "dest": "demo",
+  "packages": {
+    "npm:jquery": true,
+    "npm:jquery-mousewheel": true,
+    "npm:normalize.css": true
+  }
+}

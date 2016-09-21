@@ -1,6 +1,6 @@
 {
   "name": "jquery-asScrollbar",
-  "version":"0.4.0",
+  "version": "0.4.0",
   "description": "a jquery plugin",
   "main": "dist/jquery-asScrollbar.js",
   "copyright": "amazingSurge",
@@ -24,7 +24,7 @@
     "globals"
   ],
   "dependencies": {
-    "jquery": ">=2.1.1",
-    "jquery-wheel" : "git@github.com:brandonaaron/jquery-mousewheel.git"
+    "jquery": "^3.1.0",
+    "jquery-mousewheel": "git@github.com:jquery/jquery-mousewheel.git#^3.1.13"
   }
 }

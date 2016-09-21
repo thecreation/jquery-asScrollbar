@@ -1,58 +1,18 @@
-import $ from 'jQuery';
-
-import defaults from './defaults';
+// import $ from 'jquery';
+import DEFAULTS from './defaults';
 import easingBezier from './easingBezier';
-import { isPercentage, convertPercentageToFloat, convertMatrixToArray } from './helpers';
+import { isPercentage, convertPercentageToFloat, convertMatrixToArray, getTime } from './helpers';
 import support from './support';
 
 const NAME = 'asScrollbar';
 
 /**
- * Animation Frame
- **/
-if (!Date.now) {
-  Date.now = () => {
-    'use strict';
-    return new Date().getTime();
-  };
-}
-
-let getTime = () => {
-  'use strict';
-  if (typeof window.performance !== 'undefined' && window.performance.now) {
-    return window.performance.now();
-  }
-  return Date.now();
-};
-
-let vendors = ['webkit', 'moz'];
-for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
-  let vp = vendors[i];
-  window.requestAnimationFrame = window[`${vp}RequestAnimationFrame`];
-  window.cancelAnimationFrame = (window[`${vp}CancelAnimationFrame`] || window[`${vp}CancelRequestAnimationFrame`]);
-}
-if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
-  let lastTime = 0;
-  window.requestAnimationFrame = (callback) => {
-    'use strict';
-    let now = getTime();
-    let timePlus = 16;
-    let nextTime = Math.max(lastTime + timePlus, now);
-    return setTimeout(() => {
-        callback(lastTime = nextTime);
-      },
-      nextTime - now);
-  };
-  window.cancelAnimationFrame = clearTimeout;
-}
-
-/**
  * Plugin constructor
  **/
-class asScrollbar {
+export default class asScrollbar {
   constructor(options, bar) {
     this.$bar = $(bar);
-    options = this.options = $.extend({}, defaults, options || {}, this.$bar.data('options') || {});
+    options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
     bar.direction = this.options.direction;
 
     this.classes = {
@@ -745,32 +705,10 @@ class asScrollbar {
     this.$bar.on(this.eventName());
   }
 
-  static _jQueryInterface(options, ...args) {
-    'use strict';
-
-    if (typeof options === 'string') {
-      return this.each(function() {
-        let instance = $(this).data(NAME);
-        if (!instance) {
-          return false;
-        }
-        if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
-          return false;
-        }
-        // apply method
-        return instance[options].apply(instance, args);
-      });
-    }
-
-    return this.each(function() {
-      if (!$(this).data(NAME)) {
-        $(this).data(NAME, new asScrollbar(options, this));
-      }
-    });
+  static setDefaults(options) {
+    $.extend(DEFAULTS, $.isPlainObject(options) && options);
   }
 }
-
-asScrollbar.support = support;
 
 $.extend(asScrollbar.easing = {}, {
   ease: easingBezier(0.25, 0.1, 0.25, 1.0),
@@ -779,13 +717,3 @@ $.extend(asScrollbar.easing = {}, {
   'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
   'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
 });
-
-$.fn[NAME] = asScrollbar._jQueryInterface;
-$.fn[NAME].constructor = asScrollbar;
-$.fn[NAME].noConflict = () => {
-  'use strict';
-  $.fn[NAME] = window.JQUERY_NO_CONFLICT;
-  return asScrollbar._jQueryInterface;
-};
-
-export default asScrollbar;

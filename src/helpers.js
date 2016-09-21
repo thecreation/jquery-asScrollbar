@@ -1,3 +1,30 @@
+if (!Date.now) {
+  Date.now = () => {
+    return new Date().getTime();
+  };
+}
+
+let vendors = ['webkit', 'moz'];
+for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+  let vp = vendors[i];
+  window.requestAnimationFrame = window[`${vp}RequestAnimationFrame`];
+  window.cancelAnimationFrame = (window[`${vp}CancelAnimationFrame`] || window[`${vp}CancelRequestAnimationFrame`]);
+}
+
+if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+  let lastTime = 0;
+  window.requestAnimationFrame = (callback) => {
+    let now = getTime();
+    let timePlus = 16;
+    let nextTime = Math.max(lastTime + timePlus, now);
+    return setTimeout(() => {
+        callback(lastTime = nextTime);
+      },
+      nextTime - now);
+  };
+  window.cancelAnimationFrame = clearTimeout;
+}
+
 /**
  * Helper functions
  **/
@@ -22,4 +49,11 @@ let convertMatrixToArray = (value) => {
   return false;
 };
 
-export { isPercentage, convertPercentageToFloat, convertMatrixToArray };
+let getTime = () => {
+  if (typeof window.performance !== 'undefined' && window.performance.now) {
+    return window.performance.now();
+  }
+  return Date.now();
+};
+
+export { isPercentage, convertPercentageToFloat, convertMatrixToArray, getTime };

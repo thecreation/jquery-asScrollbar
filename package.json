@@ -1,8 +1,8 @@
 {
   "name": "jquery-asScrollbar",
-  "title": "jQuery Scrollbar",
-  "description": "a jquery plugin",
-  "version": "0.4.0",
+  "title": "jQuery asScrollbar",
+  "description": "A jquery plugin that generate a styleable scrollbar.",
+  "version": "0.4.1",
   "homepage": "https://github.com/amazingSurge/jquery-asScrollbar",
   "author": {
     "name": "amazingSurge",
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "argv": "*",
+    "assets-manager": "*",
     "babel-core": "*",
     "babel-eslint": "*",
     "babel-istanbul": "*",
@@ -92,6 +93,7 @@
     "mkdirp": "*",
     "mocha": "*",
     "node-notifier": "*",
+    "normalize.css": "^4.2.0",
     "path-exists": "*",
     "phantomjs-prebuilt": "*",
     "rollup-plugin-babel": "*",
@@ -105,5 +107,9 @@
   "engines": {
     "node": ">= 6.2.2",
     "npm": ">= 3"
+  },
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "jquery-mousewheel": "^3.1.13"
   }
 }

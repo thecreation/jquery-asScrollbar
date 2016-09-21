@@ -1,8 +1,8 @@
 /**
-* jQuery Scrollbar
-* a jquery plugin
-* Compiled: Fri Aug 12 2016 10:57:05 GMT+0800 (CST)
-* @version v0.4.0
+* jQuery asScrollbar
+* A jquery plugin that generate a styleable scrollbar.
+* Compiled: Wed Sep 21 2016 23:06:36 GMT+0800 (CST)
+* @version v0.4.1
 * @link https://github.com/amazingSurge/jquery-asScrollbar
 * @copyright LGPL-3.0
 */
@@ -14,11 +14,12 @@
           box-sizing: border-box;
   overflow: hidden;
   line-height: 0;
-     -moz-user-select: none;
-      -ms-user-select: none;
   -webkit-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   border-radius: 2px;
+
   -webkit-touch-callout: none;
 }
 .asScrollbar.is-hovering {

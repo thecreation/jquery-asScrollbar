@@ -13,6 +13,7 @@ import * as lintStyles    from './gulp/tasks/lint-styles';
 import test               from './gulp/tasks/test';
 import * as deploy        from './gulp/tasks/deploy';
 import * as browser       from './gulp/tasks/browser';
+import * as assets        from './gulp/tasks/assets';
 import archive            from './gulp/tasks/archive';
 
 gulp.task('bundler', bundler());
@@ -25,6 +26,10 @@ gulp.task('clean:styles', clean(config.styles.dest));
 
 // Build the files
 gulp.task('build', gulp.series('clean', 'bundler', 'scripts','styles'));
+
+// Assets
+gulp.task('assets', assets.copy());
+gulp.task('clean:assets', assets.clean());
 
 // Lint Styles
 gulp.task('lint:css', lintStyles.css());

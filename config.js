@@ -40,7 +40,7 @@ export default {
       },
 
       scripts: {
-        entry: 'jquery-asScrollbar.js',
+        entry: 'main.js',
         files: '**/*.js',
         src: `${src}`,
         dest: `${dest}`,

@@ -30,6 +30,7 @@ export function bundler(src = config.scripts.src, dest = config.scripts.dest, en
       }))
       .pipe(header(config.banner))
       .pipe(rename({
+        basename: config.name,
         suffix: '.es'
       }))
       .pipe(gulp.dest(dest))
@@ -47,18 +48,21 @@ export function scripts(src = config.scripts.src, dest = config.scripts.dest, en
   return function () {
     let srcFiles = getSrcFiles(src, files);
 
-    return gulp.src(srcFiles)
+    return gulp.src(`${dest}/${config.name}.es.js`)
       .on('error', handleErrors)
       .pipe(plumber({errorHandler: handleErrors}))
-      .pipe(rollup({
-        entry: `${src}/${entry}`
-      }))
+      // .pipe(rollup({
+      //   entry: `${src}/${entry}`
+      // }))
       .pipe(babel({
         plugins: ['transform-es2015-modules-umd']
       }))
       .pipe(header(config.banner))
       .pipe(beautify({
         config: path.join(config.paths.root, '.beautifyrc')
+      }))
+      .pipe(rename({
+        basename: config.name
       }))
       .pipe(gulp.dest(dest))
       .pipe(size({

@@ -56,7 +56,6 @@ $scrollbar-handle-dragging-color: rgba(150, 150, 150, .8);
   }
   &-vertical {
     width: $scrollbar-size;
-    // height: 100%;
     height: #{calc(100% - 2 * #{$scrollbar-handle-offset})};
     margin: $scrollbar-handle-offset ($scrollbar-dragging-size - $scrollbar-size) / 2;
   }
@@ -71,7 +70,6 @@ $scrollbar-handle-dragging-color: rgba(150, 150, 150, .8);
     width: 100%;
   }
   &-horizontal {
-    // width: 100%;
     width: #{calc(100% - 2 * #{$scrollbar-handle-offset})};
     height: $scrollbar-size;
     margin: ($scrollbar-dragging-size - $scrollbar-size) / 2 $scrollbar-handle-offset;

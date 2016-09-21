@@ -1,39 +1,27 @@
 /**
-* jQuery Scrollbar
-* a jquery plugin
-* Compiled: Fri Aug 12 2016 10:57:05 GMT+0800 (CST)
-* @version v0.4.0
+* jQuery asScrollbar
+* A jquery plugin that generate a styleable scrollbar.
+* Compiled: Wed Sep 21 2016 23:06:36 GMT+0800 (CST)
+* @version v0.4.1
 * @link https://github.com/amazingSurge/jquery-asScrollbar
 * @copyright LGPL-3.0
 */
 (function(global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', 'jQuery'], factory);
+    define([], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('jQuery'));
+    factory();
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.jQuery);
-    global.jqueryAsScrollbar = mod.exports;
+    factory();
+    global.jqueryAsScrollbarEs = mod.exports;
   }
 })(this,
 
-  function(exports, _jQuery) {
+  function() {
     'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-      value: true
-    });
-
-    var _jQuery2 = _interopRequireDefault(_jQuery);
-
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        default: obj
-      };
-    }
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ?
 
@@ -76,7 +64,15 @@
       };
     }();
 
-    var defaults = {
+    /**
+    * jQuery asScrollbar
+    * A jquery plugin that generate a styleable scrollbar.
+    * Compiled: Wed Sep 21 2016 23:06:36 GMT+0800 (CST)
+    * @version v0.4.1
+    * @link https://github.com/amazingSurge/jquery-asScrollbar
+    * @copyright LGPL-3.0
+    */
+    var DEFAULTS = {
       namespace: 'asScrollbar',
 
       skin: null,
@@ -177,6 +173,41 @@
       };
     };
 
+    if (!Date.now) {
+      Date.now = function() {
+        return new Date().getTime();
+      }
+      ;
+    }
+
+    var vendors = ['webkit', 'moz'];
+
+    for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+      var vp = vendors[i];
+      window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame'];
+    }
+
+    if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+      (function() {
+        var lastTime = 0;
+        window.requestAnimationFrame = function(callback) {
+          var now = getTime();
+          var timePlus = 16;
+          var nextTime = Math.max(lastTime + timePlus, now);
+
+          return setTimeout(
+
+            function() {
+              callback(lastTime = nextTime);
+            }
+            , nextTime - now);
+        }
+        ;
+        window.cancelAnimationFrame = clearTimeout;
+      })();
+    }
+
     /**
      * Helper functions
      **/
@@ -202,6 +233,20 @@
 
       return false;
     };
+
+    var getTime = function getTime() {
+      if (typeof window.performance !== 'undefined' && window.performance.now) {
+
+        return window.performance.now();
+      }
+
+      return Date.now();
+    };
+
+    /**
+     * Css features detect
+     **/
+    // import $ from "jquery";
 
     var support = {};
 
@@ -230,7 +275,7 @@
           }
         },
         prefixes = ['webkit', 'Moz', 'O', 'ms'],
-        style = (0, _jQuery2.default)('<support>').get(0).style,
+        style = $('<support>').get(0).style,
         tests = {
           csstransforms: function csstransforms() {
             return Boolean(test('transform'));
@@ -255,7 +300,7 @@
         }
 
         if (!result) {
-          _jQuery2.default.each(prefixes,
+          $.each(prefixes,
 
             function(i, prefix) {
               if (style[prefix + upper] !== undefined) {
@@ -325,61 +370,8 @@
       ;
     })(support);
 
-    var NAME = 'asScrollbar';
-
-    /**
-     * Animation Frame
-     **/
-
-    if (!Date.now) {
-      Date.now = function() {
-        'use strict';
-
-        return new Date().getTime();
-      }
-      ;
-    }
-
-    var getTime = function getTime() {
-      'use strict';
-
-      if (typeof window.performance !== 'undefined' && window.performance.now) {
-
-        return window.performance.now();
-      }
-
-      return Date.now();
-    };
-
-    var vendors = ['webkit', 'moz'];
-
-    for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
-      var vp = vendors[i];
-      window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
-      window.cancelAnimationFrame = window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame'];
-    }
-
-    if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
-      (function() {
-        var lastTime = 0;
-        window.requestAnimationFrame = function(callback) {
-          'use strict';
-
-          var now = getTime();
-          var timePlus = 16;
-          var nextTime = Math.max(lastTime + timePlus, now);
-
-          return setTimeout(
-
-            function() {
-              callback(lastTime = nextTime);
-            }
-            , nextTime - now);
-        }
-        ;
-        window.cancelAnimationFrame = clearTimeout;
-      })();
-    }
+    // import $ from 'jquery';
+    var NAME$1 = 'asScrollbar';
 
     /**
      * Plugin constructor
@@ -389,8 +381,8 @@
       function asScrollbar(options, bar) {
         _classCallCheck(this, asScrollbar);
 
-        this.$bar = (0, _jQuery2.default)(bar);
-        options = this.options = _jQuery2.default.extend({}, defaults, options || {}, this.$bar.data('options') || {});
+        this.$bar = $(bar);
+        options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
         bar.direction = this.options.direction;
 
         this.classes = {
@@ -443,7 +435,7 @@
           this.$handle = this.$bar.find(this.options.handleSelector);
 
           if (this.$handle.length === 0) {
-            this.$handle = (0, _jQuery2.default)(options.handleTemplate.replace(/\{\{handle\}\}/g, this.classes.handleClass)).appendTo(this.$bar);
+            this.$handle = $(options.handleTemplate.replace(/\{\{handle\}\}/g, this.classes.handleClass)).appendTo(this.$bar);
           } else {
             this.$handle.addClass(this.classes.handleClass);
           }
@@ -478,7 +470,7 @@
           var data = (_ref = [this]).concat.apply(_ref, params);
 
           // event
-          this.$bar.trigger(NAME + '::' + eventType, data);
+          this.$bar.trigger(NAME$1 + '::' + eventType, data);
 
           // callback
           eventType = eventType.replace(/\b\w+\b/g,
@@ -537,7 +529,7 @@
           var _this = this;
 
           if (this.options.mouseDrag) {
-            this.$handle.on(this.eventName('mousedown'), _jQuery2.default.proxy(this.onDragStart, this));
+            this.$handle.on(this.eventName('mousedown'), $.proxy(this.onDragStart, this));
             this.$handle.on(this.eventName('dragstart selectstart'),
 
               function() {
@@ -547,17 +539,17 @@
           }
 
           if (this.options.touchDrag && support.touch) {
-            this.$handle.on(this.eventName('touchstart'), _jQuery2.default.proxy(this.onDragStart, this));
-            this.$handle.on(this.eventName('touchcancel'), _jQuery2.default.proxy(this.onDragEnd, this));
+            this.$handle.on(this.eventName('touchstart'), $.proxy(this.onDragStart, this));
+            this.$handle.on(this.eventName('touchcancel'), $.proxy(this.onDragEnd, this));
           }
 
           if (this.options.pointerDrag && support.pointer) {
-            this.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), _jQuery2.default.proxy(this.onDragStart, this));
-            this.$handle.on(this.eventName(support.prefixPointerEvent('pointercancel')), _jQuery2.default.proxy(this.onDragEnd, this));
+            this.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), $.proxy(this.onDragStart, this));
+            this.$handle.on(this.eventName(support.prefixPointerEvent('pointercancel')), $.proxy(this.onDragEnd, this));
           }
 
           if (this.options.clickMove) {
-            this.$bar.on(this.eventName('mousedown'), _jQuery2.default.proxy(this.onClick, this));
+            this.$bar.on(this.eventName('mousedown'), $.proxy(this.onClick, this));
           }
 
           if (this.options.mousewheel) {
@@ -606,7 +598,7 @@
           );
 
           if (this.options.keyboard) {
-            (0, _jQuery2.default)(document).on(this.eventName('keydown'),
+            $(document).on(this.eventName('keydown'),
 
               function(e) {
                 if (e.isDefaultPrevented && e.isDefaultPrevented()) {
@@ -624,7 +616,7 @@
                   activeElement = activeElement.shadowRoot.activeElement;
                 }
 
-                if ((0, _jQuery2.default)(activeElement).is(':input,select,option,[contenteditable]')) {
+                if ($(activeElement).is(':input,select,option,[contenteditable]')) {
 
                   return;
                 }
@@ -763,12 +755,12 @@
           };
 
           if (this.options.mouseDrag) {
-            (0, _jQuery2.default)(document).on(this.eventName('mouseup'), _jQuery2.default.proxy(this.onDragEnd, this));
+            $(document).on(this.eventName('mouseup'), $.proxy(this.onDragEnd, this));
 
-            (0, _jQuery2.default)(document).one(this.eventName('mousemove'), _jQuery2.default.proxy(
+            $(document).one(this.eventName('mousemove'), $.proxy(
 
               function() {
-                (0, _jQuery2.default)(document).on(_this2.eventName('mousemove'), _jQuery2.default.proxy(_this2.onDragMove, _this2));
+                $(document).on(_this2.eventName('mousemove'), $.proxy(_this2.onDragMove, _this2));
 
                 callback();
               }
@@ -776,12 +768,12 @@
           }
 
           if (this.options.touchDrag && support.touch) {
-            (0, _jQuery2.default)(document).on(this.eventName('touchend'), _jQuery2.default.proxy(this.onDragEnd, this));
+            $(document).on(this.eventName('touchend'), $.proxy(this.onDragEnd, this));
 
-            (0, _jQuery2.default)(document).one(this.eventName('touchmove'), _jQuery2.default.proxy(
+            $(document).one(this.eventName('touchmove'), $.proxy(
 
               function() {
-                (0, _jQuery2.default)(document).on(_this2.eventName('touchmove'), _jQuery2.default.proxy(_this2.onDragMove, _this2));
+                $(document).on(_this2.eventName('touchmove'), $.proxy(_this2.onDragMove, _this2));
 
                 callback();
               }
@@ -789,19 +781,19 @@
           }
 
           if (this.options.pointerDrag && support.pointer) {
-            (0, _jQuery2.default)(document).on(this.eventName(support.prefixPointerEvent('pointerup')), _jQuery2.default.proxy(this.onDragEnd, this));
+            $(document).on(this.eventName(support.prefixPointerEvent('pointerup')), $.proxy(this.onDragEnd, this));
 
-            (0, _jQuery2.default)(document).one(this.eventName(support.prefixPointerEvent('pointermove')), _jQuery2.default.proxy(
+            $(document).one(this.eventName(support.prefixPointerEvent('pointermove')), $.proxy(
 
               function() {
-                (0, _jQuery2.default)(document).on(_this2.eventName(support.prefixPointerEvent('pointermove')), _jQuery2.default.proxy(_this2.onDragMove, _this2));
+                $(document).on(_this2.eventName(support.prefixPointerEvent('pointermove')), $.proxy(_this2.onDragMove, _this2));
 
                 callback();
               }
               , this));
           }
 
-          (0, _jQuery2.default)(document).on(this.eventName('blur'), _jQuery2.default.proxy(this.onDragEnd, this));
+          $(document).on(this.eventName('blur'), $.proxy(this.onDragEnd, this));
         }
       }, {
         key: 'onDragMove',
@@ -819,7 +811,7 @@
       }, {
         key: 'onDragEnd',
         value: function onDragEnd() {
-          (0, _jQuery2.default)(document).off(this.eventName('mousemove mouseup touchmove touchend pointermove pointerup MSPointerMove MSPointerUp blur'));
+          $(document).off(this.eventName('mousemove mouseup touchmove touchend pointermove pointerup MSPointerMove MSPointerUp blur'));
 
           this.$bar.removeClass(this.options.draggingClass);
           this.handlePosition = this.getHandlePosition();
@@ -1136,7 +1128,7 @@
 
           if (duration) {
 
-            if (_jQuery2.default.isNumeric(duration)) {
+            if ($.isNumeric(duration)) {
               duration = duration + 'ms';
             }
             temp.push(duration);
@@ -1173,54 +1165,16 @@
           this.$bar.on(this.eventName());
         }
       }], [{
-        key: '_jQueryInterface',
-        value: function _jQueryInterface(options) {
-          'use strict';
-
-          for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-            args[_key2 - 1] = arguments[_key2];
-          }
-
-          if (typeof options === 'string') {
-
-            return this.each(
-
-              function() {
-                var instance = (0, _jQuery2.default)(this).data(NAME);
-
-                if (!instance) {
-
-                  return false;
-                }
-
-                if (!_jQuery2.default.isFunction(instance[options]) || options.charAt(0) === '_') {
-
-                  return false;
-                }
-                // apply method
-
-                return instance[options].apply(instance, args);
-              }
-            );
-          }
-
-          return this.each(
-
-            function() {
-              if (!(0, _jQuery2.default)(this).data(NAME)) {
-                (0, _jQuery2.default)(this).data(NAME, new asScrollbar(options, this));
-              }
-            }
-          );
+        key: 'setDefaults',
+        value: function setDefaults(options) {
+          $.extend(DEFAULTS, $.isPlainObject(options) && options);
         }
       }]);
 
       return asScrollbar;
     }();
 
-    asScrollbar.support = support;
-
-    _jQuery2.default.extend(asScrollbar.easing = {}, {
+    $.extend(asScrollbar.easing = {}, {
       ease: easingBezier(0.25, 0.1, 0.25, 1.0),
       linear: easingBezier(0.00, 0.0, 1.00, 1.0),
       'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
@@ -1228,17 +1182,57 @@
       'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
     });
 
-    _jQuery2.default.fn[NAME] = asScrollbar._jQueryInterface;
-    _jQuery2.default.fn[NAME].constructor = asScrollbar;
-    _jQuery2.default.fn[NAME].noConflict = function() {
-      'use strict';
+    // import $ from 'jquery';
+    var NAME = 'asScrollbar';
+    var OtherAsScrollbar = $.fn.asScrollbar;
 
-      _jQuery2.default.fn[NAME] = window.JQUERY_NO_CONFLICT;
+    $.fn.asScrollbar = function jQueryAsScrollbar(options) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
 
-      return asScrollbar._jQueryInterface;
+      if (typeof options === 'string') {
+
+        return this.each(
+
+          function() {
+            var instance = $(this).data(NAME);
+
+            if (!instance) {
+
+              return false;
+            }
+
+            if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
+
+              return false;
+            }
+            // apply method
+
+            return instance[options].apply(instance, args);
+          }
+        );
+      }
+
+      return this.each(
+
+        function() {
+          if (!$(this).data(NAME)) {
+            $(this).data(NAME, new asScrollbar(options, this));
+          }
+        }
+      );
     }
     ;
 
-    exports.default = asScrollbar;
+    $.fn.asScrollbar.Constructor = asScrollbar;
+    $.fn.asScrollbar.setDefaults = asScrollbar.setDefaults;
+
+    $.fn.asScrollbar.noConflict = function noConflict() {
+      $.fn.asScrollbar = OtherAsScrollbar;
+
+      return this;
+    }
+    ;
   }
 );
