@@ -13,6 +13,7 @@ argv.option([
   },
   {
     name: 'verbose',
+    short: 'o',
     type: 'boolean',
     description: `Verbose output`
   },

@@ -1,4 +1,4 @@
-# [jQuery asScrollbar](https://github.com/amazingSurge/jquery-asScrollbar) ![bower][bower-image] [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# [jQuery asScrollbar](https://github.com/amazingSurge/jquery-asScrollbar) ![bower][bower-image] [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url] [![npm-license]]()
 
 > A jquery plugin that generate a styleable scrollbar.
 
@@ -158,14 +158,15 @@ If you have to use other plugin with the same namespace, just call the `$.fn.asS
 ```
 
 ## Browser support
-<table>
-<tr><td>Chrome</td><td>latest</td></tr>
-<tr><td>Firefox</td><td>latest</td></tr>
-<tr><td>Safari</td><td>latest</td></tr>
-<tr><td>Opera</td><td>latest</td></tr>
-<tr><td>Edge</td><td>latest</td></tr>
-<tr><td>Internet Explorer</td><td>8+</td></tr>
-</table>
+Browser           | support
+----------------- | -------
+Chrome            | latest
+Firefox           | latest
+Safari            | latest
+Opera             | latest
+Edge              | latest
+Internet Explorer | 8+
+
 As a jQuery plugin, you also need to see the [jQuery Browser Support](http://jquery.com/browser-support/).
 
 ## Bugs and feature requests
@@ -182,10 +183,10 @@ Licensed under [the LGPL license](LICENSE).
 
 [⬆ back to top](#table-of-contents)
 
-[bower-image]: https://img.shields.io/bower/v/jquery-asScrollbar.svg?style=flat
+[bower-image]: https://img.shields.io/bower/v/jquery-asScrollable.svg?style=flat
 [bower-link]: https://david-dm.org/amazingSurge/jquery-asScrollbar/dev-status.svg
-[npm-image]: https://badge.fury.io/js/jquery-asScrollbar.svg
+[npm-image]: https://badge.fury.io/js/jquery-asScrollbar.svg?style=flat
 [npm-url]: https://npmjs.org/package/jquery-asScrollbar
-[daviddm-image]: https://david-dm.org/amazingSurge/jquery-asScrollbar.svg?theme=shields.io
+[npm-license]: https://img.shields.io/npm/l/jquery-asScrollbar.svg?style=flat
+[daviddm-image]: https://david-dm.org/amazingSurge/jquery-asScrollbar.svg?style=flat
 [daviddm-url]: https://david-dm.org/amazingSurge/jquery-asScrollbar
-

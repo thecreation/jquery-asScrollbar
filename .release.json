@@ -1,13 +1,13 @@
 {
-    "verbose": false,
-    "force": true,
-    "pkgFiles": ["package.json", "bower.json"],
-    "increment": "patch",
-    "commitMessage": "Release %s",
-    "tagName": "%s",
-    "tagAnnotation": "Release %s",
-    "buildCommand": "gulp build",
-    "npm": {
-        "publish": true
-    }
+  "verbose": false,
+  "force": false,
+  "pkgFiles": ["package.json", "bower.json"],
+  "increment": "patch",
+  "commitMessage": "Release v%s",
+  "tagName": "v%s",
+  "tagAnnotation": "Release v%s",
+  "buildCommand": "gulp build",
+  "npm": {
+    "publish": true
+  }
 }
