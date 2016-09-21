@@ -11,7 +11,7 @@
 - [No conflict](#no-conflict)
 - [Browser support](#browser-support)
 - [Bugs and feature requests](#bugs-and-feature-requests)
-- [License](#license)
+- [Copyright and license](#copyright-and-license)
 
 ## Main
 ```
