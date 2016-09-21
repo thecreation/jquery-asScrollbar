@@ -11,6 +11,11 @@
     "bower_components",
     "test",
     "demo",
+    "gulp",
+    "CONTRIBUTING.md",
+    "manifest.json",
+    "karma.conf.js",
+    "config.js",
     "package.json",
     "gulpfile.babel.js",
     "tests"
