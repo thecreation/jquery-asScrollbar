@@ -1,9 +1,9 @@
-# [jQuery asScrollbar](https://github.com/amazingSurge/jquery-asScrollbar) ![bower][bower-image] [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url] [![npm-license]](LICENSE)
+# [jQuery asScrollbar](https://github.com/amazingSurge/jquery-asScrollbar) ![bower][bower-image] [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url] [![license]](LICENSE)
 
 > A jquery plugin that generate a styleable scrollbar.
 
 ## Table of contents
-- [Main](#main)
+- [Main files](#main-files)
 - [Getting started](#getting-started)
 - [Usage](#usage)
 - [Options](#options)
@@ -13,7 +13,7 @@
 - [Bugs and feature requests](#bugs-and-feature-requests)
 - [Copyright and license](#copyright-and-license)
 
-## Main
+## Main files
 ```
 dist/
 ├── jquery-asScrollbar.js
@@ -111,20 +111,20 @@ jQuery(function($) {
 Move the scrollbar handle to the position.
 ```js
 // move to 50px
-$()..asScrollbar('moveTo', '50');
+$().asScrollbar('moveTo', '50');
 
 // move to 50%
-$()..asScrollbar('moveTo', '50%');
+$().asScrollbar('moveTo', '50%');
 ```
 
 ### moveBy(size)
 Move the scrollbar handle by the size.
 ```js
-$()..asScrollbar('moveBy', '10');
-$()..asScrollbar('moveBy', '10%');
+$().asScrollbar('moveBy', '10');
+$().asScrollbar('moveBy', '10%');
 
-$()..asScrollbar('moveBy', '-10');
-$()..asScrollbar('moveBy', '-10%');
+$().asScrollbar('moveBy', '-10');
+$().asScrollbar('moveBy', '-10%');
 ```
 
 ### enable()
@@ -150,7 +150,7 @@ If you have to use other plugin with the same namespace, just call the `$.fn.asS
 
 ```html
 <script src="other-plugin.js"></script>
-<script src="asScrollbar.js"></script>
+<script src="jquery-asScrollbar.js"></script>
 <script>
   $.fn.asScrollbar.noConflict();
   // Code that uses other plugin's "$().asScrollbar" can follow here.
@@ -187,6 +187,6 @@ Licensed under [the LGPL license](LICENSE).
 [bower-link]: https://david-dm.org/amazingSurge/jquery-asScrollbar/dev-status.svg
 [npm-image]: https://badge.fury.io/js/jquery-asScrollbar.svg?style=flat
 [npm-url]: https://npmjs.org/package/jquery-asScrollbar
-[npm-license]: https://img.shields.io/npm/l/jquery-asScrollbar.svg?style=flat
+[license]: https://img.shields.io/npm/l/jquery-asScrollbar.svg?style=flat
 [daviddm-image]: https://david-dm.org/amazingSurge/jquery-asScrollbar.svg?style=flat
 [daviddm-url]: https://david-dm.org/amazingSurge/jquery-asScrollbar
