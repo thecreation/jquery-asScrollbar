@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.4.1
+* jQuery asScrollbar v0.4.2
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
@@ -7,20 +7,28 @@
 */
 (function(global, factory) {
   if (typeof define === "function" && define.amd) {
-    define([], factory);
+    define(['jquery'], factory);
   } else if (typeof exports !== "undefined") {
-    factory();
+    factory(require('jquery'));
   } else {
     var mod = {
       exports: {}
     };
-    factory();
+    factory(global.jQuery);
     global.jqueryAsScrollbarEs = mod.exports;
   }
 })(this,
 
-  function() {
+  function(_jquery) {
     'use strict';
+
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    function _interopRequireDefault(obj) {
+      return obj && obj.__esModule ? obj : {
+        default: obj
+      };
+    }
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ?
 
@@ -63,13 +71,6 @@
       };
     }();
 
-    /**
-    * jQuery asScrollbar v0.4.1
-    * https://github.com/amazingSurge/jquery-asScrollbar
-    *
-    * Copyright (c) amazingSurge
-    * Released under the LGPL-3.0 license
-    */
     var DEFAULTS = {
       namespace: 'asScrollbar',
 
@@ -244,8 +245,6 @@
     /**
      * Css features detect
      **/
-    // import $ from "jquery";
-
     var support = {};
 
     (function(support) {
@@ -273,7 +272,7 @@
           }
         },
         prefixes = ['webkit', 'Moz', 'O', 'ms'],
-        style = $('<support>').get(0).style,
+        style = (0, _jquery2.default)('<support>').get(0).style,
         tests = {
           csstransforms: function csstransforms() {
             return Boolean(test('transform'));
@@ -298,7 +297,7 @@
         }
 
         if (!result) {
-          $.each(prefixes,
+          _jquery2.default.each(prefixes,
 
             function(i, prefix) {
               if (style[prefix + upper] !== undefined) {
@@ -368,7 +367,6 @@
       ;
     })(support);
 
-    // import $ from 'jquery';
     var NAME$1 = 'asScrollbar';
 
     /**
@@ -379,8 +377,8 @@
       function asScrollbar(options, bar) {
         _classCallCheck(this, asScrollbar);
 
-        this.$bar = $(bar);
-        options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
+        this.$bar = (0, _jquery2.default)(bar);
+        options = this.options = _jquery2.default.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
         bar.direction = this.options.direction;
 
         this.classes = {
@@ -433,7 +431,7 @@
           this.$handle = this.$bar.find(this.options.handleSelector);
 
           if (this.$handle.length === 0) {
-            this.$handle = $(options.handleTemplate.replace(/\{\{handle\}\}/g, this.classes.handleClass)).appendTo(this.$bar);
+            this.$handle = (0, _jquery2.default)(options.handleTemplate.replace(/\{\{handle\}\}/g, this.classes.handleClass)).appendTo(this.$bar);
           } else {
             this.$handle.addClass(this.classes.handleClass);
           }
@@ -527,7 +525,7 @@
           var _this = this;
 
           if (this.options.mouseDrag) {
-            this.$handle.on(this.eventName('mousedown'), $.proxy(this.onDragStart, this));
+            this.$handle.on(this.eventName('mousedown'), _jquery2.default.proxy(this.onDragStart, this));
             this.$handle.on(this.eventName('dragstart selectstart'),
 
               function() {
@@ -537,17 +535,17 @@
           }
 
           if (this.options.touchDrag && support.touch) {
-            this.$handle.on(this.eventName('touchstart'), $.proxy(this.onDragStart, this));
-            this.$handle.on(this.eventName('touchcancel'), $.proxy(this.onDragEnd, this));
+            this.$handle.on(this.eventName('touchstart'), _jquery2.default.proxy(this.onDragStart, this));
+            this.$handle.on(this.eventName('touchcancel'), _jquery2.default.proxy(this.onDragEnd, this));
           }
 
           if (this.options.pointerDrag && support.pointer) {
-            this.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), $.proxy(this.onDragStart, this));
-            this.$handle.on(this.eventName(support.prefixPointerEvent('pointercancel')), $.proxy(this.onDragEnd, this));
+            this.$handle.on(this.eventName(support.prefixPointerEvent('pointerdown')), _jquery2.default.proxy(this.onDragStart, this));
+            this.$handle.on(this.eventName(support.prefixPointerEvent('pointercancel')), _jquery2.default.proxy(this.onDragEnd, this));
           }
 
           if (this.options.clickMove) {
-            this.$bar.on(this.eventName('mousedown'), $.proxy(this.onClick, this));
+            this.$bar.on(this.eventName('mousedown'), _jquery2.default.proxy(this.onClick, this));
           }
 
           if (this.options.mousewheel) {
@@ -596,7 +594,7 @@
           );
 
           if (this.options.keyboard) {
-            $(document).on(this.eventName('keydown'),
+            (0, _jquery2.default)(document).on(this.eventName('keydown'),
 
               function(e) {
                 if (e.isDefaultPrevented && e.isDefaultPrevented()) {
@@ -614,7 +612,7 @@
                   activeElement = activeElement.shadowRoot.activeElement;
                 }
 
-                if ($(activeElement).is(':input,select,option,[contenteditable]')) {
+                if ((0, _jquery2.default)(activeElement).is(':input,select,option,[contenteditable]')) {
 
                   return;
                 }
@@ -753,12 +751,12 @@
           };
 
           if (this.options.mouseDrag) {
-            $(document).on(this.eventName('mouseup'), $.proxy(this.onDragEnd, this));
+            (0, _jquery2.default)(document).on(this.eventName('mouseup'), _jquery2.default.proxy(this.onDragEnd, this));
 
-            $(document).one(this.eventName('mousemove'), $.proxy(
+            (0, _jquery2.default)(document).one(this.eventName('mousemove'), _jquery2.default.proxy(
 
               function() {
-                $(document).on(_this2.eventName('mousemove'), $.proxy(_this2.onDragMove, _this2));
+                (0, _jquery2.default)(document).on(_this2.eventName('mousemove'), _jquery2.default.proxy(_this2.onDragMove, _this2));
 
                 callback();
               }
@@ -766,12 +764,12 @@
           }
 
           if (this.options.touchDrag && support.touch) {
-            $(document).on(this.eventName('touchend'), $.proxy(this.onDragEnd, this));
+            (0, _jquery2.default)(document).on(this.eventName('touchend'), _jquery2.default.proxy(this.onDragEnd, this));
 
-            $(document).one(this.eventName('touchmove'), $.proxy(
+            (0, _jquery2.default)(document).one(this.eventName('touchmove'), _jquery2.default.proxy(
 
               function() {
-                $(document).on(_this2.eventName('touchmove'), $.proxy(_this2.onDragMove, _this2));
+                (0, _jquery2.default)(document).on(_this2.eventName('touchmove'), _jquery2.default.proxy(_this2.onDragMove, _this2));
 
                 callback();
               }
@@ -779,19 +777,19 @@
           }
 
           if (this.options.pointerDrag && support.pointer) {
-            $(document).on(this.eventName(support.prefixPointerEvent('pointerup')), $.proxy(this.onDragEnd, this));
+            (0, _jquery2.default)(document).on(this.eventName(support.prefixPointerEvent('pointerup')), _jquery2.default.proxy(this.onDragEnd, this));
 
-            $(document).one(this.eventName(support.prefixPointerEvent('pointermove')), $.proxy(
+            (0, _jquery2.default)(document).one(this.eventName(support.prefixPointerEvent('pointermove')), _jquery2.default.proxy(
 
               function() {
-                $(document).on(_this2.eventName(support.prefixPointerEvent('pointermove')), $.proxy(_this2.onDragMove, _this2));
+                (0, _jquery2.default)(document).on(_this2.eventName(support.prefixPointerEvent('pointermove')), _jquery2.default.proxy(_this2.onDragMove, _this2));
 
                 callback();
               }
               , this));
           }
 
-          $(document).on(this.eventName('blur'), $.proxy(this.onDragEnd, this));
+          (0, _jquery2.default)(document).on(this.eventName('blur'), _jquery2.default.proxy(this.onDragEnd, this));
         }
       }, {
         key: 'onDragMove',
@@ -809,7 +807,7 @@
       }, {
         key: 'onDragEnd',
         value: function onDragEnd() {
-          $(document).off(this.eventName('mousemove mouseup touchmove touchend pointermove pointerup MSPointerMove MSPointerUp blur'));
+          (0, _jquery2.default)(document).off(this.eventName('mousemove mouseup touchmove touchend pointermove pointerup MSPointerMove MSPointerUp blur'));
 
           this.$bar.removeClass(this.options.draggingClass);
           this.handlePosition = this.getHandlePosition();
@@ -1126,7 +1124,7 @@
 
           if (duration) {
 
-            if ($.isNumeric(duration)) {
+            if (_jquery2.default.isNumeric(duration)) {
               duration = duration + 'ms';
             }
             temp.push(duration);
@@ -1165,14 +1163,14 @@
       }], [{
         key: 'setDefaults',
         value: function setDefaults(options) {
-          $.extend(DEFAULTS, $.isPlainObject(options) && options);
+          _jquery2.default.extend(DEFAULTS, _jquery2.default.isPlainObject(options) && options);
         }
       }]);
 
       return asScrollbar;
     }();
 
-    $.extend(asScrollbar.easing = {}, {
+    _jquery2.default.extend(asScrollbar.easing = {}, {
       ease: easingBezier(0.25, 0.1, 0.25, 1.0),
       linear: easingBezier(0.00, 0.0, 1.00, 1.0),
       'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
@@ -1180,11 +1178,10 @@
       'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
     });
 
-    // import $ from 'jquery';
     var NAME = 'asScrollbar';
-    var OtherAsScrollbar = $.fn.asScrollbar;
+    var OtherAsScrollbar = _jquery2.default.fn.asScrollbar;
 
-    $.fn.asScrollbar = function jQueryAsScrollbar(options) {
+    _jquery2.default.fn.asScrollbar = function jQueryAsScrollbar(options) {
       for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
         args[_key2 - 1] = arguments[_key2];
       }
@@ -1194,14 +1191,14 @@
         return this.each(
 
           function() {
-            var instance = $(this).data(NAME);
+            var instance = (0, _jquery2.default)(this).data(NAME);
 
             if (!instance) {
 
               return false;
             }
 
-            if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
+            if (!_jquery2.default.isFunction(instance[options]) || options.charAt(0) === '_') {
 
               return false;
             }
@@ -1215,19 +1212,19 @@
       return this.each(
 
         function() {
-          if (!$(this).data(NAME)) {
-            $(this).data(NAME, new asScrollbar(options, this));
+          if (!(0, _jquery2.default)(this).data(NAME)) {
+            (0, _jquery2.default)(this).data(NAME, new asScrollbar(options, this));
           }
         }
       );
     }
     ;
 
-    $.fn.asScrollbar.Constructor = asScrollbar;
-    $.fn.asScrollbar.setDefaults = asScrollbar.setDefaults;
+    _jquery2.default.fn.asScrollbar.Constructor = asScrollbar;
+    _jquery2.default.fn.asScrollbar.setDefaults = asScrollbar.setDefaults;
 
-    $.fn.asScrollbar.noConflict = function noConflict() {
-      $.fn.asScrollbar = OtherAsScrollbar;
+    _jquery2.default.fn.asScrollbar.noConflict = function noConflict() {
+      _jquery2.default.fn.asScrollbar = OtherAsScrollbar;
 
       return this;
     }

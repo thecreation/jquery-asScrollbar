@@ -1,10 +1,12 @@
 /**
-* jQuery asScrollbar v0.4.1
+* jQuery asScrollbar v0.4.2
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
 * Released under the LGPL-3.0 license
 */
+import $ from 'jquery';
+
 var DEFAULTS = {
   namespace: 'asScrollbar',
 
@@ -162,8 +164,6 @@ let getTime = () => {
 /**
  * Css features detect
  **/
-// import $ from "jquery";
-
 let support = {};
 
 ((support) => {
@@ -277,7 +277,6 @@ let support = {};
   };
 })(support);
 
-// import $ from 'jquery';
 const NAME$1 = 'asScrollbar';
 
 /**
@@ -992,7 +991,6 @@ $.extend(asScrollbar.easing = {}, {
   'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
 });
 
-// import $ from 'jquery';
 const NAME = 'asScrollbar';
 const OtherAsScrollbar = $.fn.asScrollbar;
 

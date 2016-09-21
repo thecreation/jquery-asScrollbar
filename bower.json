@@ -1,6 +1,6 @@
 {
   "name": "jquery-asScrollbar",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A jquery plugin that generate a styleable scrollbar.",
   "main": "dist/jquery-asScrollbar.js",
   "copyright": "amazingSurge",

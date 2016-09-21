@@ -26,7 +26,10 @@ export function bundler(src = config.scripts.src, dest = config.scripts.dest, en
       .on('error', handleErrors)
       .pipe(plumber({errorHandler: handleErrors}))
       .pipe(rollup({
-        entry: `${src}/${entry}`
+        entry: `${src}/${entry}`,
+        globals: {
+          jquery: 'jQuery'
+        }
       }))
       .pipe(header(config.banner))
       .pipe(rename({
@@ -55,7 +58,14 @@ export function scripts(src = config.scripts.src, dest = config.scripts.dest, en
       //   entry: `${src}/${entry}`
       // }))
       .pipe(babel({
-        plugins: ['transform-es2015-modules-umd']
+        "presets": ["es2015"],
+        "plugins": [
+          ["transform-es2015-modules-umd", {
+            "globals": {
+              "jquery": "jQuery"
+            }
+          }]
+        ]
       }))
       .pipe(header(config.banner))
       .pipe(beautify({

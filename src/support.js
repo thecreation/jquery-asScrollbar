@@ -1,7 +1,7 @@
 /**
  * Css features detect
  **/
-// import $ from "jquery";
+import $ from "jquery";
 
 let support = {};
 

@@ -1,4 +1,4 @@
-// import $ from 'jquery';
+import $ from 'jquery';
 import DEFAULTS from './defaults';
 import easingBezier from './easingBezier';
 import { isPercentage, convertPercentageToFloat, convertMatrixToArray, getTime } from './helpers';
