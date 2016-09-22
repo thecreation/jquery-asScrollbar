@@ -76,7 +76,9 @@ fits with the scope and aims of the project. It's up to *you* to make a strong
 case to convince the project's developers of the merits of this feature. Please
 provide as much detail and context as possible.
 
-## Pull Request Guidelines
+## Pull Requests
+
+**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
 
 You must understand that by contributing code to this project, you are granting
 the authors (and/or leaders) of the project a non-exclusive license to

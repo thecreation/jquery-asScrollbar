@@ -26,7 +26,7 @@ gulp.task('styles', styles());
 gulp.task('clean:styles', clean(config.styles.dest));
 
 // Build the files
-gulp.task('build', gulp.series('clean', 'bundler', 'scripts','styles'));
+gulp.task('build', gulp.series('clean', 'bundler', 'scripts', 'styles'));
 
 // Assets
 gulp.task('assets', assets.copy());

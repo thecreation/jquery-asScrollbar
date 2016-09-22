@@ -554,7 +554,7 @@
                 if (_this.options.direction === 'vertical') {
                   delta = e.deltaFactor * e.deltaY;
                 } else if (_this.options.direction === 'horizontal') {
-                  delta = e.deltaFactor * e.deltaX;
+                  delta = -1 * e.deltaFactor * e.deltaX;
                 }
                 var offset = _this.getHandlePosition();
 

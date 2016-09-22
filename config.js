@@ -56,7 +56,7 @@ export default {
 
       browser: {
         baseDir: './',
-        startPath: "demo/index.html",
+        startPath: "examples/index.html",
         browserPort: 3000,
         UIPort: 3001,
         testPort: 3002,

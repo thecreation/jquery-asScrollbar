@@ -168,7 +168,7 @@ export default class asScrollbar {
         if (this.options.direction === 'vertical') {
           delta = e.deltaFactor * e.deltaY;
         } else if (this.options.direction === 'horizontal') {
-          delta = e.deltaFactor * e.deltaX;
+          delta = -1 * e.deltaFactor * e.deltaX;
         }
         let offset = this.getHandlePosition();
         if (offset <= 0 && delta > 0) {

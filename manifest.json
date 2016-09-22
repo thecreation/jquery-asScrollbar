@@ -1,5 +1,5 @@
 {
-  "dest": "demo",
+  "dest": "examples",
   "packages": {
     "npm:jquery": true,
     "npm:jquery-mousewheel": true,
