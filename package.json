@@ -14,12 +14,10 @@
     "url": "git@github.com:amazingSurge/jquery-asScrollbar.git"
   },
   "bugs": "https://github.com/amazingSurge/jquery-asScrollbar/issues",
-  "licenses": [
-    {
-      "type": "LGPL-3.0",
-      "url": "https://github.com/amazingSurge/jquery-asScrollbar/blob/master/LICENSE"
-    }
-  ],
+  "licenses": [{
+    "type": "LGPL-3.0",
+    "url": "https://github.com/amazingSurge/jquery-asScrollable/blob/master/LICENSE"
+  }],
   "license": "LGPL-3.0",
   "files": [
     "dist",
@@ -39,7 +37,7 @@
     "babel-core": "*",
     "babel-eslint": "*",
     "babel-istanbul": "*",
-    "babel-plugin-transform-es2015-modules-umd": "^6.12.0",
+    "babel-plugin-transform-es2015-modules-umd": "*",
     "babel-preset-es2015": "*",
     "babel-preset-es2015-rollup": "*",
     "babelrc-rollup": "*",
@@ -110,7 +108,7 @@
     "npm": ">= 3"
   },
   "dependencies": {
-    "jquery": "^3.1.0",
+    "jquery": ">=2.2.0",
     "jquery-mousewheel": "^3.1.13"
   }
 }

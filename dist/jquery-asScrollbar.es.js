@@ -172,7 +172,7 @@ let support = {};
    **/
    'use strict';
 
-  let events = {
+  const events = {
       transition: {
         end: {
           WebkitTransition: 'webkitTransitionEnd',
@@ -268,11 +268,9 @@ let support = {};
   }
 
   support.prefixPointerEvent = (pointerEvent) => {
-    let charStart = 9,
-      subStart = 10;
 
     return window.MSPointerEvent ?
-      `MSPointer${pointerEvent.charAt(charStart).toUpperCase()}${pointerEvent.substr(subStart)}` :
+      `MSPointer${pointerEvent.charAt(9).toUpperCase()}${pointerEvent.substr(10)}` :
       pointerEvent;
   };
 })(support);

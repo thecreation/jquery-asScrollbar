@@ -28,7 +28,7 @@
     "globals"
   ],
   "dependencies": {
-    "jquery": "^3.1.0",
+    "jquery": ">=2.2.0",
     "jquery-mousewheel": "git@github.com:jquery/jquery-mousewheel.git#^3.1.13"
   }
 }

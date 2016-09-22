@@ -359,10 +359,7 @@
       }
 
       support.prefixPointerEvent = function(pointerEvent) {
-        var charStart = 9,
-          subStart = 10;
-
-        return window.MSPointerEvent ? 'MSPointer' + pointerEvent.charAt(charStart).toUpperCase() + pointerEvent.substr(subStart) : pointerEvent;
+        return window.MSPointerEvent ? 'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10) : pointerEvent;
       }
       ;
     })(support);

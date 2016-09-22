@@ -21,10 +21,10 @@ dist/
 ```
 
 ## Getting Started
-Download the [production version][min] or the [development version][max].
+Download the latest build, ready to go:
 
-[min]: https://raw.github.com/amazingSurge/jquery-asScrollbar/master/dist/jquery-asScrollbar.min.js
-[max]: https://raw.github.com/amazingSurge/jquery-asScrollbar/master/dist/jquery-asScrollbar.js
+ * [Development](https://raw.githubusercontent.com/amazingSurge/jquery-asScrollbar/master/dist/jquery-asScrollbar.js) - unminified
+ * [Production](https://raw.githubusercontent.com/amazingSurge/jquery-asScrollbar/master/dist/jquery-asScrollbar.min.js) - minified
 
 ### Install From Bower
     bower install jquery-asScrollbar --save
@@ -165,7 +165,7 @@ Firefox           | latest
 Safari            | latest
 Opera             | latest
 Edge              | latest
-Internet Explorer | 8+
+Internet Explorer | 9+
 
 As a jQuery plugin, you also need to see the [jQuery Browser Support](http://jquery.com/browser-support/).
 
