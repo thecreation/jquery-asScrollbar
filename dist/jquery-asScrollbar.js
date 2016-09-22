@@ -549,9 +549,16 @@
           }
 
           if (this.options.mousewheel) {
-            this.$bar.on(this.eventName('mousewheel'),
+            this.$bar.on('mousewheel',
 
-              function(e, delta) {
+              function(e) {
+                var delta = void 0;
+
+                if (_this.options.direction === 'vertical') {
+                  delta = e.deltaFactor * e.deltaY;
+                } else if (_this.options.direction === 'horizontal') {
+                  delta = e.deltaFactor * e.deltaX;
+                }
                 var offset = _this.getHandlePosition();
 
                 if (offset <= 0 && delta > 0) {
@@ -562,7 +569,6 @@
                   return true;
                 }
                 offset -= _this.options.mousewheelSpeed * delta;
-
                 _this.move(offset, true);
 
                 return false;

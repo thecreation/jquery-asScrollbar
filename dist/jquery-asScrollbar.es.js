@@ -436,7 +436,13 @@ class asScrollbar {
     }
 
     if (this.options.mousewheel) {
-      this.$bar.on(this.eventName('mousewheel'), (e, delta) => {
+      this.$bar.on('mousewheel', (e) => {
+        let delta;
+        if (this.options.direction === 'vertical') {
+          delta = e.deltaFactor * e.deltaY;
+        } else if (this.options.direction === 'horizontal') {
+          delta = e.deltaFactor * e.deltaX;
+        }
         let offset = this.getHandlePosition();
         if (offset <= 0 && delta > 0) {
           return true;
@@ -444,7 +450,6 @@ class asScrollbar {
           return true;
         }
         offset -= this.options.mousewheelSpeed * delta;
-
         this.move(offset, true);
         return false;
       });

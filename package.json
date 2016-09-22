@@ -96,7 +96,7 @@
     "normalize.css": "^4.2.0",
     "path-exists": "*",
     "phantomjs-prebuilt": "*",
-    "release-it": "^2.4.3",
+    "release-it": "*",
     "rollup-plugin-babel": "*",
     "rollup-plugin-istanbul": "*",
     "sinon": "*",
