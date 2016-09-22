@@ -183,7 +183,7 @@ Licensed under [the LGPL license](LICENSE).
 
 [⬆ back to top](#table-of-contents)
 
-[bower-image]: https://img.shields.io/bower/v/jquery-asScrollable.svg?style=flat
+[bower-image]: https://img.shields.io/bower/v/jquery-asScrollbar.svg?style=flat
 [bower-link]: https://david-dm.org/amazingSurge/jquery-asScrollbar/dev-status.svg
 [npm-image]: https://badge.fury.io/js/jquery-asScrollbar.svg?style=flat
 [npm-url]: https://npmjs.org/package/jquery-asScrollbar
