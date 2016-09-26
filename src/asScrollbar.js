@@ -9,7 +9,7 @@ const NAME = 'asScrollbar';
 /**
  * Plugin constructor
  **/
-export default class asScrollbar {
+class asScrollbar {
   constructor(options, bar) {
     this.$bar = $(bar);
     options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
@@ -736,3 +736,6 @@ $.extend(asScrollbar.easing = {}, {
   'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
   'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
 });
+
+$.asScrollbar = asScrollbar;
+export default asScrollbar;

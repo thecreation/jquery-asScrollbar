@@ -1196,6 +1196,8 @@
       'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
     });
 
+    _jquery2.default.asScrollbar = asScrollbar;
+
     var NAME = 'asScrollbar';
     var OtherAsScrollbar = _jquery2.default.fn.asScrollbar;
 

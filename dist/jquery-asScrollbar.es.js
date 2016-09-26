@@ -1008,6 +1008,8 @@ $.extend(asScrollbar.easing = {}, {
   'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
 });
 
+$.asScrollbar = asScrollbar;
+
 const NAME = 'asScrollbar';
 const OtherAsScrollbar = $.fn.asScrollbar;
 
