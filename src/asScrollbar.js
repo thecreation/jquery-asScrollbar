@@ -83,6 +83,8 @@ export default class asScrollbar {
     this.updateLength();
 
     this.bindEvents();
+
+    this.trigger('ready');
   }
 
   trigger(eventType, ...params) {
@@ -698,16 +700,28 @@ export default class asScrollbar {
     this._states.disabled = 0;
 
     this.$bar.removeClass(this.options.disabledClass);
+
+    this.trigger('enable');
   }
 
   disable() {
     this._states.disabled = 1;
 
     this.$bar.addClass(this.options.disabledClass);
+
+    this.trigger('disable');
   }
 
   destory() {
-    this.$bar.on(this.eventName());
+    this.$handle.removeClass(this.classes.handleClass);
+    this.$bar.removeClass(this.classes.barClass).removeClass(this.classes.directionClass).attr('draggable', null);
+    if (this.options.skin) {
+      this.$bar.removeClass(this.options.skin);
+    }
+    this.$bar.off(this.eventName());
+    this.$handle.off(this.eventName());
+
+    this.trigger('destory');
   }
 
   static setDefaults(options) {

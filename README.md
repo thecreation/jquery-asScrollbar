@@ -22,6 +22,7 @@
 ```
 dist/
 ├── jquery-asScrollbar.js
+├── jquery-asScrollbar.es.js
 └── jquery-asScrollbar.min.js
 ```
 
@@ -56,13 +57,14 @@ gulp build
 Done!
 
 ## Requirements
-`jquery-asScrollbar` requires the latest version of [`jQuery`](https://jquery.com/download/).
+`jquery-asScrollbar` requires the latest version of [`jQuery`](https://jquery.com/download/) and [`jquery-mousewheel`](https://github.com/jquery/jquery-mousewheel) if we need mouse wheel support.
 
 ## Usage
 #### Including files:
 
 ```html
 <script src="/path/to/jquery.js"></script>
+<script src="/path/to/jquery.mousewheel"></script>
 <script src="/path/to/jquery-asScrollbar.js"></script>
 ```
 
@@ -76,7 +78,7 @@ Done!
 All you need to do is call the plugin on the element:
 
 ```javascript
-$(function() {
+jQuery(function($) {
   $('.example').asScrollbar(); 
 });
 ```
