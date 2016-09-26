@@ -22,7 +22,7 @@ $.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
 
   return this.each(function() {
     if (!$(this).data(NAME)) {
-      $(this).data(NAME, new asScrollbar(options, this));
+      $(this).data(NAME, new asScrollbar(this, options));
     }
   });
 };

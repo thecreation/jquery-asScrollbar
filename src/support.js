@@ -46,7 +46,7 @@ let support = {};
       }
     };
 
-  let test = (property, prefixed) => {
+  const test = (property, prefixed) => {
     let result = false,
       upper = property.charAt(0).toUpperCase() + property.slice(1);
 
@@ -72,7 +72,7 @@ let support = {};
     return false;
   };
 
-  let prefixed = (property) => {
+  const prefixed = (property) => {
     return test(property, true);
   };
 
@@ -107,7 +107,6 @@ let support = {};
   }
 
   support.prefixPointerEvent = (pointerEvent) => {
-
     return window.MSPointerEvent ?
       `MSPointer${pointerEvent.charAt(9).toUpperCase()}${pointerEvent.substr(10)}` :
       pointerEvent;

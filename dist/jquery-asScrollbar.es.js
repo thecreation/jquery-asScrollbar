@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.5.1
+* jQuery asScrollbar v0.5.2
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
@@ -47,32 +47,32 @@ var DEFAULTS = {
   easing: 'ease' // linear, ease-in, ease-out, ease-in-out
 };
 
-let easingBezier = (mX1, mY1, mX2, mY2) => {
+const easingBezier = (mX1, mY1, mX2, mY2) => {
   'use strict';
 
-  let a = (aA1, aA2) => {
+  const a = (aA1, aA2) => {
     return 1.0 - 3.0 * aA2 + 3.0 * aA1;
   };
 
-  let b = (aA1, aA2) => {
+  const b = (aA1, aA2) => {
     return 3.0 * aA2 - 6.0 * aA1;
   };
 
-  let c = (aA1) => {
+  const c = (aA1) => {
     return 3.0 * aA1;
   };
 
   // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
-  let calcBezier = (aT, aA1, aA2) => {
+  const calcBezier = (aT, aA1, aA2) => {
     return ((a(aA1, aA2) * aT + b(aA1, aA2)) * aT + c(aA1)) * aT;
   };
 
   // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
-  let getSlope = (aT, aA1, aA2) => {
+  const getSlope = (aT, aA1, aA2) => {
     return 3.0 * a(aA1, aA2) * aT * aT + 2.0 * b(aA1, aA2) * aT + c(aA1);
   };
 
-  let getTForX = (aX) => {
+  const getTForX = (aX) => {
     // Newton raphson iteration
     let aGuessT = aX;
     for (let i = 0; i < 4; ++i) {
@@ -117,7 +117,7 @@ if (!Date.now) {
   };
 }
 
-let vendors = ['webkit', 'moz'];
+const vendors = ['webkit', 'moz'];
 for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
   let vp = vendors[i];
   window.requestAnimationFrame = window[`${vp}RequestAnimationFrame`];
@@ -141,19 +141,19 @@ if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.req
 /**
  * Helper functions
  **/
-let isPercentage = (n) => {
+const isPercentage = (n) => {
   'use strict';
 
   return typeof n === 'string' && n.indexOf('%') !== -1;
 };
 
-let convertPercentageToFloat = (n) => {
+const convertPercentageToFloat = (n) => {
   'use strict';
 
   return parseFloat(n.slice(0, -1) / 100, 10);
 };
 
-let convertMatrixToArray = (value) => {
+const convertMatrixToArray = (value) => {
   'use strict';
 
   if (value && (value.substr(0, 6) === 'matrix')) {
@@ -162,7 +162,7 @@ let convertMatrixToArray = (value) => {
   return false;
 };
 
-let getTime = () => {
+const getTime = () => {
   if (typeof window.performance !== 'undefined' && window.performance.now) {
     return window.performance.now();
   }
@@ -215,7 +215,7 @@ let support = {};
       }
     };
 
-  let test = (property, prefixed) => {
+  const test = (property, prefixed) => {
     let result = false,
       upper = property.charAt(0).toUpperCase() + property.slice(1);
 
@@ -241,7 +241,7 @@ let support = {};
     return false;
   };
 
-  let prefixed = (property) => {
+  const prefixed = (property) => {
     return test(property, true);
   };
 
@@ -276,7 +276,6 @@ let support = {};
   }
 
   support.prefixPointerEvent = (pointerEvent) => {
-
     return window.MSPointerEvent ?
       `MSPointer${pointerEvent.charAt(9).toUpperCase()}${pointerEvent.substr(10)}` :
       pointerEvent;
@@ -289,7 +288,7 @@ const NAME$1 = 'asScrollbar';
  * Plugin constructor
  **/
 class asScrollbar {
-  constructor(options, bar) {
+  constructor(bar, options) {
     this.$bar = $(bar);
     options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
     bar.direction = this.options.direction;
@@ -1017,7 +1016,7 @@ class asScrollbar {
 }
 
 var info = {
-  version:'0.5.1'
+  version:'0.5.2'
 };
 
 const NAME = 'asScrollbar';
@@ -1040,7 +1039,7 @@ $.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
 
   return this.each(function() {
     if (!$(this).data(NAME)) {
-      $(this).data(NAME, new asScrollbar(options, this));
+      $(this).data(NAME, new asScrollbar(this, options));
     }
   });
 };

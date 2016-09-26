@@ -4,7 +4,7 @@ if (!Date.now) {
   };
 }
 
-let vendors = ['webkit', 'moz'];
+const vendors = ['webkit', 'moz'];
 for (let i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
   let vp = vendors[i];
   window.requestAnimationFrame = window[`${vp}RequestAnimationFrame`];
@@ -28,19 +28,19 @@ if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.req
 /**
  * Helper functions
  **/
-let isPercentage = (n) => {
+const isPercentage = (n) => {
   'use strict';
 
   return typeof n === 'string' && n.indexOf('%') !== -1;
 };
 
-let convertPercentageToFloat = (n) => {
+const convertPercentageToFloat = (n) => {
   'use strict';
 
   return parseFloat(n.slice(0, -1) / 100, 10);
 };
 
-let convertMatrixToArray = (value) => {
+const convertMatrixToArray = (value) => {
   'use strict';
 
   if (value && (value.substr(0, 6) === 'matrix')) {
@@ -49,7 +49,7 @@ let convertMatrixToArray = (value) => {
   return false;
 };
 
-let getTime = () => {
+const getTime = () => {
   if (typeof window.performance !== 'undefined' && window.performance.now) {
     return window.performance.now();
   }

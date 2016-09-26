@@ -23,7 +23,10 @@
 dist/
 ├── jquery-asScrollbar.js
 ├── jquery-asScrollbar.es.js
-└── jquery-asScrollbar.min.js
+├── jquery-asScrollbar.min.js
+└── css/
+    ├── asScrollbar.css
+    └── asScrollbar.min.css
 ```
 
 ## Quick start
@@ -63,6 +66,7 @@ Done!
 #### Including files:
 
 ```html
+<link rel="stylesheet" href="/path/to/asScrollbar.css">
 <script src="/path/to/jquery.js"></script>
 <script src="/path/to/jquery.mousewheel"></script>
 <script src="/path/to/jquery-asScrollbar.js"></script>

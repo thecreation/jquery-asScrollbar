@@ -11,7 +11,7 @@ const NAME = 'asScrollbar';
  * Plugin constructor
  **/
 class asScrollbar {
-  constructor(options, bar) {
+  constructor(bar, options) {
     this.$bar = $(bar);
     options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
     bar.direction = this.options.direction;

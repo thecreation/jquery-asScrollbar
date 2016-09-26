@@ -1,6 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
-
+<html class="no-js">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,16 +13,16 @@
     body {
       background-color: #f7f7f7;
     }
-    
+
     .section {
       padding: 20px;
     }
-    
+
     .inner {
       margin: 0 auto;
       max-width: 960px;
     }
-    
+
     .example {
       position: relative;
       overflow: hidden;
@@ -34,27 +33,29 @@
       box-shadow: 1px 1px 2px 0px rgba(200, 200, 200, 0.3);
       background-color: #fefefe;
     }
-    
+
     .content-200px-height {
       height: 200px;
     }
-    
+
     .content-300px-height {
       height: 300px;
     }
-    
+
     .content-500px-height {
       height: 500px;
     }
-    
+
     .content-1000px-height {
       background-color: rgb(232, 244, 255);
       height: 1000px;
     }
   </style>
 </head>
-
 <body>
+  <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
   <!--[if lt IE 8]>
   <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -109,27 +110,21 @@
   <script src="js/jquery.mousewheel.js"></script>
   <script src="../dist/jquery-asScrollbar.js"></script>
   <script type="text/javascript">
-    jQuery(document).ready(function() {
+    jQuery(function() {
       $('.example-scrollbar-horizontal').asScrollbar({
         direction: 'horizontal',
         minHandleLength: 200,
         handleLength: 100
       });
-
       var api = $('.example-scrollbar-horizontal').data('asScrollbar');
-
       $('.api-move-to').on('click', function() {
         var to = $(this).data('to');
-
         $('.example-scrollbar-horizontal, .example-scrollbar-vertical').asScrollbar('moveTo', to);
       });
-
       $('.api-move-by').on('click', function() {
         var to = $(this).data('by');
-
         $('.example-scrollbar-horizontal, .example-scrollbar-vertical').asScrollbar('moveBy', to);
       });
-
       $('.example-scrollbar-vertical').asScrollbar({
         direction: 'vertical',
         handleLength: 100,
@@ -141,18 +136,14 @@
         clickMoveStep: 0.2, // 0 - 1
         mousewheel: true,
         mousewheelSpeed: 50,
-
         keyboard: true,
-
         useCssTransforms3d: true,
         useCssTransforms: true,
         useCssTransitions: true,
-
         duration: '800',
         easing: 'ease' // linear, ease-in, ease-out, ease-in-out
       });
     });
   </script>
 </body>
-
 </html>
