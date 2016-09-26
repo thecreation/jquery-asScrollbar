@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import asScrollbar from './asScrollbar';
+import version from './version';
 
 const NAME = 'asScrollbar';
 const OtherAsScrollbar = $.fn.asScrollbar;
@@ -26,10 +27,13 @@ $.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
   });
 };
 
-$.fn.asScrollbar.Constructor = asScrollbar;
-$.fn.asScrollbar.setDefaults = asScrollbar.setDefaults;
-
-$.fn.asScrollbar.noConflict = function noConflict() {
-  $.fn.asScrollbar = OtherAsScrollbar;
-  return this;
+$.asScrollbar = {
+  version: version,
+  setDefaults: asScrollbar.setDefaults,
+  registerEasing: asScrollbar.registerEasing,
+  getEasing: asScrollbar.getEasing,
+  noConflict: function() {
+    $.fn.asScrollbar = OtherAsScrollbar;
+    return this;
+  },
 };

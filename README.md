@@ -201,13 +201,13 @@ disable | This event is fired immediately when the `disable` instance method has
 destroy | Fires when an instance is destroyed. 
 
 ## No conflict
-If you have to use other plugin with the same namespace, just call the `$.fn.asScrollbar.noConflict` method to revert to it.
+If you have to use other plugin with the same namespace, just call the `$.asScrollbar.noConflict` method to revert to it.
 
 ```html
 <script src="other-plugin.js"></script>
 <script src="jquery-asScrollbar.js"></script>
 <script>
-  $.fn.asScrollbar.noConflict();
+  $.asScrollbar.noConflict();
   // Code that uses other plugin's "$().asScrollbar" can follow here.
 </script>
 ```

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import DEFAULTS from './defaults';
 import easingBezier from './easingBezier';
+import EASING from './easing';
 import { isPercentage, convertPercentageToFloat, convertMatrixToArray, getTime } from './helpers';
 import support from './support';
 
@@ -52,7 +53,7 @@ class asScrollbar {
     // Current handle position
     this.handlePosition = 0;
 
-    this.easing = asScrollbar.easing[this.options.easing] || asScrollbar.easing.ease;
+    this.easing = EASING[this.options.easing] || EASING.ease;
 
     this.init();
   }
@@ -724,18 +725,17 @@ class asScrollbar {
     this.trigger('destory');
   }
 
+  static registerEasing(name, ...args) {
+    EASING[name] = easingBezier(...args);
+  }
+
+  static getEasing(name) {
+    return EASING[name];
+  }
+
   static setDefaults(options) {
     $.extend(DEFAULTS, $.isPlainObject(options) && options);
   }
 }
 
-$.extend(asScrollbar.easing = {}, {
-  ease: easingBezier(0.25, 0.1, 0.25, 1.0),
-  linear: easingBezier(0.00, 0.0, 1.00, 1.0),
-  'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
-  'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
-  'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
-});
-
-$.asScrollbar = asScrollbar;
 export default asScrollbar;

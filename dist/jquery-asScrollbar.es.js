@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.4.9
+* jQuery asScrollbar v0.5.0
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
@@ -101,6 +101,14 @@ let easingBezier = (mX1, mY1, mX2, mY2) => {
       return calcBezier(getTForX(aX), mY1, mY2);
     }
   };
+};
+
+var EASING = {
+  ease: easingBezier(0.25, 0.1, 0.25, 1.0),
+  linear: easingBezier(0.00, 0.0, 1.00, 1.0),
+  'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
+  'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
+  'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
 };
 
 if (!Date.now) {
@@ -323,7 +331,7 @@ class asScrollbar {
     // Current handle position
     this.handlePosition = 0;
 
-    this.easing = asScrollbar.easing[this.options.easing] || asScrollbar.easing.ease;
+    this.easing = EASING[this.options.easing] || EASING.ease;
 
     this.init();
   }
@@ -995,20 +1003,22 @@ class asScrollbar {
     this.trigger('destory');
   }
 
+  static registerEasing(name, ...args) {
+    EASING[name] = easingBezier(...args);
+  }
+
+  static getEasing(name) {
+    return EASING[name];
+  }
+
   static setDefaults(options) {
     $.extend(DEFAULTS, $.isPlainObject(options) && options);
   }
 }
 
-$.extend(asScrollbar.easing = {}, {
-  ease: easingBezier(0.25, 0.1, 0.25, 1.0),
-  linear: easingBezier(0.00, 0.0, 1.00, 1.0),
-  'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
-  'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
-  'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
-});
-
-$.asScrollbar = asScrollbar;
+var version = {
+  version:'0.5.0'
+};
 
 const NAME = 'asScrollbar';
 const OtherAsScrollbar = $.fn.asScrollbar;
@@ -1035,10 +1045,13 @@ $.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
   });
 };
 
-$.fn.asScrollbar.Constructor = asScrollbar;
-$.fn.asScrollbar.setDefaults = asScrollbar.setDefaults;
-
-$.fn.asScrollbar.noConflict = function noConflict() {
-  $.fn.asScrollbar = OtherAsScrollbar;
-  return this;
+$.asScrollbar = {
+  version: version,
+  setDefaults: asScrollbar.setDefaults,
+  registerEasing: asScrollbar.registerEasing,
+  getEasing: asScrollbar.getEasing,
+  noConflict: function() {
+    $.fn.asScrollbar = OtherAsScrollbar;
+    return this;
+  },
 };

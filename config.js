@@ -40,6 +40,7 @@ export default {
 
       scripts: {
         entry: 'main.js',
+        version: 'version.js',
         files: '**/*.js',
         src: `${src}`,
         dest: `${dest}`,

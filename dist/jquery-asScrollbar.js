@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.4.9
+* jQuery asScrollbar v0.5.0
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
@@ -170,6 +170,14 @@
           return calcBezier(getTForX(aX), mY1, mY2);
         }
       };
+    };
+
+    var EASING = {
+      ease: easingBezier(0.25, 0.1, 0.25, 1.0),
+      linear: easingBezier(0.00, 0.0, 1.00, 1.0),
+      'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
+      'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
+      'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
     };
 
     if (!Date.now) {
@@ -415,7 +423,7 @@
         // Current handle position
         this.handlePosition = 0;
 
-        this.easing = asScrollbar.easing[this.options.easing] || asScrollbar.easing.ease;
+        this.easing = EASING[this.options.easing] || EASING.ease;
 
         this.init();
       }
@@ -1179,6 +1187,20 @@
           this.trigger('destory');
         }
       }], [{
+        key: 'registerEasing',
+        value: function registerEasing(name) {
+          for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+            args[_key2 - 1] = arguments[_key2];
+          }
+
+          EASING[name] = easingBezier.apply(undefined, args);
+        }
+      }, {
+        key: 'getEasing',
+        value: function getEasing(name) {
+          return EASING[name];
+        }
+      }, {
         key: 'setDefaults',
         value: function setDefaults(options) {
           _jquery2.default.extend(DEFAULTS, _jquery2.default.isPlainObject(options) && options);
@@ -1188,22 +1210,16 @@
       return asScrollbar;
     }();
 
-    _jquery2.default.extend(asScrollbar.easing = {}, {
-      ease: easingBezier(0.25, 0.1, 0.25, 1.0),
-      linear: easingBezier(0.00, 0.0, 1.00, 1.0),
-      'ease-in': easingBezier(0.42, 0.0, 1.00, 1.0),
-      'ease-out': easingBezier(0.00, 0.0, 0.58, 1.0),
-      'ease-in-out': easingBezier(0.42, 0.0, 0.58, 1.0)
-    });
-
-    _jquery2.default.asScrollbar = asScrollbar;
+    var version = {
+      version: '0.5.0'
+    };
 
     var NAME = 'asScrollbar';
     var OtherAsScrollbar = _jquery2.default.fn.asScrollbar;
 
     _jquery2.default.fn.asScrollbar = function jQueryAsScrollbar(options) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
+      for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        args[_key3 - 1] = arguments[_key3];
       }
 
       if (typeof options === 'string') {
@@ -1240,14 +1256,16 @@
     }
     ;
 
-    _jquery2.default.fn.asScrollbar.Constructor = asScrollbar;
-    _jquery2.default.fn.asScrollbar.setDefaults = asScrollbar.setDefaults;
+    _jquery2.default.asScrollbar = {
+      version: version,
+      setDefaults: asScrollbar.setDefaults,
+      registerEasing: asScrollbar.registerEasing,
+      getEasing: asScrollbar.getEasing,
+      noConflict: function noConflict() {
+        _jquery2.default.fn.asScrollbar = OtherAsScrollbar;
 
-    _jquery2.default.fn.asScrollbar.noConflict = function noConflict() {
-      _jquery2.default.fn.asScrollbar = OtherAsScrollbar;
-
-      return this;
-    }
-    ;
+        return this;
+      }
+    };
   }
 );
