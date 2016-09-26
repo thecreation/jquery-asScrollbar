@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.5.0
+* jQuery asScrollbar v0.5.1
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
@@ -1016,8 +1016,8 @@ class asScrollbar {
   }
 }
 
-var version = {
-  version:'0.5.0'
+var info = {
+  version:'0.5.1'
 };
 
 const NAME = 'asScrollbar';
@@ -1045,13 +1045,12 @@ $.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
   });
 };
 
-$.asScrollbar = {
-  version: version,
+$.asScrollbar = $.extend({
   setDefaults: asScrollbar.setDefaults,
   registerEasing: asScrollbar.registerEasing,
   getEasing: asScrollbar.getEasing,
   noConflict: function() {
     $.fn.asScrollbar = OtherAsScrollbar;
     return this;
-  },
-};
+  }
+}, info);
