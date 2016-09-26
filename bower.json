@@ -1,6 +1,6 @@
 {
   "name": "jquery-asScrollbar",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "A jquery plugin that do amazing things.",
   "main": "dist/jquery-asScrollbar.js",
   "copyright": "amazingSurge",

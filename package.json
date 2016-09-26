@@ -2,7 +2,7 @@
   "name": "jquery-asScrollbar",
   "title": "jQuery asScrollbar",
   "description": "A jquery plugin that do amazing things.",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "homepage": "https://github.com/amazingSurge/jquery-asScrollbar",
   "author": {
     "name": "amazingSurge",
@@ -29,7 +29,7 @@
     }
   ],
   "license": "LGPL-3.0",
-  "main": "",
+  "main": "dist/jquery-asScrollbar.js",
   "files": [
     "dist",
     "src"
