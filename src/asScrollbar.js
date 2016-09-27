@@ -5,7 +5,7 @@ import EASING from './easing';
 import { isPercentage, convertPercentageToFloat, convertMatrixToArray, getTime } from './helpers';
 import support from './support';
 
-const NAME = 'asScrollbar';
+const NAMESPACE = 'asScrollbar';
 
 /**
  * Plugin constructor
@@ -18,8 +18,8 @@ class asScrollbar {
 
     this.classes = {
       directionClass: `${options.namespace}-${options.direction}`,
-      barClass: options.barClass ? options.barClass : options.namespace,
-      handleClass: options.handleClass ? options.handleClass : `${options.namespace}-handle`
+      barClass: options.barClass? options.barClass: options.namespace,
+      handleClass: options.handleClass? options.handleClass: `${options.namespace}-handle`
     };
 
     if (this.options.direction === 'vertical') {
@@ -92,7 +92,7 @@ class asScrollbar {
     let data = [this].concat(...params);
 
     // event
-    this.$bar.trigger(`${NAME}::${eventType}`, data);
+    this.$bar.trigger(`${NAMESPACE}::${eventType}`, data);
 
     // callback
     eventType = eventType.replace(/\b\w+\b/g, (word) => {

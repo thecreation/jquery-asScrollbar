@@ -2,30 +2,38 @@ import $ from 'jquery';
 import asScrollbar from './asScrollbar';
 import info from './info';
 
-const NAME = 'asScrollbar';
+const NAMESPACE = 'asScrollbar';
 const OtherAsScrollbar = $.fn.asScrollbar;
 
-$.fn.asScrollbar = function jQueryAsScrollbar(options, ...args) {
+const jQueryAsScrollbar = function(options, ...args) {
   if (typeof options === 'string') {
-    return this.each(function() {
-      let instance = $(this).data(NAME);
-      if (!instance) {
-        return false;
+    let method = options;
+
+    if (/^_/.test(method)) {
+      return false;
+    } else if ((/^(get)/.test(method))) {
+      let instance = this.first().data(NAMESPACE);
+      if (instance && typeof instance[method] === 'function') {
+        return instance[method](...args);
       }
-      if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
-        return false;
-      }
-      // apply method
-      return instance[options](...args);
-    });
+    } else {
+      return this.each(function() {
+        let instance = $.data(this, NAMESPACE);
+        if (instance && typeof instance[method] === 'function') {
+          instance[method](...args);
+        }
+      });
+    }
   }
 
   return this.each(function() {
-    if (!$(this).data(NAME)) {
-      $(this).data(NAME, new asScrollbar(this, options));
+    if (!$(this).data(NAMESPACE)) {
+      $(this).data(NAMESPACE, new asScrollbar(this, options));
     }
   });
 };
+
+$.fn.asScrollbar = jQueryAsScrollbar;
 
 $.asScrollbar = $.extend({
   setDefaults: asScrollbar.setDefaults,
@@ -33,6 +41,6 @@ $.asScrollbar = $.extend({
   getEasing: asScrollbar.getEasing,
   noConflict: function() {
     $.fn.asScrollbar = OtherAsScrollbar;
-    return this;
+    return jQueryAsScrollbar;
   }
 }, info);
