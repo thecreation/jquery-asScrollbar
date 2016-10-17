@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.5.3
+* jQuery asScrollbar v0.5.4
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
@@ -138,36 +138,27 @@ if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.req
   window.cancelAnimationFrame = clearTimeout;
 }
 
-/**
- * Helper functions
- **/
-const isPercentage = (n) => {
-  'use strict';
-
+function isPercentage(n) {
   return typeof n === 'string' && n.indexOf('%') !== -1;
-};
+}
 
-const convertPercentageToFloat = (n) => {
-  'use strict';
-
+function convertPercentageToFloat(n) {
   return parseFloat(n.slice(0, -1) / 100, 10);
-};
+}
 
-const convertMatrixToArray = (value) => {
-  'use strict';
-
+function convertMatrixToArray(value) {
   if (value && (value.substr(0, 6) === 'matrix')) {
     return value.replace(/^.*\((.*)\)$/g, '$1').replace(/px/g, '').split(/, +/);
   }
   return false;
-};
+}
 
-const getTime = () => {
+function getTime () {
   if (typeof window.performance !== 'undefined' && window.performance.now) {
     return window.performance.now();
   }
   return Date.now();
-};
+}
 
 /**
  * Css features detect
@@ -288,9 +279,9 @@ const NAMESPACE$1 = 'asScrollbar';
  * Plugin constructor
  **/
 class asScrollbar {
-  constructor(bar, options) {
+  constructor(bar, options = {}) {
     this.$bar = $(bar);
-    options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
+    options = this.options = $.extend({}, DEFAULTS, options, this.$bar.data('options') || {});
     bar.direction = this.options.direction;
 
     this.classes = {
@@ -366,7 +357,7 @@ class asScrollbar {
   }
 
   trigger(eventType, ...params) {
-    let data = [this].concat(...params);
+    let data = [this].concat(params);
 
     // event
     this.$bar.trigger(`${NAMESPACE$1}::${eventType}`, data);
@@ -378,7 +369,7 @@ class asScrollbar {
     let onFunction = `on${eventType}`;
 
     if (typeof this.options[onFunction] === 'function') {
-      this.options[onFunction].apply(this, ...params);
+      this.options[onFunction].apply(this, params);
     }
   }
 
@@ -990,7 +981,7 @@ class asScrollbar {
     this.trigger('disable');
   }
 
-  destory() {
+  destroy() {
     this.$handle.removeClass(this.classes.handleClass);
     this.$bar.removeClass(this.classes.barClass).removeClass(this.classes.directionClass).attr('draggable', null);
     if (this.options.skin) {
@@ -999,7 +990,7 @@ class asScrollbar {
     this.$bar.off(this.eventName());
     this.$handle.off(this.eventName());
 
-    this.trigger('destory');
+    this.trigger('destroy');
   }
 
   static registerEasing(name, ...args) {
@@ -1016,7 +1007,7 @@ class asScrollbar {
 }
 
 var info = {
-  version:'0.5.3'
+  version:'0.5.4'
 };
 
 const NAMESPACE = 'asScrollbar';
@@ -1024,18 +1015,18 @@ const OtherAsScrollbar = $.fn.asScrollbar;
 
 const jQueryAsScrollbar = function(options, ...args) {
   if (typeof options === 'string') {
-    let method = options;
+    const method = options;
 
     if (/^_/.test(method)) {
       return false;
     } else if ((/^(get)/.test(method))) {
-      let instance = this.first().data(NAMESPACE);
+      const instance = this.first().data(NAMESPACE);
       if (instance && typeof instance[method] === 'function') {
         return instance[method](...args);
       }
     } else {
       return this.each(function() {
-        let instance = $.data(this, NAMESPACE);
+        const instance = $.data(this, NAMESPACE);
         if (instance && typeof instance[method] === 'function') {
           instance[method](...args);
         }

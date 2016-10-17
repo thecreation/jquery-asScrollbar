@@ -2,7 +2,7 @@ import $ from 'jquery';
 import DEFAULTS from './defaults';
 import easingBezier from './easingBezier';
 import EASING from './easing';
-import { isPercentage, convertPercentageToFloat, convertMatrixToArray, getTime } from './helpers';
+import * as util from './util';
 import support from './support';
 
 const NAMESPACE = 'asScrollbar';
@@ -11,9 +11,9 @@ const NAMESPACE = 'asScrollbar';
  * Plugin constructor
  **/
 class asScrollbar {
-  constructor(bar, options) {
+  constructor(bar, options = {}) {
     this.$bar = $(bar);
-    options = this.options = $.extend({}, DEFAULTS, options || {}, this.$bar.data('options') || {});
+    options = this.options = $.extend({}, DEFAULTS, options, this.$bar.data('options') || {});
     bar.direction = this.options.direction;
 
     this.classes = {
@@ -89,7 +89,7 @@ class asScrollbar {
   }
 
   trigger(eventType, ...params) {
-    let data = [this].concat(...params);
+    let data = [this].concat(params);
 
     // event
     this.$bar.trigger(`${NAMESPACE}::${eventType}`, data);
@@ -101,7 +101,7 @@ class asScrollbar {
     let onFunction = `on${eventType}`;
 
     if (typeof this.options[onFunction] === 'function') {
-      this.options[onFunction].apply(this, ...params);
+      this.options[onFunction].apply(this, params);
     }
   }
 
@@ -496,7 +496,7 @@ class asScrollbar {
     let value;
 
     if (this.options.useCssTransforms && support.transform) {
-      value = convertMatrixToArray(this.$handle.css(support.transform));
+      value = util.convertMatrixToArray(this.$handle.css(support.transform));
 
       if (!value) {
         return 0;
@@ -554,8 +554,8 @@ class asScrollbar {
     let type = typeof value;
 
     if (type === 'string') {
-      if (isPercentage(value)) {
-        value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
+      if (util.isPercentage(value)) {
+        value = util.convertPercentageToFloat(value) * (this.barLength - this.handleLength);
       }
 
       value = parseFloat(value);
@@ -573,8 +573,8 @@ class asScrollbar {
     let type = typeof value;
 
     if (type === 'string') {
-      if (isPercentage(value)) {
-        value = convertPercentageToFloat(value) * (this.barLength - this.handleLength);
+      if (util.isPercentage(value)) {
+        value = util.convertPercentageToFloat(value) * (this.barLength - this.handleLength);
       }
 
       value = parseFloat(value);
@@ -640,7 +640,7 @@ class asScrollbar {
     } else {
       this.enter('animating');
 
-      let startTime = getTime();
+      let startTime = util.getTime();
       let start = this.getHandlePosition();
       let end = value;
 
@@ -713,7 +713,7 @@ class asScrollbar {
     this.trigger('disable');
   }
 
-  destory() {
+  destroy() {
     this.$handle.removeClass(this.classes.handleClass);
     this.$bar.removeClass(this.classes.barClass).removeClass(this.classes.directionClass).attr('draggable', null);
     if (this.options.skin) {
@@ -722,7 +722,7 @@ class asScrollbar {
     this.$bar.off(this.eventName());
     this.$handle.off(this.eventName());
 
-    this.trigger('destory');
+    this.trigger('destroy');
   }
 
   static registerEasing(name, ...args) {

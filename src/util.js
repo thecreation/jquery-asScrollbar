@@ -25,35 +25,24 @@ if (/iP(ad|hone|od).*OS (6|7|8)/.test(window.navigator.userAgent) || !window.req
   window.cancelAnimationFrame = clearTimeout;
 }
 
-/**
- * Helper functions
- **/
-const isPercentage = (n) => {
-  'use strict';
-
+export function isPercentage(n) {
   return typeof n === 'string' && n.indexOf('%') !== -1;
 };
 
-const convertPercentageToFloat = (n) => {
-  'use strict';
-
+export function convertPercentageToFloat(n) {
   return parseFloat(n.slice(0, -1) / 100, 10);
 };
 
-const convertMatrixToArray = (value) => {
-  'use strict';
-
+export function convertMatrixToArray(value) {
   if (value && (value.substr(0, 6) === 'matrix')) {
     return value.replace(/^.*\((.*)\)$/g, '$1').replace(/px/g, '').split(/, +/);
   }
   return false;
 };
 
-const getTime = () => {
+export function getTime () {
   if (typeof window.performance !== 'undefined' && window.performance.now) {
     return window.performance.now();
   }
   return Date.now();
 };
-
-export { isPercentage, convertPercentageToFloat, convertMatrixToArray, getTime };
