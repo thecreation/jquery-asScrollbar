@@ -1,5 +1,5 @@
 /**
-* jQuery asScrollbar v0.5.5
+* jQuery asScrollbar v0.5.6
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
@@ -59,7 +59,7 @@
   })();
 
   /**
-  * jQuery asScrollbar v0.5.5
+  * jQuery asScrollbar v0.5.6
   * https://github.com/amazingSurge/jquery-asScrollbar
   *
   * Copyright (c) amazingSurge
@@ -1286,7 +1286,7 @@
     })();
 
     var info = {
-      version: '0.5.5'
+      version: '0.5.6'
     };
 
     var NAMESPACE = 'asScrollbar';
