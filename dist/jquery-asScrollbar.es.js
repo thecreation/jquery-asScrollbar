@@ -1,11 +1,14 @@
 /**
-* jQuery asScrollbar v0.5.4
+* jQuery asScrollbar v0.5.5
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
 * Copyright (c) amazingSurge
 * Released under the LGPL-3.0 license
 */
-import $ from 'jquery';
+(function ($) {
+'use strict';
+
+$ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
 var DEFAULTS = {
   namespace: 'asScrollbar',
@@ -1007,7 +1010,7 @@ class asScrollbar {
 }
 
 var info = {
-  version:'0.5.4'
+  version:'0.5.5'
 };
 
 const NAMESPACE = 'asScrollbar';
@@ -1052,3 +1055,5 @@ $.asScrollbar = $.extend({
     return jQueryAsScrollbar;
   }
 }, info);
+
+}(jQuery));
