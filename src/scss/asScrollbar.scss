@@ -1,12 +1,12 @@
-$scrollbar: "asScrollbar";
-$scrollbar-size: 4px;
-$scrollbar-dragging-size: 10px;
-$scrollbar-dragging-color: rgba(238, 238, 238, .6);
-$scrollbar-hovering-color: rgba(238, 238, 238, .4);
-$scrollbar-handle-offset: 5px;
-$scrollbar-handle-color: rgba(224, 224, 224, .6);
-$scrollbar-handle-hovering-color: rgba(150, 150, 150, .6);
-$scrollbar-handle-dragging-color: rgba(150, 150, 150, .8);
+$scrollbar: "asScrollbar" !default;
+$scrollbar-size: 4px !default;
+$scrollbar-dragging-size: 10px !default;
+$scrollbar-dragging-color: rgba(238, 238, 238, .6) !default;
+$scrollbar-hovering-color: rgba(238, 238, 238, .4) !default;
+$scrollbar-handle-offset: 5px !default;
+$scrollbar-handle-color: rgba(224, 224, 224, .6) !default;
+$scrollbar-handle-hovering-color: rgba(150, 150, 150, .6) !default;
+$scrollbar-handle-dragging-color: rgba(150, 150, 150, .8) !default;
 
 .#{$scrollbar} {
   position: absolute;
